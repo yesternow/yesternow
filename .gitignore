@@ -3,5 +3,3 @@ secrets.js
 .DS_Store
 npm-debug.log
 yarn-error.log
-bundle.js
-bundle.js.map

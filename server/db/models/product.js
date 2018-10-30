@@ -56,6 +56,9 @@ const Product = db.define('product', {
 	},
 	brand: {
 		type: Sequelize.STRING
+	},
+	category: {
+		type: Sequelize.ARRAY(Sequelize.STRING)
 	}
 });
 

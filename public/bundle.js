@@ -144,12 +144,18 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components__WEBPACK_IMPORTED_MODULE_2__["Navbar"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_routes__WEBPACK_IMPORTED_MODULE_4__["default"], null));
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components__WEBPACK_IMPORTED_MODULE_2__["Navbar"], null), isFetching ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "FETCHING DATA") : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_routes__WEBPACK_IMPORTED_MODULE_4__["default"], null));
     }
   }]);
 
   return App;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    isFetching: state.products.isFetching
+  };
+};
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
@@ -382,20 +388,21 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Products = function Products(props) {
-  if (props.products) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, props.products.map(function (product) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        key: product.id
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, product.title));
-    }));
-  } else {
+  if (!props.products) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Hello there are no products yet");
   }
+
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, props.products.map(function (product) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      key: product.id
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, product.title));
+  }));
 };
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    products: state.products
+    products: state.products //will need to be state.products.products after seed data
+
   };
 };
 
@@ -671,7 +678,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setProducts", function() { return _product__WEBPACK_IMPORTED_MODULE_5__["setProducts"]; });
 
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "newProduct", function() { return _product__WEBPACK_IMPORTED_MODULE_5__["newProduct"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "removeProduct", function() { return _product__WEBPACK_IMPORTED_MODULE_5__["removeProduct"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "updateProduct", function() { return _product__WEBPACK_IMPORTED_MODULE_5__["updateProduct"]; });
+
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "fetchProducts", function() { return _product__WEBPACK_IMPORTED_MODULE_5__["fetchProducts"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "addProduct", function() { return _product__WEBPACK_IMPORTED_MODULE_5__["addProduct"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "deleteProduct", function() { return _product__WEBPACK_IMPORTED_MODULE_5__["deleteProduct"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "sendProductUpdate", function() { return _product__WEBPACK_IMPORTED_MODULE_5__["sendProductUpdate"]; });
 
 
 
@@ -697,45 +716,155 @@ var store = Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(reducer, m
 /*!*********************************!*\
   !*** ./client/store/product.js ***!
   \*********************************/
-/*! exports provided: setProducts, fetchProducts, default */
+/*! exports provided: setProducts, newProduct, removeProduct, updateProduct, fetchProducts, addProduct, deleteProduct, sendProductUpdate, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setProducts", function() { return setProducts; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newProduct", function() { return newProduct; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "removeProduct", function() { return removeProduct; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateProduct", function() { return updateProduct; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchProducts", function() { return fetchProducts; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addProduct", function() { return addProduct; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteProduct", function() { return deleteProduct; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendProductUpdate", function() { return sendProductUpdate; });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
  //Action Types
 
-var SET_PRODUCTS = 'SET_PRODUCTS'; //Action Creator
+var SET_PRODUCTS = 'SET_PRODUCTS';
+var NEW_PRODUCT = 'NEW_PRODUCT';
+var UPDATE_PRODUCT = 'UPDATE_PRODUCT';
+var REMOVE_PRODUCT = 'REMOVE_PRODUCT';
+var FETCH_REQUEST = 'FETCH_REQUEST';
+var FETCH_FAILURE = 'FETCH_FAILURE'; //Action Creator
 
 var setProducts = function setProducts(products) {
   return {
     type: SET_PRODUCTS,
     products: products
   };
+};
+var newProduct = function newProduct(product) {
+  return {
+    type: NEW_PRODUCT,
+    product: product
+  };
+};
+var removeProduct = function removeProduct(product) {
+  return {
+    type: REMOVE_PRODUCT,
+    product: product
+  };
+};
+var updateProduct = function updateProduct(product) {
+  return {
+    type: UPDATE_PRODUCT,
+    product: product
+  };
+};
+
+var fetchRequest = function fetchRequest() {
+  return {
+    type: FETCH_REQUEST
+  };
+};
+
+var fetchFailure = function fetchFailure(error) {
+  return {
+    type: FETCH_FAILURE,
+    error: 'Failed to fetch products',
+    payload: error
+  };
 }; //Thunk Creator
+
 
 var fetchProducts = function fetchProducts() {
   return function (dispatch) {
+    dispatch(fetchRequest());
     return axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('./api/products').then(function (res) {
       return res.data;
     }).then(function (products) {
       return dispatch(setProducts(products));
     }).catch(function (error) {
       console.error.bind(console);
+      dispatch(fetchFailure(error));
     });
   };
+};
+var addProduct = function addProduct(product) {
+  return function (dispatch) {
+    return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/products', product).then(function (res) {
+      return dispatch(newProduct(res.data));
+    }).catch(console.error.bind(console));
+  };
+};
+var deleteProduct = function deleteProduct(product) {
+  return function (dispatch) {
+    return axios__WEBPACK_IMPORTED_MODULE_0___default.a.delete("api/products/".concat(product.id)).then(function () {
+      return dispatch(removeProdcut(product));
+    }).catch(console.error.bind(console));
+  };
+};
+var sendProductUpdate = function sendProductUpdate(product) {
+  return function (dispatch) {
+    return axios__WEBPACK_IMPORTED_MODULE_0___default.a.put("./api/products/".concat(product.id), product).then(function () {
+      return dispatch(updateProduct(product));
+    }).catch(console.error.bind(console));
+  };
+};
+var initialState = {
+  products: [],
+  isFetching: false
 }; //Reducer
 
 /* harmony default export */ __webpack_exports__["default"] = (function () {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
   switch (action.type) {
+    case FETCH_REQUEST:
+      return _objectSpread({}, state, {
+        isFetching: true
+      });
+
     case SET_PRODUCTS:
-      return action.products;
+      return _objectSpread({}, state, {
+        products: action.products,
+        isFetching: false
+      });
+
+    case NEW_PRODUCT:
+      return _objectSpread({}, state, {
+        products: _toConsumableArray(state.products).concat([action.product])
+      });
+
+    case REMOVE_PRODUCT:
+      return _objectSpread({}, state, {
+        products: state.products.slice().filter(function (product) {
+          return product.id !== action.product.id;
+        })
+      });
+
+    case UPDATE_PRODUCT:
+      return _objectSpread({}, state, {
+        products: _toConsumableArray(state.products.slice().filter(function (product) {
+          return product.id !== product.id;
+        })).concat([action.product])
+      });
 
     default:
       return state;

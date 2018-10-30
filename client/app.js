@@ -12,11 +12,15 @@ class App extends Component {
     return (
       <div>
         <Navbar />
-        <Routes />
+        {isFetching ? <div>FETCHING DATA</div> : <Routes />}
       </div>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  isFetching: state.products.isFetching,
+});
 
 const mapDispatchToProps = dispatch => ({
   loadProducts: () => dispatch(fetchProducts()),

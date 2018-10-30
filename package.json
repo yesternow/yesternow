@@ -27,7 +27,7 @@
     "start": "node server",
     "start-dev": "NODE_ENV='development' npm run build-client-watch & npm run start-server",
     "start-server": "nodemon server -e html,js,scss --ignore public --ignore client",
-    "test": "NODE_ENV='test' mocha \"./server/**/*.spec.js\" \"./client/**/*.spec.js\" \"./script/**/*.spec.js\" --require @babel/polyfill --require @babel/register"
+    "test": "NODE_ENV='test' mocha -w \"./server/**/*.spec.js\" \"./client/**/*.spec.js\" \"./script/**/*.spec.js\" --require @babel/polyfill --require @babel/register"
   },
   "lint-staged": {
     "*.{js,jsx}": [
@@ -40,7 +40,6 @@
       "git add"
     ]
   },
-  "author": "Fullstack Academy of Code",
   "license": "MIT",
   "dependencies": {
     "@babel/register": "^7.0.0",
@@ -72,6 +71,8 @@
     "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "axios-mock-adapter": "^1.15.0",
     "babel-loader": "^8.0.4",
     "chai": "^3.5.0",
     "enzyme": "^3.0.0",

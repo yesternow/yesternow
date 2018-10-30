@@ -1,5 +1,3 @@
-/* global describe beforeEach it */
-
 const {expect} = require('chai');
 const db = require('../index');
 const User = db.model('user');
@@ -29,4 +27,3 @@ describe('User model', () => {
 			});
 		}); // end describe('correctPassword')
 	}); // end describe('instanceMethods')
-}); // end describe('User model')

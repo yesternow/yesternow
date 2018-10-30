@@ -30,7 +30,8 @@ const Product = db.define('product', {
 	},
 	isActive: {
 		type: Sequelize.BOOLEAN,
-		defaultValue: true
+		//DefaultValue should be false.
+		defaultValue: false
 	},
 	isAvailable: {
 		type: Sequelize.BOOLEAN,
@@ -55,6 +56,9 @@ const Product = db.define('product', {
 	},
 	brand: {
 		type: Sequelize.STRING
+	},
+	category: {
+		type: Sequelize.ARRAY(Sequelize.STRING)
 	}
 });
 

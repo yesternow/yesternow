@@ -21,7 +21,7 @@ export const fetchProducts = () => dispatch => {
 };
 
 //Reducer
-export const productsReducer = (state = [], action) => {
+export default (state = [], action) => {
   switch (action.type) {
     case SET_PRODUCTS:
       return action.products;

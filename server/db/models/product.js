@@ -30,6 +30,7 @@ const Product = db.define('product', {
 	},
 	isActive: {
 		type: Sequelize.BOOLEAN,
+		//DefaultValue should be false.
 		defaultValue: false
 	},
 	isAvailable: {

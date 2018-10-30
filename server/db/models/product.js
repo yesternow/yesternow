@@ -41,8 +41,8 @@ const Product = db.define('product', {
 		defaultValue: true
 	},
 	weight: {
-		//Unit type is pounds
-		type: Sequelize.NUMBER,
+		//Unit type is ounces
+		type: Sequelize.INTEGER,
 		allowNull: false,
 		validate: {
 			min: 0

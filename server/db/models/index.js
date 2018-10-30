@@ -1,6 +1,7 @@
 const User = require('./user');
 const Product = require('./product');
 const Address = require('./address');
+const Review = require('./review');
 const Category = require('./category');
 const Image = require('./image');
 
@@ -21,6 +22,7 @@ module.exports = {
   User,
   Product,
   Address,
+  Review,
   Category,
   Image,
 };

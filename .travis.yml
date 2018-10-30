@@ -16,12 +16,12 @@ install:
 before_script:
   - psql -c 'create database "yesternow-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
 
-# before_deploy:
-#   - npm run build-client # make the bundle
-#   - rm -rf node_modules # omit from the tarball, since we skip cleanup
-# deploy:
-#   skip_cleanup: true # prevents travis from deleting the build
-#   provider: heroku
-#   app: YOUR-HEROKU-APP-NAME-HERE # see README
-#   api_key:
-#     secure: YOUR-***ENCRYPTED***-API-KEY-HERE # see README
+before_deploy:
+  - npm run build-client # make the bundle
+  - rm -rf node_modules # omit from the tarball, since we skip cleanup
+deploy:
+  skip_cleanup: true # prevents travis from deleting the build
+  provider: heroku
+  app: yesternow # see README
+  api_key:
+    secure: STEkQEjAj18jmZ1HLt0qKzgPbR7IqCTf8kiVJvna2M07C5thdpufYfGFhvFnWACnA6aXt1V2D31bZdwO3jMod9A73tzl2byenpEBw6qW16FP5XU/f+zzVS7mlJz2zyc2PTxe6/iyXeSBYrserKW5iiWCOHqDPwPPRBdxSQ4+pcDCqKg3LLkVyo1MMg3Et2j5QThehg9Nfh8H26KYj9ZJUhxMOH2rgte7kY31t7pntlTc6LNLfcsWRsL+v27OGZzOBxFEmt9lRgQulZDAotzfg65zZk9tRtGje4cqrHSH+Hm7pgmBgGKfMNZRW9gqV3IVvH/tCXVNmyEKKtWVuKzZIp9jQUCiTQ8CDFA67mQoJJ3Tk/Oua56liuvcUxrUT4Rc4Xw5En/5aQAHHtLb3o3s5TvBEJjca6osd0X06CdxwvQRRL4U8kl8IzEEtketiVPLehq6oPDrTCbAF8DoRSQ8KhmSWUP6y4A9vb1FJlGdDruOyuLaU06RYUMjFPh6lFUZAw/jGSZe6ANDRPlZqHLsvpaAhVzqhn5c+PUtk6bRz4NhVx0EuQDG3bRxNE5yOKN7hYdT+jDik/Tus+aSrkp5n2CuH6LJ1i7Ot+2fQtCsTRLlxY8g0VMG7DBB/iKsgtQvGUof1j2grv1/pi20o2DMAGzLomb2Mpzmp0tRvoSJ6TQ= # see README

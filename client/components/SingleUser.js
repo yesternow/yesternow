@@ -1,14 +1,15 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {getUser} from './store';
 
 export class SingleStudent extends React.Component {
 	componentDidMount() {
-		this.props.loadStudent(this.props.match.params.id);
+		this.props.loadUser(this.props.match.params.id);
 	}
 
 	render() {
-		if (this.props.user) {
-			const user = this.props.user;
+		if (this.props.users) {
+			const user = this.props.users;
 			return (
 				<div>
 					<div key={user.id}>
@@ -33,10 +34,10 @@ export class SingleStudent extends React.Component {
 	}
 }
 
-const mapStateToProps = (state) => ({user: state.defaultUser});
+const mapStateToProps = (state) => ({user: state.users});
 
 const mapDispatchToProps = (dispatch) => ({
-	loadStudent: (userId) => dispatch(getUser(userId))
+	loadUser: (userId) => dispatch(getUser(userId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleUser);

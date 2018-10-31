@@ -15,24 +15,11 @@ class AddProduct extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    const title = event.target.title.value;
-    const description = event.target.description.value;
-    const price = event.target.price.value;
-    const quantity = event.target.quantity.value;
-    const weight = event.target.weight.value;
-    const brand = event.target.brand.value;
-
-    this.props.addProduct({
-      title,
-      description,
-      price,
-      quantity,
-      weight,
-      brand,
-    });
+    this.props.addProduct(this.state);
   }
 
   render() {
+    const { title, description, price, quantity, weight, brand } = this.state;
     return (
       <div>
         <h3>Add A New Product</h3>
@@ -42,6 +29,7 @@ class AddProduct extends Component {
               placeholder="Product Title"
               id="title"
               type="text"
+              value={title}
               onChange={this.handleChange}
               required
             />
@@ -51,6 +39,7 @@ class AddProduct extends Component {
               placeholder="Product Description"
               id="description"
               type="text"
+              value={description}
               onChange={this.handleChange}
               required
             />
@@ -60,6 +49,7 @@ class AddProduct extends Component {
               placeholder="Product Price"
               id="price"
               type="number"
+              value={price}
               onChange={this.handleChange}
               required
             />
@@ -69,6 +59,7 @@ class AddProduct extends Component {
               placeholder="Product Quantity"
               id="quantity"
               type="number"
+              value={quantity}
               onChange={this.handleChange}
               required
             />
@@ -78,6 +69,7 @@ class AddProduct extends Component {
               placeholder="Product Weight in Ounces"
               id="weight"
               type="number"
+              value={weight}
               onChange={this.handleChange}
               required
             />
@@ -87,6 +79,7 @@ class AddProduct extends Component {
               placeholder="Product Brand"
               id="brand"
               type="text"
+              value={brand}
               onChange={this.handleChange}
             />
           </div>

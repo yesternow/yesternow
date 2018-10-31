@@ -1,24 +1,34 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { fetchProducts } from '../store';
 import { connect } from 'react-redux';
 
-const Products = props => {
-  if (!props.products) {
-    return <div>Hello there are no products yet</div>;
+class Products extends Component {
+  componentDidMount() {
+    this.props.loadProducts();
   }
-  return (
-    <div>
-      {props.products.map(product => (
-        <div key={product.id}>
-          <h2>{product.title}</h2>
-        </div>
-      ))}
-    </div>
-  );
-};
-
+  render() {
+    if (!this.props.products) {
+      return <div>Hello there are no products yet</div>;
+    }
+    return (
+      <div>
+        {this.props.products.map(product => (
+          <div key={product.id}>
+            <h2>{product.title}</h2>
+          </div>
+        ))}
+      </div>
+    );
+  }
+}
 const mapStateToProps = state => ({
   products: state.products,
-  //will need to be state.products.products after seed data
+  //once fetching is implemented... state.products.products
+  //joseph
 });
 
-export default connect(mapStateToProps)(Products);
+const mapDispatchToProps = dispatch => ({
+  loadProducts: () => dispatch(fetchProducts()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Products);

@@ -19,9 +19,9 @@ export const newProduct = product => ({
   product,
 });
 
-export const removeProduct = product => ({
+export const removeProduct = productId => ({
   type: REMOVE_PRODUCT,
-  product,
+  productId,
 });
 
 export const updateProduct = product => ({
@@ -57,10 +57,10 @@ export const addProduct = product => dispatch => {
     .catch(console.error.bind(console));
 };
 
-export const deleteProduct = product => dispatch => {
+export const deleteProduct = productId => dispatch => {
   return axios
-    .delete(`api/products/${product.id}`)
-    .then(() => dispatch(removeProdcut(product)))
+    .delete(`api/products/${productId}`)
+    .then(() => dispatch(removeProduct(productId)))
     .catch(console.error.bind(console));
 };
 
@@ -78,6 +78,11 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case FETCH_REQUEST:
       return { ...state, isFetching: true };
+    case FETCH_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+      };
     case SET_PRODUCTS:
       return { ...state, products: action.products, isFetching: false };
     case NEW_PRODUCT:
@@ -85,19 +90,9 @@ export default (state = initialState, action) => {
     case REMOVE_PRODUCT:
       return {
         ...state,
-        products: state.products
-          .slice()
-          .filter(product => product.id !== action.product.id),
-      };
-    case UPDATE_PRODUCT:
-      return {
-        ...state,
-        products: [
-          ...state.products
-            .slice()
-            .filter(product => product.id !== product.id),
-          action.product,
-        ],
+        products: state.products.filter(
+          product => product.id !== action.productId
+        ),
       };
     default:
       return state;

@@ -6,6 +6,7 @@ const db = require('../db');
 const app = require('../index');
 const User = db.model('user');
 
+//needs to be updated
 xdescribe('User routes', () => {
 	beforeEach(() => {
 		return db.sync({force: true});

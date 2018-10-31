@@ -1,0 +1,25 @@
+[
+    {
+        "address1":"405 W Superior",
+        "city":"Chicago",
+        "state":"IL",
+        "country":"USA",
+        "zipcode":60654
+    },
+    {
+        "address1":"5 Hanover Square",
+        "address2":"floor 11",
+        "city":"New York",
+        "state":"NY",
+        "country":"USA",
+        "zipcode":10004
+    },
+    {
+        "address1":"5 Imaginary Street",
+        "address2":"1698th floor",
+        "city":"Narnia",
+        "state":"NN",
+        "country":"USA",
+        "zipcode":10001
+    }
+]

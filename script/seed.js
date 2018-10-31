@@ -1,29 +1,51 @@
 'use strict';
 
 const db = require('../server/db');
-const { User } = require('../server/db/models');
+const { User, Product, Order, Review, Image, Cart, LineItem, CartItem, Category, Address } = require('../server/db/models');
+const Tag = db.models.tags
+const AddressBook = db.models.addressBook
+
+const usersData = require('../seedData/users.json')
+const productsData = require('../seedData/products.json')
+const reviewsData = require('../seedData/reviews.json')
+const addressesData = require('../seedData/addresses.json')
+const ordersData = require('../seedData/orders.json')
+const imagesData = require('../seedData/images.json')
+const categoriesData = require('../seedData/categories.json')
+const lineItemsData = require('../seedData/lineItems.json')
+const cartItemsData = require('../seedData/cartItems.json')
+const cartsData = require('../seedData/carts.json')
 
 async function seed() {
   await db.sync({ force: true });
   console.log('db synced!');
 
-  const users = await Promise.all([
-    User.create({
-      firstName: 'admin',
-      lastName: 'admin',
-      email: 'admin@admin.com',
-      password: 'admin',
-      isAdmin: true,
-    }),
-    User.create({
-      firstName: 'murphy',
-      lastName: 'murphy',
-      email: 'murphy@email.com',
-      password: '123',
-    }),
-  ]);
+  await User.bulkCreate(usersData)
+  await Product.bulkCreate(productsData)
+  await Review.bulkCreate(reviewsData)
+  await Address.bulkCreate(addressesData)
+  await Order.bulkCreate(ordersData)
+  await Image.bulkCreate(imagesData)
+  await Category.bulkCreate(categoriesData)
+  await Cart.bulkCreate(cartsData)
+  await LineItem.bulkCreate(lineItemsData)
+  await CartItem.bulkCreate(cartItemsData)
 
-  console.log(`seeded ${users.length} users`);
+  await Tag.bulkCreate([
+    {productId: 1, categoryId:1},
+    {productId: 2, categoryId:3},
+    {productId: 3, categoryId:3},
+    {productId: 3, categoryId:1},
+    {productId: 3, categoryId:5},
+    {productId: 4, categoryId:3}
+  ])
+
+  await AddressBook.bulkCreate([
+    {userId:2, addressId:3},
+    {userId:3, addressId:1},
+    {userId:4, addressId:2}
+  ])
+
   console.log(`seeded successfully`);
 }
 

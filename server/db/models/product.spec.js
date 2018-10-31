@@ -7,7 +7,7 @@ describe('Product model', () => {
 		return db.sync({force: true});
 	});
 
-	it('has fields title, imageUrl, description, price, quantity, isActive, isAvailable, isFeatured, weight, dimensions, brand', () => {
+	it('has fields title, description, price, quantity, isActive, isAvailable, isFeatured, weight, dimensions, brand', () => {
 		const product = Product.build({
 			title: 'Mystery Box',
 			description: 'there is a mystery inside!',
@@ -21,7 +21,7 @@ describe('Product model', () => {
 		expect(product.title).to.equal('Mystery Box');
 		expect(product.description).to.equal('there is a mystery inside!');
 		expect(product.price).to.equal(50000);
-		expect(product.isActive).to.equal(true);
+		expect(product.isActive).to.equal(false);
 	});
 
 	it('Requires title, price, quantity, weight', async () => {
@@ -37,24 +37,5 @@ describe('Product model', () => {
 		}
 
 		expect(error).to.be.an.instanceOf(Error);
-	});
-
-	it('default imageUrl if left blank', async () => {
-		const product = Product.build({
-			title: 'Mystery Box',
-			description: 'there is a mystery inside!',
-			price: 50000,
-			quantity: 10,
-			dimensions: "10x10x10'",
-			weight: 2,
-			brand: 'Deepmind'
-		});
-
-		await product.validate();
-		expect(product.imageUrl).to.be.a('array');
-		expect(product.imageUrl[0]).to.equal('http://products.ideadunes.com/assets/images/default_product.jpg');
-		expect(product.isActive).to.equal(true);
-		expect(product.isFeatured).to.equal(true);
-		expect(product.isAvailable).to.equal(true);
 	});
 });

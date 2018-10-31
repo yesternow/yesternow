@@ -1,0 +1,22 @@
+[
+    {
+        "userId":2,
+        "status":"created",
+        "addressId":1
+    },
+    {
+        "userId":2,
+        "status":"created",
+        "addressId":2
+    },
+    {
+        "userId":3,
+        "status":"created",
+        "addressId":3
+    },
+    {
+        "userId":4,
+        "status":"created",
+        "addressId":3
+    }
+]

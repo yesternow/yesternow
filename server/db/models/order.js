@@ -9,7 +9,7 @@ const Order = db.define('order', {
         type: Sequelize.INTEGER
     },
     status: {
-        type: Sequelize.ENUM(['created, processing, cancelled, shipped, delivered'])
+        type: Sequelize.ENUM(['created', 'processing', 'cancelled', 'shipped', 'delivered'])
     },
     guestEmail: {
         type: Sequelize.STRING,

@@ -1,0 +1,32 @@
+[
+    {
+        "rating":5,
+        "description":"I loved this product",
+        "productId":1,
+        "userId":2
+    },
+    {
+        "rating":4,
+        "description":"I liked this product, could be better",
+        "productId":2,
+        "userId":2
+    },
+    {
+        "rating":3,
+        "description":"It's okay",
+        "productId":3,
+        "userId":3
+    },
+    {
+        "rating":2,
+        "description":"I don't like it but I don't want to give 1-star rating.",
+        "productId":4,
+        "userId":4
+    },
+    {
+        "rating":1,
+        "description":"This sucks!",
+        "productId":4,
+        "userId":4
+    }
+]

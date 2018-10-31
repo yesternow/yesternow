@@ -7,6 +7,9 @@ const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 const REMOVE_PRODUCT = 'REMOVE_PRODUCT';
 const FETCH_REQUEST = 'FETCH_REQUEST';
 const FETCH_FAILURE = 'FETCH_FAILURE';
+const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER'
+const SET_SORT_FILTER = 'SET_SORT_FILTER'
+const SET_CATEGORIES = 'SET_CATEGORIES'
 
 //Action Creator
 export const setProducts = products => ({
@@ -29,6 +32,21 @@ export const updateProduct = product => ({
   product,
 });
 
+export const setVisibility = visibility => ({
+  type: SET_VISIBILITY_FILTER,
+  visibility
+})
+
+export const setSort = sort => ({
+  type: SET_SORT_FILTER,
+  sort
+})
+
+const setCategories = (categories) => ({
+  type: SET_CATEGORIES,
+  categories
+})
+
 const fetchRequest = () => ({ type: FETCH_REQUEST });
 
 const fetchFailure = error => ({
@@ -41,7 +59,7 @@ const fetchFailure = error => ({
 export const fetchProducts = () => dispatch => {
   dispatch(fetchRequest());
   return axios
-    .get('./api/products')
+    .get('/api/products')
     .then(res => res.data)
     .then(products => dispatch(setProducts(products)))
     .catch(error => {
@@ -71,7 +89,23 @@ export const sendProductUpdate = product => dispatch => {
     .catch(console.error.bind(console));
 };
 
-const initialState = { products: [], isFetching: false };
+export const fetchCategories = () => {
+  return async (dispatch) => {
+    const { data } = await axios.get('/api/products/categories')
+    dispatch(setCategories(data))
+  }
+}
+
+const initialState = {
+  products: [],
+  isFetching: false,
+  visibilityFilter: 'all',
+  sortFilter: 'a-i',
+  categories: []
+};
+
+//visibilityFilter options: all, or cateforyID
+//sortFIlter options: a-i for alphabetical-increase, a-d for alphabetical-decrease, p-i price-increase, p-d price-decrease
 
 //Reducer
 export default (state = initialState, action) => {
@@ -94,6 +128,12 @@ export default (state = initialState, action) => {
           product => product.id !== action.productId
         ),
       };
+    case SET_CATEGORIES:
+      return {...state, categories: [...state.categories, ...action.categories]}
+    case SET_VISIBILITY_FILTER:
+      return {...state, visibilityFilter: action.visibility}
+    case SET_SORT_FILTER:
+      return {...state, sortFilter: action.sort}
     default:
       return state;
   }

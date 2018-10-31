@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addProduct } from '../store';
+import { sendProductUpdate } from '../store';
 import { Button, Form } from 'semantic-ui-react';
 
-class AddProduct extends Component {
-  constructor() {
-    super();
-    this.state = {};
+class UpdateProduct extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { ...this.props.product };
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -15,15 +16,14 @@ class AddProduct extends Component {
   }
   handleSubmit(event) {
     event.preventDefault();
-
-    this.props.addProduct(this.state);
+    this.props.sendProductUpdate(this.state);
   }
 
   render() {
     const { title, description, price, quantity, weight, brand } = this.state;
     return (
       <div>
-        <h3>Add A New Product</h3>
+        <h3>Update Product</h3>
         <Form onSubmit={this.handleSubmit}>
           <Form.Field>
             <div>
@@ -112,7 +112,7 @@ class AddProduct extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  addProduct: product => dispatch(addProduct(product)),
+  sendProductUpdate: product => dispatch(sendProductUpdate(product)),
 });
 
-export default connect(null, mapDispatchToProps)(AddProduct);
+export default connect(null, mapDispatchToProps)(UpdateProduct);

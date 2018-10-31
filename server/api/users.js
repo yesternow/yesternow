@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const { User } = require('../db/models');
-module.exports = router;
 
 router.get('/', async (req, res, next) => {
   try {
@@ -43,17 +42,23 @@ router.post('/', async (req, res, next) => {
 
 router.put('/:id', async (req, res, next) => {
   try {
-
     const user = await User.findById(req.params.id);
 
     if (!user) return res.sendStatus(404);
 
-    await user.update(req.body)
+    await user.update(req.body);
     res.status(204).end();
   } catch (err) {
     next(err);
   }
-// });
+});
 
 //delete user
 
+router.delete('/:userId', (req, res, next) => {
+  Product.destroy({ where: { id: req.params.userId } })
+    .then(() => res.status(204).end())
+    .catch(next);
+});
+
+module.exports = router;

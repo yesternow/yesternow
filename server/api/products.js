@@ -5,15 +5,51 @@ router.get("/", async (req, res, next) => {
 const productFieldsAllowList = ['title', 'description', 'price']
 
 
+// limit/offset pagination
+// GET /products
+// GET /products?page=3&pagePage=10&categoryId=5
+
+// cursor pagination
+// GET /products?perPage=10&after=<timestamp>
+// select * from products
+// where createdAt > timestamp
+// order by createdAt
+// limit 10
+
 router.get('/', async (req, res, next) => {
+  const page = req.query.page || 1
+  const perPage = req.query.perPage || 10
+  const categoryId = req.query.categoryId
+
   try {
 
     //updated findAll to include category data to filter products at all products page
+    const categoryInclude = {
+      model: Category,
+      through: {attributes: []}
+    }
+    if (categoryId) {
+      categoryInclude.reqired = true
+      categoryInclude.where = { id: categoryId }
+    }
 
+    const productQuery = {
+      include: [categoryInclude]
+      orderBy: 'updatedAt ASC',
+    }
     const products = await Product.findAll({
-      include: [{ model: Category, through: {attributes: []} }]
+      ...productQuery,
+      limit: page,
+      offset: page * perPage,
     });
-    res.json(products);
+    const queryCount = await Product.count(productQuery)
+
+    res.json({
+      page: page,
+      perPage: perPage,
+      totalItems: queryCount,
+      items: products,
+    });
   } catch (error) {
     next(error);
   }

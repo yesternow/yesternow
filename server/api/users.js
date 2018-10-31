@@ -56,7 +56,7 @@ router.put('/:id', async (req, res, next) => {
 //delete user
 
 router.delete('/:userId', (req, res, next) => {
-  Product.destroy({ where: { id: req.params.userId } })
+  User.destroy({ where: { id: req.params.userId } })
     .then(() => res.status(204).end())
     .catch(next);
 });

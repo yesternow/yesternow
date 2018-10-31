@@ -31,11 +31,8 @@ router.get('/:userId', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const user = await User.create(req.body, {
-      where: {
-        isAdmin: true,
-      },
-    });
+    const { firstName, lastName, email, passport } = req.body;
+    const user = await User.create({ firstName, lastName, email, password });
     res.json(user);
   } catch (err) {
     next(err);
@@ -44,18 +41,15 @@ router.post('/', async (req, res, next) => {
 
 //update user
 
-router.put('/:id', async (req, res, next) => {
-  try {
-    const user = await User.findById(req.params.id);
+// router.put('/:id', async (req, res, next) => {
+//   try {
+//     const user = await User.findById(req.params.id);
 
-    if (!user) return res.sendStatus(404);
-    const updatedUser = await user.update(req.body, {
-      where: {
-        isAdmin: true,
-      },
-    });
-    res.json(updatedUser);
-  } catch (err) {
-    next(err);
-  }
-});
+//     if (!user) return res.sendStatus(404);
+
+//     const updatedUser = await user.update(req.body)
+//     res.json(updatedUser);
+//   } catch (err) {
+//     next(err);
+//   }
+// });

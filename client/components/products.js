@@ -22,9 +22,7 @@ class Products extends Component {
   }
 }
 const mapStateToProps = state => ({
-  products: state.products,
-  //once fetching is implemented... state.products.products
-  //joseph
+  products: state.product.products,
 });
 
 const mapDispatchToProps = dispatch => ({

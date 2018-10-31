@@ -1,15 +1,25 @@
-import React from 'react'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Navbar } from './components';
+import { fetchProducts } from './store';
+import Routes from './routes';
 
-import {Navbar} from './components'
-import Routes from './routes'
-
-const App = () => {
-  return (
-    <div>
-      <Navbar />
-      <Routes />
-    </div>
-  )
+class App extends Component {
+  componentDidMount() {
+    this.props.loadProducts();
+  }
+  render() {
+    return (
+      <div>
+        <Navbar />
+        <Routes />
+      </div>
+    );
+  }
 }
 
-export default App
+const mapDispatchToProps = dispatch => ({
+  loadProducts: () => dispatch(fetchProducts()),
+});
+
+export default connect(null, mapDispatchToProps)(App);

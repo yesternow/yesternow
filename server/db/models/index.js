@@ -26,6 +26,7 @@ const Order = require('./order');
 Cart.hasMany(CartItem);
 Cart.belongsTo(User);
 Order.belongsTo(Address);
+Order.hasMany(LineItem)
 
 User.hasMany(Review);
 Product.hasMany(Review);

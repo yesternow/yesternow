@@ -2,6 +2,10 @@ const router = require("express").Router();
 const { Product, Category } = require("../db/models");
 
 router.get("/", async (req, res, next) => {
+const productFieldsAllowList = ['title', 'description', 'price']
+
+
+router.get('/', async (req, res, next) => {
   try {
 
     //updated findAll to include category data to filter products at all products page
@@ -30,17 +34,46 @@ router.get("/:productId", (req, res, next) => {
     .catch(next);
 });
 
+<<<<<<< Updated upstream
 router.put("/:productId", (req, res, next) => {
+=======
+// REVIEW:
+//  * NO req.body
+//  * requireLogin
+//  * requireAdmin
+
+// server/util.js
+export function requireLogin (req, res, next) {
+  if (req.user) {
+    next()
+  }
+  else {
+    res.send(401)
+  }
+}
+
+export function requireAdmin (req, res, next) {
+  if (req.user.isAdmin) {
+    next()
+  }
+  else {
+    res.send(403)
+  }
+}
+
+const { requireLogin, requireAdmin } = require('../util')
+
+router.put('/:productId', requireLogin, requireAdmin, (req, res, next) => {
   Product.findById(req.params.productId)
     .then(product => {
-      product.update(req.body);
+      product.update(underscore.pick(req.body, productFieldsAllowList));
     })
     .then(() => res.status(204).end())
     .catch(next);
 });
 
-router.post("/", (req, res, next) => {
-  Product.create(req.body)
+router.post('/', (req, res, next) => {
+  Product.create(underscore.pick(req.body, productFieldsAllowList))
     .then(response => res.json(response))
     .catch(next);
 });

@@ -1,6 +1,9 @@
 const router = require('express').Router();
 const { User } = require('../db/models');
 
+const userFieldAllowList =  ['firstName', 'lastName',]
+const userFieldAdminAllowList = [...userFieldAllowList, 'isAdmin']
+
 router.get('/', async (req, res, next) => {
   try {
     const users = await User.findAll({
@@ -31,7 +34,11 @@ router.get('/:userId', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     const { firstName, lastName, email, password } = req.body;
-    const user = await User.create({ firstName, lastName, email, password });
+    //const user = await User.create({ firstName, lastName, email, password });
+    // req.body.isAdmin = true
+    // req.body.createdAt = '100 years ago'
+    // if (!req.user.isAdmin) req.body.isAdmin = false
+    const user = await User.create(req.body);
     res.json(user);
   } catch (err) {
     next(err);
@@ -41,12 +48,15 @@ router.post('/', async (req, res, next) => {
 //update user
 
 router.put('/:id', async (req, res, next) => {
+  const userUpdates = req.user.isAdmin ?
+    underscore.pick(req.body, userFieldAdminAllowList)
+    : underscore.pick(req.body, userFieldAllowList)
   try {
     const user = await User.findById(req.params.id);
 
     if (!user) return res.sendStatus(404);
 
-    await user.update(req.body);
+    await user.update(userUpdates);
     res.status(204).end();
   } catch (err) {
     next(err);

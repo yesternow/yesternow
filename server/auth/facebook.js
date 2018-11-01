@@ -11,13 +11,15 @@ if (!process.env.FACEBOOK_CLIENT_ID || !process.env.FACEBOOK_CLIENT_SECRET) {
 	const facebookConfig = facebookConfigSecret;
 
 	const strategy = new FacebookStrategy(facebookConfig, (token, refreshToken, profile, cb) => {
+		console.log(profile, 'profile please please');
 		const facebookId = profile.id;
-		const name = profile.displayName;
-		const email = profile.emails[0].value;
+		const firstName = profile.displayName;
+		const lastName = profile.displayName;
+		const email = profile.email || 'default@email.com';
 
 		User.findOrCreate({
 			where: {facebookId},
-			defaults: {name, email}
+			defaults: {firstName, lastName, email}
 		})
 			.then(([ user ]) => cb(null, user))
 			.catch(cb);

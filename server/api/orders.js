@@ -5,13 +5,12 @@ const { requireAdmin, requireLogin, requireUserOrAdmin } = require('./util');
 //Get all orders by a single user /admin
 
 router.get(
-  '/:id/orders',
+  '/:id',
   requireLogin,
   requireUserOrAdmin,
   (req, res, next) => {
-    const userId = req.params.id;
-    return Order.findAll({ where: { userId } })
-      .then(orders => res.json(orders))
+    return Order.findById(req.params.id)
+      .then(order => res.json(order))
       .catch(next);
   }
 );

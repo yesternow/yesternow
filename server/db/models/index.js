@@ -26,36 +26,40 @@ const Order = require('./order');
 Cart.hasMany(CartItem);
 Cart.belongsTo(User);
 Order.belongsTo(Address);
-Order.hasMany(LineItem)
+Order.hasMany(LineItem);
 
 User.hasMany(Review);
 Product.hasMany(Review);
 
 User.hasMany(Order);
 
-Product.belongsToMany(Category, { through: 'tags' });
-Category.belongsToMany(Product, { through: 'tags' });
+Product.belongsToMany(Category, {through: 'tags'});
+Category.belongsToMany(Product, {through: 'tags'});
 
-User.belongsToMany(Address, { through: 'addressBook' });
-Address.belongsToMany(User, { through: 'addressBook' });
+User.belongsToMany(Address, {through: 'addressBook'});
+Address.belongsToMany(User, {through: 'addressBook'});
 Product.hasMany(CartItem);
-CartItem.belongsTo(Product)
-Product.hasMany(LineItem);
+
 LineItem.belongsTo(Product);
+Product.hasMany(LineItem);
+Image.belongsTo(Product);
+
+CartItem.belongsTo(Product)
+
 Product.hasMany(Image);
 Image.belongsTo(Product)
 Review.hasMany(Image);
 Image.belongsTo(Review);
 
 module.exports = {
-  User,
-  Product,
-  Address,
-  Review,
-  Category,
-  Image,
-  Cart,
-  CartItem,
-  LineItem,
-  Order,
+	User,
+	Product,
+	Address,
+	Review,
+	Category,
+	Image,
+	Cart,
+	CartItem,
+	LineItem,
+	Order
 };

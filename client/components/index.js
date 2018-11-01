@@ -1,4 +1,4 @@
-import { fetchProducts } from '../store';
+
 
 /**
  * `components/index.js` exists simply as a 'central export' for our components.
@@ -11,3 +11,5 @@ export { Login, Signup } from './auth-form';
 export { default as Products } from './products';
 export { default as AddProduct } from './addproduct';
 export { default as UpdateProduct } from './updateproduct';
+export { default as SingleProduct } from './singleProduct';
+

@@ -1,5 +1,6 @@
 const router = require("express").Router();
-const { Product, Category } = require("../db/models");
+const { Product, Category, Image, Review } = require("../db/models");
+
 
 router.get("/", async (req, res, next) => {
   try {
@@ -25,7 +26,7 @@ router.get('/categories', async (req, res, next) => {
 })
 
 router.get("/:productId", (req, res, next) => {
-  Product.findById(req.params.productId)
+  Product.findById(req.params.productId,{ include: [Category, Review, Image]})
     .then(response => res.json(response))
     .catch(next);
 });

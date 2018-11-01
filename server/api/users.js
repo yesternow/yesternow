@@ -2,22 +2,20 @@ const router = require('express').Router();
 const { User } = require('../db/models');
 const { requireAdmin, requireLogin, requireUserOrAdmin } = require('./util');
 
-const userFieldAllowList = ['firstName', 'lastName', 'email'];
+const userFieldAllowList = ['firstName', 'lastName', 'email', 'password', 'imageUrl', 'phone'];
 const userFieldAdminAllowList = [...userFieldAllowList, 'isAdmin'];
 
 //get all users
 
 router.get('/', requireAdmin, (req, res, next) => {
-  return User.findAll({
-    attributes: ['id', 'email'],
-  })
+  return User.findAll()
     .then(users => res.json(users))
     .catch(next);
 });
 
 //get user by id
 
-router.get('/:id', requireUserOrAdmin, (req, res, next) => {
+router.get('/:id', requireLogin, requireUserOrAdmin, (req, res, next) => {
   return User.findById(req.params.id)
     .then(
       user =>
@@ -28,6 +26,8 @@ router.get('/:id', requireUserOrAdmin, (req, res, next) => {
               firstName: user.firstName,
               lastName: user.lastName,
               email: user.email,
+              imageUrl: user.imageUrl,
+              phone: user.phone
             })
           : res.sendStatus(404)
     )
@@ -37,23 +37,31 @@ router.get('/:id', requireUserOrAdmin, (req, res, next) => {
 //create user
 
 router.post('/', (req, res, next) => {
-  return User.create(req.body)
+
+  return User.create(underscore.pick(req.body, userFieldAllowList))
     .then(user => res.json(user))
     .catch(next);
 });
 
 //update user
 
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', requireLogin, requireUserOrAdmin, async (req, res, next) => {
   const userUpdates = req.user.isAdmin
     ? underscore.pick(req.body, userFieldAdminAllowList)
     : underscore.pick(req.body, userFieldAllowList);
   try {
     const user = await User.findById(req.params.id);
     if (!user) return res.sendStatus(404);
-    await user.update(req.body);
     await user.update(userUpdates);
-    res.status(204).end();
+    res.status(204).json({
+      id: user.id,
+      isAdmin: user.isAdmin,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      imageUrl: user.imageUrl,
+      phone: user.phone
+    });
   } catch (err) {
     next(err);
   }
@@ -61,12 +69,12 @@ router.put('/:id', async (req, res, next) => {
 
 //delete user
 
-router.delete('/:id', requireUserOrAdmin, (req, res, next) => {
+router.delete('/:id', requireLogin, requireUserOrAdmin, (req, res, next) => {
   return User.findById(req.params.id)
     .then(user => {
       if (user) {
         return User.destroy({ where: { id: req.params.id } }).then(() =>
-          res.sendStatus(200)
+          res.sendStatus(202)
         );
       } else res.sendStatus(404);
     })

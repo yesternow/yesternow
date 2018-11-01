@@ -1,8 +1,8 @@
 const router = require('express').Router();
-const { Order } = require('../db/models');
+const { Order, LineItem } = require('../db/models');
 const { requireAdmin, requireLogin, requireUserOrAdmin } = require('./util');
 
-//Get all orders by a single user /admin
+//Get single order
 
 router.get(
   '/:id',
@@ -15,16 +15,17 @@ router.get(
   }
 );
 
-//Get a a single order by  user
+//Get orders of a single user
 
-router.get('/:id/orders/:orderId', requireLogin, async (req, res, next) => {
+router.get('/user/:userId/', requireLogin, async (req, res, next) => {
   // if logged in, check that this is the logged in user's order
   // if admin show anything
-  const order = await Order.findById(req.params.id);
+  const userId = req.params.userId
+  const orders = await Order.findAll({where: {userId}, include:[LineItem]});
   if (req.user.isAdmin) {
-    res.json(order);
-  } else if (order.userId === req.user.id) {
-    res.json(order);
+    res.json(orders);
+  } else if (userId === req.user.id) {
+    res.json(orders);
   } else {
     res.sendStatus(403);
   }
@@ -32,7 +33,13 @@ router.get('/:id/orders/:orderId', requireLogin, async (req, res, next) => {
 
 //Create order for a user
 
-router.post('/:id/orders', requireUserOrAdmin, (req, res, next) => {
+
+/*
+
+We will write these two routes when we finish cart and finish order functionality. When we create order we should create lineItems as well.
+
+
+router.post('/user/:id/', requireUserOrAdmin, (req, res, next) => {
   let neworder = req.body;
   neworder['userId'] = req.params.id;
   return Order.create(neworder)
@@ -52,5 +59,7 @@ router.put('/:id/orders/:orderid', requireUserOrAdmin, (req, res, next) => {
     })
     .catch(next);
 });
+
+*/
 
 module.exports = router;

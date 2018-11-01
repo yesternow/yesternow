@@ -12,7 +12,7 @@ const addressesData = require('../seedData/addresses.json')
 const ordersData = require('../seedData/orders.json')
 const imagesData = require('../seedData/images.json')
 const categoriesData = require('../seedData/categories.json')
-const lineItemsData = require('../seedData/lineItems.json')
+const lineItemsData = require('../seedData/lineitems.json')
 const cartItemsData = require('../seedData/cartItems.json')
 const cartsData = require('../seedData/carts.json')
 
@@ -20,7 +20,7 @@ async function seed() {
   await db.sync({ force: true });
   console.log('db synced!');
 
-  await User.bulkCreate(usersData)
+  usersData.forEach(async user => await User.create(user))
   await Product.bulkCreate(productsData)
   await Review.bulkCreate(reviewsData)
   await Address.bulkCreate(addressesData)

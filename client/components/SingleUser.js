@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {getUser} from './store';
 
-export class SingleStudent extends React.Component {
+export class SingleUser extends React.Component {
 	componentDidMount() {
 		this.props.loadUser(this.props.match.params.id);
 	}
@@ -13,7 +13,7 @@ export class SingleStudent extends React.Component {
 			return (
 				<div>
 					<div key={user.id}>
-						<img className="studentImg" src={user.imageUrl} />
+						<img src={user.imageUrl} />
 						<ul>
 							<li>
 								Name:

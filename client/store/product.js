@@ -10,6 +10,8 @@ const FETCH_FAILURE = 'FETCH_FAILURE';
 const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER'
 const SET_SORT_FILTER = 'SET_SORT_FILTER'
 const SET_CATEGORIES = 'SET_CATEGORIES'
+const GET_PRODUCT = 'GET_PRODUCT'
+
 
 //Action Creator
 export const setProducts = products => ({
@@ -55,6 +57,11 @@ const fetchFailure = error => ({
   payload: error,
 });
 
+const getProduct = product => ({
+  type: GET_PRODUCT,
+  product
+})
+
 //Thunk Creator
 export const fetchProducts = () => dispatch => {
   dispatch(fetchRequest());
@@ -96,12 +103,20 @@ export const fetchCategories = () => {
   }
 }
 
+export const fetchProduct = (productId) => {
+  return async (dispatch) => {
+    const { data }= await axios.get(`/api/products/${productId}`)
+    dispatch(getProduct(data))
+  }
+}
+
 const initialState = {
   products: [],
   isFetching: false,
   visibilityFilter: 'all',
   sortFilter: 'a-i',
-  categories: []
+  categories: [],
+  product: {}
 };
 
 //visibilityFilter options: all, or cateforyID
@@ -134,6 +149,8 @@ export default (state = initialState, action) => {
       return {...state, visibilityFilter: action.visibility}
     case SET_SORT_FILTER:
       return {...state, sortFilter: action.sort}
+    case GET_PRODUCT:
+      return {...state, product: action.product }
     default:
       return state;
   }

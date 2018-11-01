@@ -39,9 +39,13 @@ Category.belongsToMany(Product, { through: 'tags' });
 User.belongsToMany(Address, { through: 'addressBook' });
 Address.belongsToMany(User, { through: 'addressBook' });
 Product.hasMany(CartItem);
+CartItem.belongsTo(Product)
 Product.hasMany(LineItem);
+LineItem.belongsTo(Product);
 Product.hasMany(Image);
+Image.belongsTo(Product)
 Review.hasMany(Image);
+Image.belongsTo(Review);
 
 module.exports = {
   User,

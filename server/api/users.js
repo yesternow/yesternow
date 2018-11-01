@@ -1,52 +1,58 @@
 const router = require('express').Router();
 const { User } = require('../db/models');
+const { requireAdmin, requireLogin, requireUserOrAdmin } = require('./util');
 
-router.get('/', async (req, res, next) => {
-  try {
-    const users = await User.findAll({
-      // explicitly select only the id and email fields - even though
-      // users' passwords are encrypted, it won't help if we just
-      // send everything to anyone who asks!
-      attributes: ['id', 'email'],
-    });
-    res.json(users);
-  } catch (err) {
-    next(err);
-  }
+const userFieldAllowList = ['firstName', 'lastName', 'email'];
+const userFieldAdminAllowList = [...userFieldAllowList, 'isAdmin'];
+
+//get all users
+
+router.get('/', requireAdmin, (req, res, next) => {
+  return User.findAll({
+    attributes: ['id', 'email'],
+  })
+    .then(users => res.json(users))
+    .catch(next);
 });
 
-router.get('/:userId', async (req, res, next) => {
-  try {
-    const user = User.findById(req.params.userId, {
-      attributes: ['id', 'firstName', 'lastName', 'email'],
-    });
-    res.json(user);
-  } catch (err) {
-    next(err);
-  }
+//get user by id
+
+router.get('/:id', requireUserOrAdmin, (req, res, next) => {
+  return User.findById(req.params.id)
+    .then(
+      user =>
+        user
+          ? res.json({
+              id: user.id,
+              isAdmin: user.isAdmin,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              email: user.email,
+            })
+          : res.sendStatus(404)
+    )
+    .catch(next);
 });
 
 //create user
 
-router.post('/', async (req, res, next) => {
-  try {
-    const { firstName, lastName, email, password } = req.body;
-    const user = await User.create({ firstName, lastName, email, password });
-    res.json(user);
-  } catch (err) {
-    next(err);
-  }
+router.post('/', (req, res, next) => {
+  return User.create(req.body)
+    .then(user => res.json(user))
+    .catch(next);
 });
 
 //update user
 
 router.put('/:id', async (req, res, next) => {
+  const userUpdates = req.user.isAdmin
+    ? underscore.pick(req.body, userFieldAdminAllowList)
+    : underscore.pick(req.body, userFieldAllowList);
   try {
     const user = await User.findById(req.params.id);
-
     if (!user) return res.sendStatus(404);
-
     await user.update(req.body);
+    await user.update(userUpdates);
     res.status(204).end();
   } catch (err) {
     next(err);
@@ -55,9 +61,15 @@ router.put('/:id', async (req, res, next) => {
 
 //delete user
 
-router.delete('/:userId', (req, res, next) => {
-  User.destroy({ where: { id: req.params.userId } })
-    .then(() => res.status(204).end())
+router.delete('/:id', requireUserOrAdmin, (req, res, next) => {
+  return User.findById(req.params.id)
+    .then(user => {
+      if (user) {
+        return User.destroy({ where: { id: req.params.id } }).then(() =>
+          res.sendStatus(200)
+        );
+      } else res.sendStatus(404);
+    })
     .catch(next);
 });
 

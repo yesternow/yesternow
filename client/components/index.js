@@ -12,4 +12,6 @@ export { default as Products } from './products';
 export { default as AddProduct } from './addproduct';
 export { default as UpdateProduct } from './updateproduct';
 export { default as SingleProduct } from './singleProduct';
+export { default as Carts } from './carts';
+export { default as Cart } from './cart';
 

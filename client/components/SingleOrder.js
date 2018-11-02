@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 
 class SingleOrder extends Component {
 	componentDidMount() {
-		this.props.loadOrder();
+		// this.props.loadOrder();
 	}
 	render() {
 		if (!this.props.order) {

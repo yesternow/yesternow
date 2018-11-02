@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {auth} from '../store';
+import {Container, Form, Input, Button, Label, Grid, Header, Icon, Divider} from 'semantic-ui-react'
 
 /**
  * COMPONENT
@@ -10,28 +11,57 @@ const AuthForm = (props) => {
 	const {name, displayName, handleSubmit, error} = props;
 
 	return (
-		<div>
-			<form onSubmit={handleSubmit} name={name}>
-				<div>
-					<label htmlFor="email">
-						<small>Email</small>
-					</label>
-					<input name="email" type="text" />
-				</div>
-				<div>
-					<label htmlFor="password">
-						<small>Password</small>
-					</label>
-					<input name="password" type="password" />
-				</div>
-				<div>
-					<button type="submit">{displayName}</button>
-				</div>
-				{error && error.response && <div> {error.response.data} </div>}
-			</form>
-			<a href="/auth/google">{displayName} with Google</a>
-			<a href="/auth/facebook">{displayName} with Facebook</a>
-		</div>
+		// <div>
+		// 	<form onSubmit={handleSubmit} name={name}>
+		// 		<div>
+		// 			<label htmlFor="email">
+		// 				<small>Email</small>
+		// 			</label>
+		// 			<input name="email" type="text" />
+		// 		</div>
+		// 		<div>
+		// 			<label htmlFor="password">
+		// 				<small>Password</small>
+		// 			</label>
+		// 			<input name="password" type="password" />
+		// 		</div>
+		// 		<div>
+		// 			<button type="submit">{displayName}</button>
+		// 		</div>
+		// 		{error && error.response && <div> {error.response.data} </div>}
+		// 	</form>
+		// 	<a href="/auth/google">{displayName} with Google</a>
+		// 	<a href="/auth/facebook">{displayName} with Facebook</a>
+		// </div>
+		<Container>
+			<Grid>
+				<Grid.Column width={4}/>
+				<Grid.Column width={8}>
+					<Form onSubmit={handleSubmit} name={name}>
+						<Header>Log in</Header>
+						<Form.Field>
+							<label>Email</label>
+							<input
+								name="email"
+								type="email"
+								placeholder="Email" />
+						</Form.Field>
+						<Form.Field>
+							<label>Password</label>
+							<input
+								name="password"
+								type="password"
+								placeholder="Password" />
+						</Form.Field>
+						<Button position="right" type='submit'>Submit</Button>
+					</Form>
+					<Divider/>
+					<Button href="/auth/google"><Icon name='google'/>Google</Button>
+					<Button href="/auth/facebook"><Icon name='facebook' />Facebook</Button>
+				</Grid.Column>
+				<Grid.Column width={4}/>
+			</Grid>
+		</Container>
 	);
 };
 

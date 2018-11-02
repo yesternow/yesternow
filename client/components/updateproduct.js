@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { sendProductUpdate } from '../store';
-import { Button, Form } from 'semantic-ui-react';
+import { Button, Form, Container } from 'semantic-ui-react';
 
 class UpdateProduct extends Component {
   constructor(props) {
@@ -22,7 +22,7 @@ class UpdateProduct extends Component {
   render() {
     const { title, description, price, quantity, weight, brand } = this.state;
     return (
-      <div>
+      <Container>
         <h3>Update Product</h3>
         <Form onSubmit={this.handleSubmit}>
           <Form.Field>
@@ -106,7 +106,7 @@ class UpdateProduct extends Component {
             <Button type="submit">Submit</Button>
           </div>
         </Form>
-      </div>
+      </Container>
     );
   }
 }

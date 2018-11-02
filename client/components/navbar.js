@@ -63,32 +63,38 @@ const Navbar = ({handleClick, isLoggedIn, isAdmin, toggleCart}) => (
       </MenuItem>
 
     </Menu>
-)
-
+// import {Link} from 'react-router-dom'
+// import {logout} from '../store'
+// import {Menu, Image, Icon} from 'semantic-ui-react'
 
 // const Navbar = ({handleClick, isLoggedIn}) => (
-//   <div>
-//     <h1>YESTERNOW</h1>
-//     <nav>
-//       {isLoggedIn ? (
-//         <div>
-//           {/* The navbar will show these links after you log in */}
-//           <Link to="/home">Home</Link>
-//           <a href="#" onClick={handleClick}>
-//             Logout
-//           </a>
-//         </div>
-//       ) : (
-//         <div>
-//           {/* The navbar will show these links before you log in */}
-//           <Link to="/login">Login</Link>
-//           <Link to="/signup">Sign Up</Link>
-//         </div>
-//       )}
-//     </nav>
-//     <hr />
-//   </div>
-// )
+//   <Menu>
+//     <Menu.Item as={Link} to='/' name="yesternow">
+//       <Image size="mini" src="logo.png"/>
+//     </Menu.Item>
+//     <Menu.Item as={Link} to='/'>yesternow</Menu.Item>
+//     <Menu.Item as={Link} to='/products' name="Products" />
+//     <Menu.Item as={Link} to='/categories' name="Categories"/>
+//   {isLoggedIn ? (
+//     <Menu.Menu position="right">
+//       <Menu.Item as={Link} to='/orders' name="Orders">Orders</Menu.Item>
+//       <Menu.Item onClick={handleClick} position="right" name="Log Out"/>
+//       <Menu.Item as={Link} to="/cart" name="Cart">
+//         <Icon name="shopping cart"/>
+//       </Menu.Item>
+//     </Menu.Menu>)
+//   : (
+//     <Menu.Menu position="right">
+//       <Menu.Item as={Link} to="/login" name="Login"/>
+//       <Menu.Item as={Link} to="/signup" name="Sign Up"/>
+//       <Menu.Item as={Link} to="/cart" name="Cart">
+//         <Icon name="shopping cart"/>
+//       </Menu.Item>
+//     </Menu.Menu>
+//   )}
+//   </Menu>
+)
+
 
 /**
  * CONTAINER

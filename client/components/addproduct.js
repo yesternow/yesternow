@@ -1,26 +1,37 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addProduct } from '../store';
-import { Button, Form, Container} from 'semantic-ui-react';
-
+import { Button, Form, Container } from 'semantic-ui-react';
+import history from '../history'
 class AddProduct extends Component {
   constructor() {
     super();
-    this.state = {};
-    this.handleChange = this.handleChange.bind(this);
+
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
-  }
+
   handleSubmit(event) {
     event.preventDefault();
 
-    this.props.addProduct(this.state);
-  }
+    const title = event.target.title.value;
+    const description = event.target.description.value;
+    const price = Number(event.target.price.value);
+    const quantity = Number(event.target.quantity.value);
+    const weight = Number(event.target.weight.value);
+    const brand = event.target.brand.value;
+    const imageUrl = event.target.imageUrl.value;
+
+    this.props.addProduct({
+      title,
+      description,
+      price,
+      quantity,
+      weight,
+      brand,
+    }).then(response => history.push(`/products/${response.product.id}`))
+    }
 
   render() {
-    const { title, description, price, quantity, weight, brand } = this.state;
     return (
       <Container>
         <h3>Add New Product</h3>
@@ -32,8 +43,6 @@ class AddProduct extends Component {
                 placeholder="Product Title"
                 id="title"
                 type="text"
-                value={title}
-                onChange={this.handleChange}
                 required
               />
             </div>
@@ -43,10 +52,8 @@ class AddProduct extends Component {
               <label>Product Description</label>
               <input
                 placeholder="Product Description"
-                id="description"
+                name="description"
                 type="text"
-                value={description}
-                onChange={this.handleChange}
                 required
               />
             </div>
@@ -56,10 +63,8 @@ class AddProduct extends Component {
               <label>Product Price</label>
               <input
                 placeholder="Product Price"
-                id="price"
+                name="price"
                 type="number"
-                value={price}
-                onChange={this.handleChange}
                 required
               />
             </div>
@@ -69,10 +74,8 @@ class AddProduct extends Component {
               <label>Product Quantity</label>
               <input
                 placeholder="Product Quantity"
-                id="quantity"
+                name="quantity"
                 type="number"
-                value={quantity}
-                onChange={this.handleChange}
                 required
               />
             </div>
@@ -82,10 +85,8 @@ class AddProduct extends Component {
               <label>Product Weight</label>
               <input
                 placeholder="Product Weight in Ounces"
-                id="weight"
+                name="weight"
                 type="number"
-                value={weight}
-                onChange={this.handleChange}
                 required
               />
             </div>
@@ -93,12 +94,16 @@ class AddProduct extends Component {
           <Form.Field>
             <div>
               <label>Product Brand</label>
+              <input placeholder="Product Brand" name="brand" type="text" />
+            </div>
+          </Form.Field>
+          <Form.Field>
+            <div>
+              <label>Product Image</label>
               <input
-                placeholder="Product Brand"
-                id="brand"
-                type="text"
-                value={brand}
-                onChange={this.handleChange}
+                placeholder="Image Url"
+                name="imageUrl"
+                type="url"
               />
             </div>
           </Form.Field>

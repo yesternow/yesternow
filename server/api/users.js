@@ -1,13 +1,13 @@
 const router = require('express').Router();
 const { User } = require('../db/models');
 const { requireAdmin, requireLogin, requireUserOrAdmin } = require('./util');
+const underscore = require('underscore')
 
 const userFieldAllowList = ['firstName', 'lastName', 'email', 'password', 'imageUrl', 'phone'];
 const userFieldAdminAllowList = [...userFieldAllowList, 'isAdmin'];
-
 //get all users
 
-router.get('/', requireAdmin, (req, res, next) => {
+router.get('/', requireLogin, requireAdmin, (req, res, next) => {
   return User.findAll()
     .then(users => res.json(users))
     .catch(next);

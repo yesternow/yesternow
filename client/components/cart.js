@@ -5,13 +5,13 @@ import {Link } from 'react-router-dom'
 import { Image, List, Item, Container, Select, Button, Grid, Header, Divider } from 'semantic-ui-react'
 
 export class Cart extends Component {
-    componentDidMount(){
+    componentWillMount(){
         this.props.loadCart()
+
     }
 
     render() {
         const {cartItems, user  } = this.props.cart;
-        // console.log(this.props.cart.cartItems)
         if (!this.props.cart.cartItems) return <p>Loading...</p>
 
         return (
@@ -44,7 +44,8 @@ export class Cart extends Component {
 }
 
 const mapStateToProps = state => ({
-    cart: state.carts.cart
+    cart: state.carts.cart,
+    showCart: state.carts.showCart
 })
 
 const mapDispatchToProps = dispatch => ({

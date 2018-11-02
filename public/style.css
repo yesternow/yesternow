@@ -20,3 +20,7 @@ body {	.ui.card>.image>img, .ui.cards>.card>.image>img {
 .ui.card>.image>img, .ui.cards>.card>.image>img {
   height: 12em
 }
+
+.full {
+  height: 100vh;
+}

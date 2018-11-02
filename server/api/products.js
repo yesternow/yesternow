@@ -8,7 +8,7 @@ router.get("/", async (req, res, next) => {
     //updated findAll to include category data to filter products at all products page
 
     const products = await Product.findAll({
-      include: [{ model: Category, through: {attributes: []} }]
+      include: [{ model: Category, through: {attributes: []} }, Image]
     });
     res.json(products);
   } catch (error) {

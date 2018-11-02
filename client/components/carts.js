@@ -15,14 +15,14 @@ class Carts extends Component {
                 <Item.Group>
                 {carts.map(cart => {
                     return (
-                        <Item>
-                            <Item.Content>
-                                <Item.Header>{cart.id}</Item.Header>
-                                <Item.Description>{cart.user.firstName} {cart.user.lastName}</Item.Description>
-                                <Item.Meta>Items</Item.Meta>
+                    <Item>
+                        <Item.Content>
+                            <Item.Header>{cart.id}</Item.Header>
+                            <Item.Description>{cart.user.firstName} {cart.user.lastName}</Item.Description>
+                            <Item.Meta>Items</Item.Meta>
 
-                            </Item.Content>
-                        </Item>
+                        </Item.Content>
+                    </Item>
                     )
                 })}
 

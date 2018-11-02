@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect }  from 'react-redux'
 import { fetchProduct } from '../store'
-
+import { Button, Container, Image, Item, Icon } from 'semantic-ui-react'
 export class SingleProduct extends Component {
     componentDidMount(){
         this.props.loadProduct(this.props.match.params.id)
@@ -10,12 +10,21 @@ export class SingleProduct extends Component {
         const { title, description, price, quantity, images, reviews, weight, dimensions, brand }= this.props.product
 
         return (
-            <div>
-                <h4>{title}</h4>
-                <h3>{price}</h3>
-                <p>{description}</p>
-                <button>Add To Cart</button>
-            </div>
+         <Container>
+            <Item>
+                <Item.Content>
+                    <Item.Header>{title}</Item.Header>
+                    <Item.Meta>{price}</Item.Meta>
+                    <Item.Description>{description}</Item.Description>
+                    <Item.Extra>
+                    <Button floated="right" color="orange">
+                        <Icon name='shop' />
+                    </Button>
+                    </Item.Extra>
+                </Item.Content>
+                {images && images.map(image => <Image key={image.id} src={image.imageUrl} size="medium" bordered/>)}
+            </Item>
+         </Container>
         )
     }
 }

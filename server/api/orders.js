@@ -4,7 +4,7 @@ const {requireAdmin, requireLogin, requireUserOrAdmin} = require('./util');
 
 //Get single order
 
-router.get('/', requireLogin, requireUserOrAdmin, async (req, res, next) => {
+router.get('/', requireLogin, requireAdmin, async (req, res, next) => {
 	try {
 		const orders = await Order.findAll();
 		res.json(orders);

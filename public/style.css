@@ -1,21 +1,22 @@
-body {
-  font-family: sans-serif;
+/*  default style config
+body {	.ui.card>.image>img, .ui.cards>.card>.image>img {
+  font-family: sans-serif;	  height: 12em
 }
-
-a {
+ a {
   text-decoration: none;
 }
-
-label {
+ label {
   display: block;
 }
-
-nav a {
+ nav a {
   display: inline-block;
   margin: 1em;
 }
-
-form div {
+ form div {
   margin: 1em;
   display: inline-block;
+} */
+
+.ui.card>.image>img, .ui.cards>.card>.image>img {
+  height: 12em
 }

@@ -3,6 +3,7 @@ import axios from 'axios';
 const SET_CARTS = 'SET_CARTS'
 const SET_CART = 'SET_CART'
 const TOGGLE_CART = 'TOGGLE_CART'
+const UPDATE_CART = 'UPDATE_CART'
 
 const setCarts = (carts) => ({
     type: SET_CARTS,
@@ -13,6 +14,11 @@ const setCart = (cart) => ({
     cart
 })
 
+const updateCart = cartItem => ({
+    type: UPDATE_CART,
+    cartItem
+})
+
 export const toggleCart = () => ({
     type: TOGGLE_CART
 })
@@ -21,6 +27,13 @@ export const fetchCarts = () => {
     return async dispatch => {
         const { data } = await axios.get('/api/carts')
         dispatch(setCarts(data))
+    }
+}
+
+export const sendAddToCart = productId => {
+    return async dispatch => {
+        const { data } = await axios.put('/api/cart/', productId)
+        dispatch(updateCart(data))
     }
 }
 
@@ -47,6 +60,8 @@ export default (state = initialState, action) => {
             return {...state, cart: action.cart}
         case TOGGLE_CART:
             return {...state, showCart: !state.showCart}
+        // case UPDATE_CART:
+        //     return {...state, cart: {...state.cart, cartItems: [...state.cart.cartItems, action.cartItem]}}
         default:
             return state
     }

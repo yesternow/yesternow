@@ -12,6 +12,19 @@ router.get('/', requireLogin, async (req, res, next) => {
     }
 })
 
+router.put('/', requireLogin, async (req, res, next) => {
+    const userId = req.user.id
+    const { productId } = req.body
+    try {
+        const cart = await Cart.find({where: {userId}, include: [ User, {model: CartItem, include: [{model: Product, include: [Image]} ]}]})
+        // await cart.update(underscore.pick(req.body, ['cartItems']))
+        const cartItem = await CartItem.create({cartId: cart.id, productId})
+        res.json(cartItem)
+    } catch (err){
+        next(err)
+    }
+})
+
 
 
 module.exports = router;

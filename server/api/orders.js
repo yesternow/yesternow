@@ -15,8 +15,33 @@ router.get('/', requireLogin, requireUserOrAdmin, async (req, res, next) => {
 
 //Get single order
 
-router.get('/:id', requireLogin, requireUserOrAdmin, (req, res, next) => {
-	return Order.findById(req.params.id).then((order) => res.json(order)).catch(next);
+router.get('/:id', requireLogin, requireUserOrAdmin, async (req, res, next) => {
+	try {
+		const id = req.params.id;
+		const orders = await Order.findOne({
+			where: {id},
+			include: [
+				{
+					model: LineItem,
+					include: [
+						{
+							model: Product,
+							include: [ {model: Image} ]
+						}
+					]
+				}
+			]
+		});
+		if (req.user.isAdmin) {
+			res.json(orders);
+		} else if (userId === req.user.id) {
+			res.json(orders);
+		} else {
+			res.sendStatus(403);
+		}
+	} catch (error) {
+		next(error);
+	}
 });
 
 //Get orders of a single user

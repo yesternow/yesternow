@@ -1,31 +1,43 @@
 import {connect} from 'react-redux';
 import React, {Component} from 'react';
+import {fetchOrder} from '../store';
+import {Button, Form, Grid, Header, Image, Message, Segment} from 'semantic-ui-react';
 
 class SingleOrder extends Component {
 	componentDidMount() {
-		this.props.loadOrder();
+		this.props.loadOrder(this.props.match.params.id);
 	}
 	render() {
-		if (!this.props.order) {
-			return <div>Hello, order does not exist</div>;
+		if (!this.props.order.lineItems) {
+			return <div>loading..</div>;
+		} else {
+			const order = this.props.order;
+			const lineItems = this.props.order.lineItems;
+			console.log(order.lineItems);
+			return (
+				<div className="ui grid centered">
+					<select onChange={this.handleChange}>
+						<option value="all">All</option>
+					</select>
+					<h2>Order id: {order.id}</h2>
+					{lineItems.map((item) => (
+						<div key={item.id}>
+							<li>{item.product.title}</li>
+							<p>{item.product.description}</p>
+							<li>{item.price}</li>
+							{item.product.images.map((image) => (
+								<div key={image.id} className="ui grid column">
+									<li>
+										<img src={image.imageUrl} className="ui medium rounded image" />
+									</li>
+								</div>
+							))}
+						</div>
+					))}
+					{!this.props.order && <p>order does not exist</p>}
+				</div>
+			);
 		}
-		return (
-			<div>
-				<select onChange={this.handleChange}>
-					<option value="all">All</option>
-				</select>
-				<h2>Order id: {this.props.order.id}</h2>
-				{this.props.order.lineItems.map((line) => (
-					<div>
-						<li>{line.product.title}</li>
-						<p>{line.product.description}</p>
-						<li>{line.price}</li>
-						{/* <li>{line.product.image.imageUrl}</li> */}
-					</div>
-				))}
-				{!this.props.order && <p>order does not exist</p>}
-			</div>
-		);
 	}
 }
 const mapStateToProps = (state) => ({
@@ -33,7 +45,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	loadOrder: (orderId) => dispatch(fetchOrders(orderId))
+	loadOrder: (orderId) => dispatch(fetchOrder(orderId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleOrder);

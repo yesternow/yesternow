@@ -14,4 +14,6 @@ export { default as UpdateProduct } from './updateproduct';
 export { default as SingleProduct } from './singleProduct';
 export { default as Carts } from './carts';
 export { default as Cart } from './cart';
+export { default as SideBar } from './sidebar';
+export { default as Footer } from './footer';
 

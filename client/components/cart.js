@@ -5,18 +5,21 @@ import {Link } from 'react-router-dom'
 import { Image, List, Item, Container, Select, Button } from 'semantic-ui-react'
 
 export class Cart extends Component {
-    componentDidMount(){
+    componentWillMount(){
         this.props.loadCart()
+
     }
     render() {
+        // if(!this.props.showCart) {return <p></p>}
+        // if(!this.props.cart || !Object.keys(this.props.cart).length || !this.props.cart.cartItems.length){return <p>Empty Cart</p>}
         const {cartItems, user  } = this.props.cart;
-        // console.log(this.props.cart.cartItems)
+        console.log('cart', this.props.cart)
         if (!this.props.cart.cartItems) return <p>Loading...</p>
 
         return (
             <Container>
                 <List celled>
-                {cartItems.map(cartItem => <List.Item key={cartItem.id}>
+                {cartItems && cartItems.map(cartItem => <List.Item key={cartItem.id}>
                 <Image  size="small" src={cartItem.product.images[0].imageUrl}/>
                 <List.Content>
                     <List.Header as ={Link} to={`/products/${cartItem.product.id}`}>{cartItem.product.title}</List.Header>
@@ -33,7 +36,8 @@ export class Cart extends Component {
 }
 
 const mapStateToProps = state => ({
-    cart: state.carts.cart
+    cart: state.carts.cart,
+    showCart: state.carts.showCart
 })
 
 const mapDispatchToProps = dispatch => ({

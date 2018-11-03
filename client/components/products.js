@@ -4,6 +4,7 @@ import {
   setVisibility,
   setSort,
   fetchCategories,
+  sendAddToCart,
 } from '../store';
 import { connect } from 'react-redux';
 import {
@@ -27,6 +28,7 @@ class Products extends Component {
       visibilityFilter: 'all',
     };
     this.handleChange = this.handleChange.bind(this);
+    // this.handleClick = this.handleClick.bind(this)
   }
   componentDidMount() {
     this.props.loadProducts();
@@ -37,6 +39,10 @@ class Products extends Component {
     console.log('event changed', event.target.value);
     this.props.setVisibility(event.target.value);
   }
+
+  // handleClick(productId) {
+  //   this.props.sendAddToCart(productId)
+  // }
   render() {
     if (!this.props.products || !this.props.categories.length) {
       return <div>Hello there are no products yet</div>;
@@ -69,7 +75,17 @@ class Products extends Component {
                     <Card.Header>{product.title}</Card.Header>
                     <Card.Description>{product.price}</Card.Description>
                   </Card.Content>
-                  <Button animated="vertical" color="orange">
+                  <Button
+                    animated="vertical"
+                    color="orange"
+                    onClick={() =>
+                      this.props.sendAddToCart({
+                        quantity: 1,
+                        productId: product.id,
+                        cartId: 1,
+                      })
+                    }
+                  >
                     <Button.Content hidden>Add To Cart</Button.Content>
                     <Button.Content visible>
                       <Icon name="shop" />
@@ -110,6 +126,7 @@ const mapDispatchToProps = dispatch => ({
   loadCategories: () => dispatch(fetchCategories()),
   setVisibility: visibility => dispatch(setVisibility(visibility)),
   setSort: sort => dispatch(setSort(sort)),
+  sendAddToCart: productId => dispatch(sendAddToCart(productId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Products);

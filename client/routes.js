@@ -14,7 +14,7 @@ import {
   Cart,
   SingleOrder,
 } from './components';
-import { me } from './store';
+import { me, fetchCart } from './store';
 
 /**
  * COMPONENT
@@ -22,6 +22,7 @@ import { me } from './store';
 class Routes extends Component {
   componentDidMount() {
     this.props.loadInitialData();
+    this.props.loadCart();
   }
 
   render() {
@@ -41,6 +42,7 @@ class Routes extends Component {
             <Switch>
               <Route path="/addproduct" component={AddProduct} />
               <Route path="/updateproduct" component={UpdateProduct} />
+              <Route component={Products} />
             </Switch>
           )}
         {/* Displays our Login component as a fallback */}
@@ -49,6 +51,7 @@ class Routes extends Component {
             {/* Routes placed here are only available after logging in */}
             <Route path="/home" component={UserHome} />
             <Route exact path="/orders" component={Cart} />
+            <Route component={Products} />
           </Switch>
         )}
         <Route component={Products} />
@@ -73,6 +76,9 @@ const mapDispatch = dispatch => {
   return {
     loadInitialData() {
       dispatch(me());
+    },
+    loadCart() {
+      dispatch(fetchCart());
     },
   };
 };

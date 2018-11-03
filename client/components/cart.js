@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { fetchCart } from '../store';
+import { fetchCart, removeCartItem } from '../store';
 import { connect } from 'react-redux';
 import {Link } from 'react-router-dom'
 import { Image, List, Item, Container, Select, Button, Grid, Header, Divider } from 'semantic-ui-react'
@@ -12,7 +12,7 @@ export class Cart extends Component {
 
     render() {
         const {cartItems, user  } = this.props.cart;
-        if (!this.props.cart.cartItems) return <p>Loading...</p>
+        if (!this.props.cart.cartItems) return <p>Cart is Empty</p>
 
         return (
             <Container>
@@ -28,7 +28,7 @@ export class Cart extends Component {
                             <List.Description>Price: {cartItem.product.price} Quantity: {cartItem.quantity}</List.Description>
                         </List.Content>
                         <List.Content floated="right">
-                        <Button>Remove</Button>
+                        <Button onClick={() => this.props.removeItem(cartItem.id)}>Remove</Button>
                         </List.Content>
                     </List.Item>))}
                     <List.Item>
@@ -46,10 +46,12 @@ export class Cart extends Component {
 const mapStateToProps = state => ({
     cart: state.carts.cart,
     showCart: state.carts.showCart
+
 })
 
 const mapDispatchToProps = dispatch => ({
-    loadCart: () => dispatch(fetchCart())
+    loadCart: () => dispatch(fetchCart()),
+    removeItem: cartItemId => dispatch(removeCartItem(cartItemId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart)

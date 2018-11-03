@@ -22,12 +22,10 @@ import Search from './search';
 const Navbar = ({ handleClick, isLoggedIn, isAdmin, toggleCart }) => (
   <Menu fixed="top" inverted>
     <Container>
-      <Menu.Item as="a" header>
+      <Menu.Item as={Link} to="/" header>
         <Image size="mini" src="/logo.png" style={{ marginRight: '1.5em' }} />
         YESTERNOW
       </Menu.Item>
-      <Menu.Item as="a">Home</Menu.Item>
-
       <Dropdown item simple text="Categories">
         <Dropdown.Menu>
           <Dropdown.Item>List Item</Dropdown.Item>

@@ -69,7 +69,7 @@ class Products extends Component {
                   <Image
                     as={Link}
                     to={`/products/${product.id}`}
-                    src={product.images[0].imageUrl}
+                    src={product.images.length && product.images[0].imageUrl}
                   />
                   <Card.Content>
                     <Card.Header>{product.title}</Card.Header>

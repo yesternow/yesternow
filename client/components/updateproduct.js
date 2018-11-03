@@ -2,14 +2,32 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { sendProductUpdate } from '../store';
 import { Button, Form, Container } from 'semantic-ui-react';
+import underscore from 'underscore'
 
 class UpdateProduct extends Component {
   constructor(props) {
     super(props);
-    this.state = { ...this.props.product };
+    this.state = {
+      title: '',
+      description: '',
+      price: '',
+      quantity: '',
+      weight: '',
+      brand: '',
+      imageUrl: '',
+      dimensions: '',
+      isActive: false,
+      categories: ''
+    }
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.loadProduct(this.props.match.params.id);
+    this.setState(underscore.pick(this.props.product, ['title', 'description', price, quantity, weight, brand, dimensions, isActive, categories]))
+
   }
 
   handleChange(event) {
@@ -113,8 +131,13 @@ class UpdateProduct extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  product: state.product.product
+})
+
 const mapDispatchToProps = dispatch => ({
   sendProductUpdate: product => dispatch(sendProductUpdate(product)),
+  loadProduct: productId => dispatch(fetchProduct(productId)),
 });
 
 export default connect(null, mapDispatchToProps)(UpdateProduct);

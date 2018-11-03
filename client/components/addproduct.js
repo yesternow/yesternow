@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addProduct } from '../store';
-import { Button, Form, Container, Grid, Header } from 'semantic-ui-react';
+import { Button, Form, Container, Grid, Header, Radio } from 'semantic-ui-react';
 import history from '../history';
 class AddProduct extends Component {
   constructor() {
@@ -15,14 +15,23 @@ class AddProduct extends Component {
       brand: '',
       imageUrl: '',
       dimensions: '',
+      isActive: false,
+      categories: ''
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleToggle = this.handleToggle.bind(this);
   }
 
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
+  }
+
+  handleToggle() {
+    this.setState({
+      isActive: !this.state.isActive
+    })
   }
 
   handleSubmit(event) {
@@ -40,6 +49,8 @@ class AddProduct extends Component {
       brand: '',
       imageUrl: '',
       dimensions: '',
+      isActive: false,
+      categories: ''
     });
   }
 
@@ -53,6 +64,7 @@ class AddProduct extends Component {
       brand,
       imageUrl,
       dimensions,
+      categories
     } = this.state;
 
     return (
@@ -145,23 +157,22 @@ class AddProduct extends Component {
               onChange={this.handleChange}
             />
           </Form.Field>
-          {/* <Form.Group>
+          <Form.Field>
+            <label>Category</label>
+            <input
+              placeholder='Categories (separate with comma)'
+              name='categories'
+              value={categories}
+              type='text'
+              onChange={this.handleChange}
+            />
+            <label>Example: Jewelery,Cloths,Electronics</label>
+          </Form.Field>
+          <Form.Group>
             <label>Is Active</label>
-            <Form.Radio
-              label="Yes"
-              name="isActive"
-              value={isActive}
-              checked={isActive === true}
-              onChange={this.handleChange}
-            />
-            <Form.Radio
-              label="No"
-              name="isActive"
-              value={isActive}
-              checked={isActive === false}
-              onChange={this.handleChange}
-            />
-          </Form.Group> */}
+            <Radio toggle active={this.state.isActive} onClick={this.handleToggle} />
+          </Form.Group>
+
           {/* <Form.Group>
             <label>Is Available</label>
             <Form.Radio

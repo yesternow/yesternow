@@ -1,9 +1,21 @@
 const router = require('express').Router();
 const { Product, Category, Image, Review } = require('../db/models');
 const { requireAdmin, requireLogin, requireUserOrAdmin } = require('./util');
-const underscore = require('underscore')
+const underscore = require('underscore');
 
-const productFieldsAllowList = ['title', 'description', 'price', 'quantity', 'weight', 'brand'];
+const productFieldsAllowList = [
+  'title',
+  'description',
+  'price',
+  'quantity',
+  'weight',
+  'brand',
+  'dimensions',
+  'imageUrl',
+  'isActive',
+  'isFeatured',
+  'isAvailable',
+];
 
 router.get('/', async (req, res, next) => {
   try {
@@ -37,11 +49,11 @@ router.put('/:productId', requireLogin, requireAdmin, (req, res, next) => {
     .then(product => {
       product.update(underscore.pick(req.body, productFieldsAllowList));
     })
-    .then(() => res.status(204).end())
+    .then(([row, [update]]) => res.status(204).json(update))
     .catch(next);
 });
 
-router.post('/', requireLogin, (req, res, next) => {
+router.post('/', requireLogin, requireAdmin, (req, res, next) => {
   Product.create(underscore.pick(req.body, productFieldsAllowList))
     .then(response => res.json(response))
     .catch(next);

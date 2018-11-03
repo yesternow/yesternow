@@ -56,7 +56,7 @@ class Products extends Component {
                   <Card.Header>{product.title}</Card.Header>
                   <Card.Description>{product.price}</Card.Description>
                 </Card.Content>
-                <Button animated='vertical' color="orange" onClick={() => this.props.sendAddToCart(product.id)}>
+                <Button animated='vertical' color="orange" onClick={() => this.props.sendAddToCart({quantity:1, productId:product.id, cartId:1})}>
                   <Button.Content hidden>Add To Cart</Button.Content>
                   <Button.Content visible>
                     <Icon name='shop' />

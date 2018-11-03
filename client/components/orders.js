@@ -1,61 +1,130 @@
 import React, {Component} from 'react';
-import {fetchOrders} from '../store';
+import {fetchOrders, updateOrder} from '../store';
 import {connect} from 'react-redux';
-import {Container, Dropdown, Input, Card, Divider, Image, Grid, Button, Icon, Select} from 'semantic-ui-react';
-import {List} from 'semantic-ui-react';
+import {
+	Container,
+	Dropdown,
+	Input,
+	Card,
+	Divider,
+	Image,
+	Grid,
+	Button,
+	Icon,
+	Select,
+	List,
+	Rail,
+	Sticky,
+	Header,
+	Segment,
+	Form,
+	Field,
+	Checkbox
+} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 
 class Orders extends Component {
+	constructor() {
+		super();
+		this.state = {
+			selected: 0
+		};
+		this.handleSubmit = this.handleSubmit.bind(this);
+	}
 	componentDidMount() {
 		this.props.loadOrders();
+		const defaultOrder = this.props.orders[this.state.selected];
+		this.setState({defaultOrder, selected: 0});
+	}
+
+	handleSubmit(evt) {
+		evt.preventDefault();
+		this.props.updateOrder(evt.target.id);
 	}
 	render() {
 		if (!this.props.orders) {
 			return <div>Hello there are no orders yet</div>;
 		}
-
+		const orders = this.props.orders;
 		return (
-			<List>
-				<List.Item>
-					<List.Icon name="users" />
-					<List.Content>Semantic UI</List.Content>
-				</List.Item>
-				<List.Item>
-					<List.Icon name="marker" />
-					<List.Content>New York, NY</List.Content>
-				</List.Item>
-				<List.Item>
-					<List.Icon name="mail" />
-					<List.Content>
-						<a href="mailto:jack@semantic-ui.com">jack@semantic-ui.com</a>
-					</List.Content>
-				</List.Item>
-				<List.Item>
-					<List.Icon name="linkify" />
-					<List.Content>
-						<a href="http://www.semantic-ui.com">semantic-ui.com</a>
-					</List.Content>
-				</List.Item>
-			</List>
-			// <Container>
-			// 	<Grid>
-			// 		<Grid.Row>
-			// 			<Card.Group itemsPerRow={4}>
-			// 				<h1>Orders</h1>
-			// 				{this.props.orders.map((order) => (
-			// 					<Card key={order.id}>
-			// 						<Card.Content>
-			// 							<Card.Header>Order ID: {order.id}</Card.Header>
-			// 							<Card.Description>
-			// 								Tracking: {order.tracking} Address: {order.addressId} User: {order.userId}
-			// 							</Card.Description>
-			// 						</Card.Content>
-			// 					</Card>
-			// 				))}
-			// 			</Card.Group>
-			// 		</Grid.Row>
-			// 	</Grid>
-			// </Container>
+			<Grid className="cardOrders">
+				<Grid.Row>
+					{orders.map((order) => (
+						<Card.Group key={order.id}>
+							<Card>
+								<Card.Content>
+									<Card.Meta>
+										<span className="date">Joined in {order.createdAt.substring(0, 4)}</span>
+									</Card.Meta>
+									<Card.Header>
+										{order.user.firstName} {order.user.lastName}
+									</Card.Header>
+
+									<Card.Description>email: {order.user.email}</Card.Description>
+									<Card.Description>
+										mobile: {order.user.phone || 'number not listed'}
+									</Card.Description>
+									<Card.Description>User ID: {order.userId}</Card.Description>
+									<Card.Description>Order ID: {order.id}</Card.Description>
+									<Card.Description>Order Status: {order.status}</Card.Description>
+								</Card.Content>
+
+								{order.lineItems.map((item) => (
+									<Card key={item.productId}>
+										<Card.Content>Product ID: {item.productId}</Card.Content>
+										<List.Content>
+											<List.Content>item: {item.product.title}</List.Content>
+											<List.Content> brand: {item.product.brand || 'n/a'}</List.Content>
+											<List.Content>Stock: {item.quantity}</List.Content>
+											<List.Content>price (in cents): {item.price}</List.Content>
+										</List.Content>
+									</Card>
+								))}
+							</Card>
+						</Card.Group>
+					))}
+				</Grid.Row>
+
+				<Form>
+					<Form.Field>
+						<label>First Name</label>
+						<input placeholder="First Name" />
+					</Form.Field>
+					<Form.Field>
+						<label>Last Name</label>
+						<input placeholder="Last Name" />
+					</Form.Field>
+					<Form.Field>
+						<Checkbox label="I agree to the Terms and Conditions" />
+					</Form.Field>
+					<Button type="submit">Submit</Button>
+				</Form>
+				<Grid.Row>
+					<Rail position="right">
+						<Segment>Left Rail Content</Segment>
+					</Rail>
+					<List.Item>
+						<List.Icon name="users" />
+						<List.Content>Semantic UI</List.Content>
+					</List.Item>
+					<List.Item>
+						<List.Icon name="marker" />
+						<List.Content>New York, NY</List.Content>
+					</List.Item>
+					<List.Item>
+						<List.Icon name="mail" />
+						<List.Content>
+							<a href="mailto:jack@semantic-ui.com">jack@semantic-ui.com</a>
+						</List.Content>
+					</List.Item>
+					<List.Item>
+						<List.Icon name="linkify" />
+						<List.Content>
+							<a href="http://www.semantic-ui.com">semantic-ui.com</a>
+						</List.Content>
+					</List.Item>
+				</Grid.Row>
+			</Grid>
 		);
 	}
 }
@@ -65,7 +134,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	loadOrders: () => dispatch(fetchOrders())
+	loadOrders: () => dispatch(fetchOrders()),
+	updateOrder: (id) => dispatch(updateOrder(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Orders);

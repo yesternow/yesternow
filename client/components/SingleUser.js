@@ -1,6 +1,26 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getUser} from './store';
+import {grabUser} from '../store';
+import {
+	Container,
+	Dropdown,
+	Input,
+	Card,
+	Divider,
+	Image,
+	Grid,
+	Button,
+	Icon,
+	Select,
+	List,
+	Rail,
+	Sticky,
+	Header,
+	Segment,
+	Form,
+	Field,
+	Checkbox
+} from 'semantic-ui-react';
 
 export class SingleUser extends React.Component {
 	componentDidMount() {
@@ -11,24 +31,31 @@ export class SingleUser extends React.Component {
 		if (this.props.users) {
 			const user = this.props.users;
 			return (
-				<div>
-					<div key={user.id}>
-						<img src={user.imageUrl} />
-						<ul>
-							<li>
-								Name:
-								{user.firstName} {user.lastName}
-							</li>
-							<li>Email: {user.email}</li>
-						</ul>
-					</div>
-				</div>
+				<Card
+					header="Elliot Baker"
+					meta="Friend"
+					description="Elliot is a sound engineer living in Nashville who enjoys playing guitar and hanging with his cat."
+				/>
+				// <div>
+				// 	<div key={user.id}>
+				// 		<img src={user.imageUrl} />
+				// 		<ul>
+				// 			<li>
+				// 				Name:
+				// 				{user.firstName} {user.lastName}
+				// 			</li>
+				// 			<li>Email: {user.email}</li>
+				// 		</ul>
+				// 	</div>
+				// </div>
 			);
 		} else {
 			return (
-				<div>
-					<h1>User Not Found</h1>
-				</div>
+				<Card
+					header="Elliot Baker"
+					meta="Friend"
+					description="Elliot is a sound engineer living in Nashville who enjoys playing guitar and hanging with his cat."
+				/>
 			);
 		}
 	}
@@ -37,7 +64,7 @@ export class SingleUser extends React.Component {
 const mapStateToProps = (state) => ({user: state.users});
 
 const mapDispatchToProps = (dispatch) => ({
-	loadUser: (userId) => dispatch(getUser(userId))
+	loadUser: (userId) => dispatch(grabUser(userId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleUser);

@@ -14,7 +14,7 @@ const getUser = (user) => ({type: GET_USER, user});
  * THUNK CREATORS
  */
 
-export const singleUser = (userId) => async (dispatch) => {
+export const grabUser = (userId) => async (dispatch) => {
 	try {
 		const {data} = await axios.get(`/users/${userId}`);
 		dispatch(getUser(data));

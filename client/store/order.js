@@ -28,6 +28,14 @@ export const fetchOrder = (id) => async (dispatch) => {
 		console.error(err);
 	}
 };
+export const updateOrder = (id) => async (dispatch) => {
+	try {
+		await axios.put(`/api/orders/${id}`);
+		dispatch(fetchOrder(id));
+	} catch (err) {
+		console.error(err);
+	}
+};
 
 /**
  * REDUCER

@@ -11,14 +11,7 @@ const AuthForm = (props) => {
 	const {name, displayName, handleSubmit, error} = props;
 
 	return (
-		<div className="login-form">
-			<style>{`
-      body > div,
-      body > div > div,
-      body > div > div > div.login-form {
-        height: 100%;
-      }
-    `}</style>
+		<div className="login-form" id="auth-form">
 			<Image src="/logo.jpg" className="ui centered image large" />
 			<Grid textAlign="center" style={{height: '35%'}} verticalAlign="middle">
 				<Grid.Column style={{maxWidth: 450}}>

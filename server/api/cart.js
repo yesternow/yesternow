@@ -3,7 +3,11 @@ const { Cart, CartItem, User, Product, Image } = require("../db/models");
 const { requireAdmin, requireLogin, requireUserOrAdmin } = require('./util')
 
 router.get('/', requireLogin, async (req, res, next) => {
-    const userId = req.user.id
+
+    // if(req.user){
+        const userId = req.user.id
+
+    // } else {userId = 2}
     try{
         const cart = await Cart.find({where: {userId}, include: [ User, {model: CartItem, include: [{model: Product, include: [Image]} ]}]})
         res.json(cart)
@@ -12,6 +16,31 @@ router.get('/', requireLogin, async (req, res, next) => {
     }
 })
 
+router.put('/', async (req, res, next) => {
+
+    try {
+        const { quantity, productId, cartId } = req.body
+        let cartItem = await CartItem.findOne({where: {productId, cartId}})
+        if(cartItem) {
+            const total = quantity + cartItem.quantity
+            await cartItem.update({quantity: total})
+        } else {
+            cartItem = await CartItem.create({quantity, productId, cartId})
+        }
+        res.json(cartItem)
+    } catch (err){
+        next(err)
+    }
+})
+
+router.delete('/:cartItemId', async (req, res, next) => {
+    try {
+        await CartItem.destroy({where: {id: req.params.cartItemId}})
+        res.sendStatus(204)
+    } catch (err){
+        next(err)
+    }
+})
 
 
 module.exports = router;

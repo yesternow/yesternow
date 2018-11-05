@@ -32,7 +32,7 @@ class Users extends Component {
                     <Button
                       onClick={() =>
                         this.props.updateUser({
-                          ...user,
+                          userId: user.id,
                           isAdmin: !user.isAdmin,
                         })
                       }

@@ -47,7 +47,8 @@ export const sendRemoveUser = userId => async dispatch => {
 
 export const sendUpdateUser = user => async dispatch => {
   try {
-    const { data } = await axios.put(`/api/users/${user.id}`, user);
+    await axios.put(`/api/users/${user.userId}`, user);
+    const { data } = await axios.get(`/api/users/${user.userId}`);
     dispatch(updateUser(data));
   } catch (err) {
     console.error(err);

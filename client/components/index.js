@@ -17,3 +17,4 @@ export {default as Footer} from './footer';
 export {default as SingleOrder} from './SingleOrder';
 export {default as Orders} from './orders';
 export {default as SingleUser} from './SingleUser';
+export {default as UserOrders} from './UserOrders';

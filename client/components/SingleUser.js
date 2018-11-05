@@ -28,14 +28,24 @@ export class SingleUser extends React.Component {
 	}
 
 	render() {
-		if (this.props.users) {
-			const user = this.props.users;
+		if (this.props.user.firstName) {
+			const user = this.props.user;
 			return (
-				<Card
-					header="Elliot Baker"
-					meta="Friend"
-					description="Elliot is a sound engineer living in Nashville who enjoys playing guitar and hanging with his cat."
-				/>
+				<Card centered color="yellow">
+					<Image src={user.imageUrl} />
+					<Card.Content>
+						<Card.Header>
+							{user.firstName} {user.lastName}
+						</Card.Header>
+						<Card.Meta>
+							<span className="date">Joined in {user.createdAt.substring(0, 4)}</span>
+						</Card.Meta>
+
+						<Card.Description>email: {user.email}</Card.Description>
+						<Card.Description>mobile: {user.phone || 'unlisted'}</Card.Description>
+						<Card.Description>User ID: {user.id}</Card.Description>
+					</Card.Content>
+				</Card>
 				// <div>
 				// 	<div key={user.id}>
 				// 		<img src={user.imageUrl} />
@@ -50,13 +60,7 @@ export class SingleUser extends React.Component {
 				// </div>
 			);
 		} else {
-			return (
-				<Card
-					header="Elliot Baker"
-					meta="Friend"
-					description="Elliot is a sound engineer living in Nashville who enjoys playing guitar and hanging with his cat."
-				/>
-			);
+			return <h1>User not Found</h1>;
 		}
 	}
 }

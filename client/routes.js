@@ -14,7 +14,8 @@ import {
 	Cart,
 	SingleOrder,
 	Orders,
-	SingleUser
+	SingleUser,
+	UserOrders
 } from './components';
 import {me, fetchCart} from './store';
 
@@ -24,7 +25,7 @@ import {me, fetchCart} from './store';
 class Routes extends Component {
 	componentDidMount() {
 		this.props.loadInitialData();
-		this.props.loadCart()
+		this.props.loadCart();
 	}
 
 	render() {
@@ -50,7 +51,7 @@ class Routes extends Component {
 						<Route path="/addproduct" component={AddProduct} />
 						<Route path="/updateproduct" component={UpdateProduct} />
 						<Route exact path="/orders" component={Orders} />
-						<Route exact path="/users/:id/orders/:id" component={Orders} />
+						<Route exact path="/users/:id/orders" component={UserOrders} />
 					</Switch>
 				)}
 				{isLoggedIn && (
@@ -83,7 +84,7 @@ const mapDispatch = (dispatch) => {
 			dispatch(me());
 		},
 		loadCart() {
-			dispatch(fetchCart())
+			dispatch(fetchCart());
 		}
 	};
 };

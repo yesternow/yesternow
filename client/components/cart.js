@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
-import { fetchCart, removeCartItem } from '../store';
+import { fetchCart, removeCartItem, sendAddToCart } from '../store';
 import { connect } from 'react-redux';
 import {Link } from 'react-router-dom'
-import { Image, List, Item, Container, Select, Button, Grid, Header, Divider } from 'semantic-ui-react'
+import { Image, List, Item, Container, Select, Button, Grid, Header, Divider, Dropdown, Text } from 'semantic-ui-react'
 
 export class Cart extends Component {
+
+
     componentWillMount(){
         this.props.loadCart()
-
     }
 
     render() {
+
+        let options = []
+        for(let i = 1; i <= 100; i++) {
+            options.push({text: i.toString(), value: i})
+        }
+
         const {cartItems, user  } = this.props.cart;
         if (!this.props.cart.cartItems) return <p>Cart is Empty</p>
 
@@ -25,9 +32,19 @@ export class Cart extends Component {
                         <Image avatar src={cartItem.product.images[0].imageUrl}/>
                     <List.Content>
                             <List.Header as ={Link} to={`/products/${cartItem.product.id}`}>{cartItem.product.title}</List.Header>
-                            <List.Description>Price: {cartItem.product.price} Quantity: {cartItem.quantity}</List.Description>
+                            <List.Description>Price: {cartItem.product.price} </List.Description>
+                            <List.Description>Quantity:                             <Dropdown
+                                search
+                                placeholder={cartItem.quantity.toString()}
+                                selection
+                                compact
+                                options={options}
+                            />
+
+                            </List.Description>
                         </List.Content>
                         <List.Content floated="right">
+                            <Button onClick={() => this.props.sendAddToCart({quantity:1})} >Update</Button>
                         <Button onClick={() => this.props.removeItem(cartItem.id)}>Remove</Button>
                         </List.Content>
                     </List.Item>))}
@@ -51,7 +68,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     loadCart: () => dispatch(fetchCart()),
-    removeItem: cartItemId => dispatch(removeCartItem(cartItemId))
+    removeItem: cartItemId => dispatch(removeCartItem(cartItemId)),
+    sendAddToCart: (product) => dispatch(sendAddToCart(product))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart)

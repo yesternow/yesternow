@@ -65,7 +65,7 @@ class Products extends Component {
 										animated="vertical"
 										color="orange"
 										onClick={() =>
-											this.props.sendAddToCart({quantity: 1, productId: product.id, cartId: 1})}
+											this.props.sendAddToCart({quantity: 1, productId: product.id, cartId: this.props.cartId})}
 									>
 										<Button.Content hidden>Add To Cart</Button.Content>
 										<Button.Content visible>
@@ -95,7 +95,8 @@ const mapStateToProps = (state) => ({
 			return false;
 		}
 	}),
-	categories: state.product.categories
+	categories: state.product.categories,
+	cartId: state.carts.cart.id
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -103,7 +104,7 @@ const mapDispatchToProps = (dispatch) => ({
 	loadCategories: () => dispatch(fetchCategories()),
 	setVisibility: (visibility) => dispatch(setVisibility(visibility)),
 	setSort: (sort) => dispatch(setSort(sort)),
-	sendAddToCart: (productId) => dispatch(sendAddToCart(productId))
+	sendAddToCart: (product) => dispatch(sendAddToCart(product))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Products);

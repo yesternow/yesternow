@@ -17,10 +17,23 @@ body {	.ui.card>.image>img, .ui.cards>.card>.image>img {
   display: inline-block;
 } */
 
-.ui.card>.image>img, .ui.cards>.card>.image>img {
-  height: 12em
+.ui.card > .image > img,
+.ui.cards > .card > .image > img {
+	height: 12em;
 }
 
 .full {
   min-height: 100vh;
+}
+
+#auth-form {
+	height: 100%;
+}
+
+.cardOrders {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	align-items: flex-end;
 }

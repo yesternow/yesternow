@@ -1,12 +1,20 @@
 const router = require('express').Router();
-const {Order, LineItem, Product, Image} = require('../db/models');
+const {Order, LineItem, Product, Image, User} = require('../db/models');
 const {requireAdmin, requireLogin, requireUserOrAdmin} = require('./util');
 
-//Get single order
+//Get all orders
 
-router.get('/', requireLogin, requireUserOrAdmin, async (req, res, next) => {
+router.get('/', requireLogin, requireAdmin, async (req, res, next) => {
 	try {
-		const orders = await Order.findAll();
+		const orders = await Order.findAll({
+			include: [
+				{model: User},
+				{
+					model: LineItem,
+					include: [ {model: Product} ]
+				}
+			]
+		});
 		res.json(orders);
 	} catch (error) {
 		next(error);
@@ -18,7 +26,7 @@ router.get('/', requireLogin, requireUserOrAdmin, async (req, res, next) => {
 router.get('/:id', requireLogin, requireUserOrAdmin, async (req, res, next) => {
 	try {
 		const id = req.params.id;
-		const orders = await Order.findOne({
+		const order = await Order.findOne({
 			where: {id},
 			include: [
 				{
@@ -33,9 +41,9 @@ router.get('/:id', requireLogin, requireUserOrAdmin, async (req, res, next) => {
 			]
 		});
 		if (req.user.isAdmin) {
-			res.json(orders);
-		} else if (userId === req.user.id) {
-			res.json(orders);
+			res.json(order);
+		} else if (order.userId === req.user.id) {
+			res.json(order);
 		} else {
 			res.sendStatus(403);
 		}
@@ -75,32 +83,26 @@ router.get('/user/:userId/', requireLogin, async (req, res, next) => {
 
 //Create order for a user
 
-/*
+// We will write these two routes when we finish cart and finish order functionality. When we create order we should create lineItems as well.
 
-We will write these two routes when we finish cart and finish order functionality. When we create order we should create lineItems as well.
+// router.post('/user/:id/', requireUserOrAdmin, (req, res, next) => {
+//   let neworder = req.body;
+//   neworder['userId'] = req.params.id;
+//   return Order.create(neworder)
+//     .then(order => res.json(order))
+//     .catch(next);
+// });
 
-
-router.post('/user/:id/', requireUserOrAdmin, (req, res, next) => {
-  let neworder = req.body;
-  neworder['userId'] = req.params.id;
-  return Order.create(neworder)
-    .then(order => res.json(order))
-    .catch(next);
+router.put('/:id', requireLogin, requireUserOrAdmin, async (req, res, next) => {
+	try {
+		const {status} = req.body;
+		await Order.update(status, {
+			where: {id: req.params.id}
+		});
+		res.status(204).end();
+	} catch (error) {
+		next(error);
+	}
 });
-
-router.put('/:id/orders/:orderid', requireUserOrAdmin, (req, res, next) => {
-  return Order.findById(req.params.orderid)
-    .then(order => {
-      if (!order) return res.sendStatus(404);
-      else {
-        order.update(req.body).then(updatedOrder => {
-          res.json(updatedOrder);
-        });
-      }
-    })
-    .catch(next);
-});
-
-*/
 
 module.exports = router;

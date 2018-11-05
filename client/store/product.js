@@ -91,7 +91,7 @@ export const deleteProduct = productId => dispatch => {
 export const sendProductUpdate = product => dispatch => {
   return axios
     .put(`/api/products/${product.id}`, product)
-    .then(updatedProduct => dispatch(updateProduct(updatedProduct)))
+    .then(response => dispatch(updateProduct(response.data)))
     .catch(console.error.bind(console));
 };
 

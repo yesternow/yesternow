@@ -26,7 +26,7 @@ const Navbar = ({ handleClick, isLoggedIn, isAdmin, toggleCart, userFirstName, u
         <Image size="mini" src="/logo.png" style={{ marginRight: '1.5em' }} />
         YESTERNOW
       </Menu.Item>
-      <Dropdown item simple text="Categories">
+      {/* <Dropdown item simple text="Categories">
         <Dropdown.Menu>
           <Dropdown.Item>List Item</Dropdown.Item>
           <Dropdown.Item>List Item</Dropdown.Item>
@@ -34,14 +34,32 @@ const Navbar = ({ handleClick, isLoggedIn, isAdmin, toggleCart, userFirstName, u
         </Dropdown.Menu>
       </Dropdown>
 
+      </Dropdown> */}
     </Container>
-
-    <Search />
-
+    <Menu.Item>
+      <Search />
+    </Menu.Item>
     {isLoggedIn ? (
       <Menu.Menu >
         {isAdmin ? (
-          <Menu.Item>Dashboard</Menu.Item>
+          <Dropdown item simple text="Dashboard">
+            <Dropdown.Menu>
+              <Dropdown.Item as={Link} to="/Users">
+                Users
+              </Dropdown.Item>
+              <Dropdown.Item as={Link} to="/Orders">
+                Orders
+              </Dropdown.Item>
+              <Dropdown.Item as={Link} to="AllProductsAdmin">
+                Products
+                <Dropdown.Menu>
+                  <Dropdown.Item as={Link} to="addproduct">
+                    Add Product
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         ) : (
           <Menu.Item>
           <List>

@@ -3,19 +3,21 @@ import { connect } from 'react-redux';
 import { withRouter, Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
-	Login,
-	Signup,
-	UserHome,
-	Products,
-	AddProduct,
-	UpdateProduct,
-	SingleProduct,
-	Carts,
-	Cart,
-	SingleOrder,
-	Orders,
-	SingleUser,
-	UserOrders
+  Login,
+  Signup,
+  UserHome,
+  Products,
+  AddProduct,
+  UpdateProduct,
+  SingleProduct,
+  Carts,
+  Cart,
+  SingleOrder,
+  Orders,
+  SingleUser,
+  UserOrders,
+  Users,
+  AllProductsAdmin,
 } from './components';
 import { me, fetchCart } from './store';
 
@@ -23,13 +25,14 @@ import { me, fetchCart } from './store';
  * COMPONENT
  */
 class Routes extends Component {
-	componentDidMount() {
-		this.props.loadInitialData();
-		this.props.loadCart();
-	}
+  componentDidMount() {
+    this.props.loadInitialData();
+    this.props.loadCart();
+  }
 
-	render() {
-		const {isLoggedIn, isAdmin} = this.props;
+  render() {
+    const { isLoggedIn, isAdmin } = this.props;
+
 
 		return (
 			<Switch>
@@ -48,8 +51,12 @@ class Routes extends Component {
 					<Switch>
 						{/* Routes placed here are only available after logging in as Admin */}
 						<Route path="/addproduct" component={AddProduct} />
-						<Route path="/updateproduct" component={UpdateProduct} />
+						<Route
+                path="/updateproduct/:productId"
+                component={UpdateProduct}
+              />
 						<Route exact path="/orders" component={Orders} />
+      
 					</Switch>
 				)}
 				{isLoggedIn && (
@@ -58,36 +65,37 @@ class Routes extends Component {
 						<Route exact path="/users/:id" component={SingleUser} />
 						<Route path="/users/:id/orders" component={UserOrders} />
 						<Route path="/home" component={UserHome} />
-						<Route path='/testing' component={Products} />
 					</Switch>
 				)}
 				{/* Displays our Login component as a fallback */}
+        <Route component={Products} />
 			</Switch>
 		);
 	}
+
 }
 
 /**
  * CONTAINER
  */
-const mapState = (state) => {
-	return {
-		// Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
-		// Otherwise, state.user will be an empty object, and state.user.id will be falsey
-		isLoggedIn: !!state.user.id,
-		isAdmin: !!state.user.isAdmin
-	};
+const mapState = state => {
+  return {
+    // Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
+    // Otherwise, state.user will be an empty object, and state.user.id will be falsey
+    isLoggedIn: !!state.user.id,
+    isAdmin: !!state.user.isAdmin,
+  };
 };
 
-const mapDispatch = (dispatch) => {
-	return {
-		loadInitialData() {
-			dispatch(me());
-		},
-		loadCart() {
-			dispatch(fetchCart());
-		}
-	};
+const mapDispatch = dispatch => {
+  return {
+    loadInitialData() {
+      dispatch(me());
+    },
+    loadCart() {
+      dispatch(fetchCart());
+    },
+  };
 };
 
 // The `withRouter` wrapper makes sure that updates are not blocked

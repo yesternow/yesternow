@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchProducts, deleteProduct } from '../store';
+import { fetchProducts, deleteProduct, sendProductUpdate } from '../store';
 import { Container, Grid, List, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
@@ -22,11 +22,24 @@ class AllProductsAdmin extends Component {
                 <List.Item key={product.id}>
                   <List.Header>{product.title}</List.Header>
                   <List.Description>
-                    {'Quantity: ' + product.quantity}
+                    {'Quantity: ' +
+                      product.quantity +
+                      ' isAvailable: ' +
+                      product.isAvailable}
                   </List.Description>
                   <List.Content floated="right">
                     <Button as={Link} to={`/updateproduct/${product.id}`}>
                       Edit
+                    </Button>
+                    <Button
+                      onClick={() =>
+                        this.props.updateProduct({
+                          id: product.id,
+                          isAvailable: !product.isAvailable,
+                        })
+                      }
+                    >
+                      Toggle Available
                     </Button>
                     <Button
                       onClick={() => this.props.removeProduct(product.id)}
@@ -50,6 +63,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   loadProducts: () => dispatch(fetchProducts()),
   removeProduct: productId => dispatch(deleteProduct(productId)),
+  updateProduct: product => dispatch(sendProductUpdate(product)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllProductsAdmin);

@@ -12,7 +12,10 @@ import {
 	SingleProduct,
 	Carts,
 	Cart,
-	SingleOrder
+	SingleOrder,
+	Orders,
+	SingleUser,
+	UserOrders
 } from './components';
 import {me, fetchCart} from './store';
 
@@ -22,34 +25,42 @@ import {me, fetchCart} from './store';
 class Routes extends Component {
 	componentDidMount() {
 		this.props.loadInitialData();
-		this.props.loadCart()
+		this.props.loadCart();
 	}
 
 	render() {
-		const {isLoggedIn} = this.props;
+		const {isLoggedIn, isAdmin} = this.props;
 
 		return (
 			<Switch>
 				{/* Routes placed here are available to all visitors */}
+				<Route exact path="/" component={Products} />
 				<Route path="/login" component={Login} />
 				<Route path="/signup" component={Signup} />
 				<Route exact path="/products" component={Products} />
 				<Route path="/products/:id" component={SingleProduct} />
-				<Route path="/addproduct" component={AddProduct} />
-				<Route path="/updateproduct" component={UpdateProduct} />
 				<Route path="/carts" component={Carts} />
 				<Route exact path="/cart" component={Cart} />
 				<Route exact path="/orders/:id" component={SingleOrder} />
+				<Route exact path="/users/:id" component={SingleUser} />
 
+				{isAdmin &&
+				isLoggedIn && (
+					<Switch>
+						{/* Routes placed here are only available after logging in as Admin */}
+						<Route path="/addproduct" component={AddProduct} />
+						<Route path="/updateproduct" component={UpdateProduct} />
+						<Route exact path="/orders" component={Orders} />
+						<Route exact path="/users/:id/orders" component={UserOrders} />
+					</Switch>
+				)}
 				{isLoggedIn && (
 					<Switch>
 						{/* Routes placed here are only available after logging in */}
 						<Route path="/home" component={UserHome} />
-						<Route exact path="/orders" component={Cart} />
 					</Switch>
 				)}
 				{/* Displays our Login component as a fallback */}
-				<Route component={Products} />
 			</Switch>
 		);
 	}
@@ -62,7 +73,8 @@ const mapState = (state) => {
 	return {
 		// Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
 		// Otherwise, state.user will be an empty object, and state.user.id will be falsey
-		isLoggedIn: !!state.user.id
+		isLoggedIn: !!state.user.id,
+		isAdmin: !!state.user.isAdmin
 	};
 };
 
@@ -72,7 +84,7 @@ const mapDispatch = (dispatch) => {
 			dispatch(me());
 		},
 		loadCart() {
-			dispatch(fetchCart())
+			dispatch(fetchCart());
 		}
 	};
 };

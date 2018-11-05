@@ -34,6 +34,7 @@ Review.belongsTo(User)
 Review.belongsTo(Product)
 
 User.hasMany(Order);
+Order.belongsTo(User);
 
 Product.belongsToMany(Category, {through: 'tags'});
 Category.belongsToMany(Product, {through: 'tags'});
@@ -46,10 +47,10 @@ LineItem.belongsTo(Product);
 Product.hasMany(LineItem);
 Image.belongsTo(Product);
 
-CartItem.belongsTo(Product)
+CartItem.belongsTo(Product);
 
 Product.hasMany(Image);
-Image.belongsTo(Product)
+Image.belongsTo(Product);
 Review.hasMany(Image);
 Image.belongsTo(Review);
 

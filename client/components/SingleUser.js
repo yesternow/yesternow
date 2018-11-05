@@ -1,6 +1,26 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getUser} from './store';
+import {grabUser} from '../store';
+import {
+	Container,
+	Dropdown,
+	Input,
+	Card,
+	Divider,
+	Image,
+	Grid,
+	Button,
+	Icon,
+	Select,
+	List,
+	Rail,
+	Sticky,
+	Header,
+	Segment,
+	Form,
+	Field,
+	Checkbox
+} from 'semantic-ui-react';
 
 export class SingleUser extends React.Component {
 	componentDidMount() {
@@ -8,28 +28,39 @@ export class SingleUser extends React.Component {
 	}
 
 	render() {
-		if (this.props.users) {
-			const user = this.props.users;
+		if (this.props.user.firstName) {
+			const user = this.props.user;
 			return (
-				<div>
-					<div key={user.id}>
-						<img src={user.imageUrl} />
-						<ul>
-							<li>
-								Name:
-								{user.firstName} {user.lastName}
-							</li>
-							<li>Email: {user.email}</li>
-						</ul>
-					</div>
-				</div>
+				<Card centered color="yellow">
+					<Image src={user.imageUrl} />
+					<Card.Content>
+						<Card.Header>
+							{user.firstName} {user.lastName}
+						</Card.Header>
+						<Card.Meta>
+							<span className="date">Joined in {user.createdAt.substring(0, 4)}</span>
+						</Card.Meta>
+
+						<Card.Description>email: {user.email}</Card.Description>
+						<Card.Description>mobile: {user.phone || 'unlisted'}</Card.Description>
+						<Card.Description>User ID: {user.id}</Card.Description>
+					</Card.Content>
+				</Card>
+				// <div>
+				// 	<div key={user.id}>
+				// 		<img src={user.imageUrl} />
+				// 		<ul>
+				// 			<li>
+				// 				Name:
+				// 				{user.firstName} {user.lastName}
+				// 			</li>
+				// 			<li>Email: {user.email}</li>
+				// 		</ul>
+				// 	</div>
+				// </div>
 			);
 		} else {
-			return (
-				<div>
-					<h1>User Not Found</h1>
-				</div>
-			);
+			return <h1>User not Found</h1>;
 		}
 	}
 }
@@ -37,7 +68,7 @@ export class SingleUser extends React.Component {
 const mapStateToProps = (state) => ({user: state.users});
 
 const mapDispatchToProps = (dispatch) => ({
-	loadUser: (userId) => dispatch(getUser(userId))
+	loadUser: (userId) => dispatch(grabUser(userId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleUser);

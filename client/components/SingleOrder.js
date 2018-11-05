@@ -1,7 +1,7 @@
 import {connect} from 'react-redux';
 import React, {Component} from 'react';
 import {fetchOrder} from '../store';
-import {Button, Form, Grid, Header, Image, Message, Segment} from 'semantic-ui-react';
+import {Button, Form, Grid, Header, Image, Message, Segment, List} from 'semantic-ui-react';
 
 class SingleOrder extends Component {
 	componentDidMount() {
@@ -15,27 +15,29 @@ class SingleOrder extends Component {
 			const lineItems = this.props.order.lineItems;
 			console.log(order.lineItems);
 			return (
-				<div className="ui grid centered">
-					<select onChange={this.handleChange}>
-						<option value="all">All</option>
-					</select>
-					<h2>Order id: {order.id}</h2>
-					{lineItems.map((item) => (
-						<div key={item.id}>
-							<li>{item.product.title}</li>
-							<p>{item.product.description}</p>
-							<li>{item.price}</li>
-							{item.product.images.map((image) => (
-								<div key={image.id} className="ui grid column">
-									<li>
-										<img src={image.imageUrl} className="ui medium rounded image" />
-									</li>
-								</div>
+				<List celled>
+					<List.Item>
+						<List.Content>
+							<List.Header>Order ID: {order.id}</List.Header>
+							{lineItems.map((item) => (
+								<List key={item.id} celled>
+									<Image
+										floated="right"
+										verticalAlign="middle"
+										size="mini"
+										src={item.product.images[0].imageUrl}
+										className="ui medium rounded image"
+									/>
+									<List.Content>
+										<List.Header>{item.product.title}</List.Header>
+										<List.Description>Description: {item.product.description}</List.Description>
+										<List.Description>Price: {item.price}¢</List.Description>
+									</List.Content>
+								</List>
 							))}
-						</div>
-					))}
-					{!this.props.order && <p>order does not exist</p>}
-				</div>
+						</List.Content>
+					</List.Item>
+				</List>
 			);
 		}
 	}

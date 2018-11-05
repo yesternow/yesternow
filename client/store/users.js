@@ -5,14 +5,14 @@ import axios from 'axios';
  */
 const GET_USER = 'GET_USER';
 const GET_USERS = 'GET_USERS';
-const REMOVE_USER = 'REMOVE_USER';
+const REMOVE_USER_DB = 'REMOVE_USER_DB';
 const UPDATE_USER = 'UPDATE_USER';
 /**
  * ACTION CREATORS
  */
 const getUser = user => ({ type: GET_USER, user });
 const getUsers = users => ({ type: GET_USERS, users });
-const removeUser = userId => ({ type: REMOVE_USER, userId });
+const removeUserDb = userId => ({ type: REMOVE_USER_DB, userId });
 const updateUser = user => ({ type: UPDATE_USER, user });
 /**
  * THUNK CREATORS
@@ -39,7 +39,7 @@ export const grabUsers = () => async dispatch => {
 export const sendRemoveUser = userId => async dispatch => {
   try {
     await axios.delete(`/api/users/${userId}`);
-    dispatch(removeUser(userId));
+    dispatch(removeUserDb(userId));
   } catch (err) {
     console.error(err);
   }
@@ -79,7 +79,7 @@ export default function(state = [], action) {
       return { ...state, user: action.user };
     case GET_USERS:
       return { ...state, users: action.users };
-    case REMOVE_USER:
+    case REMOVE_USER_DB:
       return {
         ...state,
         users: state.users.filter(user => user.id !== action.userId),

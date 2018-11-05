@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Header, Icon, Image, Menu, Segment, Sidebar, Ref, Container } from 'semantic-ui-react'
+import { Button, Header, Icon, Image, Menu, Segment, Sidebar, Ref, Container, Sticky } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { Cart } from '../components'
 import { fetchCart } from '../store';
@@ -13,7 +13,8 @@ class SidebarCart extends Component {
     const  visible  = this.props.showCart
 
     return (
-      <div>
+      <Container fluid >
+
         <Sidebar.Pushable as={Segment} >
           <Sidebar
             as={Menu}
@@ -23,14 +24,15 @@ class SidebarCart extends Component {
             vertical
             visible={visible}
             width='wide'
-          >
+            >
+            <Sticky style={{padding:20}}>
 
 
             <Cart />
 
 
 
-            <Menu.Item as='a'>
+            {/* <Menu.Item as='a'>
               <Icon name='home' />
               Home
             </Menu.Item>
@@ -41,14 +43,15 @@ class SidebarCart extends Component {
             <Menu.Item as='a'>
               <Icon name='camera' />
               Channels
-            </Menu.Item>
+            </Menu.Item> */}
+          </Sticky>
           </Sidebar>
 
           <Sidebar.Pusher dimmed={visible}>
             {this.props.children}
           </Sidebar.Pusher>
         </Sidebar.Pushable>
-      </div>
+      </Container>
     )
   }
 }

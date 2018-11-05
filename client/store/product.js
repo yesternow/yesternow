@@ -7,11 +7,10 @@ const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 const REMOVE_PRODUCT = 'REMOVE_PRODUCT';
 const FETCH_REQUEST = 'FETCH_REQUEST';
 const FETCH_FAILURE = 'FETCH_FAILURE';
-const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER'
-const SET_SORT_FILTER = 'SET_SORT_FILTER'
-const SET_CATEGORIES = 'SET_CATEGORIES'
-const GET_PRODUCT = 'GET_PRODUCT'
-
+const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
+const SET_SORT_FILTER = 'SET_SORT_FILTER';
+const SET_CATEGORIES = 'SET_CATEGORIES';
+const GET_PRODUCT = 'GET_PRODUCT';
 
 //Action Creator
 export const setProducts = products => ({
@@ -36,18 +35,18 @@ export const updateProduct = product => ({
 
 export const setVisibility = visibility => ({
   type: SET_VISIBILITY_FILTER,
-  visibility
-})
+  visibility,
+});
 
 export const setSort = sort => ({
   type: SET_SORT_FILTER,
-  sort
-})
+  sort,
+});
 
-const setCategories = (categories) => ({
+const setCategories = categories => ({
   type: SET_CATEGORIES,
-  categories
-})
+  categories,
+});
 
 const fetchRequest = () => ({ type: FETCH_REQUEST });
 
@@ -59,8 +58,8 @@ const fetchFailure = error => ({
 
 const getProduct = product => ({
   type: GET_PRODUCT,
-  product
-})
+  product,
+});
 
 //Thunk Creator
 export const fetchProducts = () => dispatch => {
@@ -84,31 +83,31 @@ export const addProduct = product => dispatch => {
 
 export const deleteProduct = productId => dispatch => {
   return axios
-    .delete(`api/products/${productId}`)
+    .delete(`/api/products/${productId}`)
     .then(() => dispatch(removeProduct(productId)))
     .catch(console.error.bind(console));
 };
 
 export const sendProductUpdate = product => dispatch => {
   return axios
-    .put(`./api/products/${product.id}`, product)
-    .then(() => dispatch(updateProduct(product)))
+    .put(`/api/products/${product.id}`, product)
+    .then(updatedProduct => dispatch(updateProduct(updatedProduct)))
     .catch(console.error.bind(console));
 };
 
 export const fetchCategories = () => {
-  return async (dispatch) => {
-    const { data } = await axios.get('/api/products/categories')
-    dispatch(setCategories(data))
-  }
-}
+  return async dispatch => {
+    const { data } = await axios.get('/api/products/categories');
+    dispatch(setCategories(data));
+  };
+};
 
-export const fetchProduct = (productId) => {
-  return async (dispatch) => {
-    const { data }= await axios.get(`/api/products/${productId}`)
-    dispatch(getProduct(data))
-  }
-}
+export const fetchProduct = productId => {
+  return async dispatch => {
+    const { data } = await axios.get(`/api/products/${productId}`);
+    dispatch(getProduct(data));
+  };
+};
 
 const initialState = {
   products: [],
@@ -116,7 +115,7 @@ const initialState = {
   visibilityFilter: 'all',
   sortFilter: 'a-i',
   categories: [],
-  product: {}
+  product: {},
 };
 
 //visibilityFilter options: all, or cateforyID
@@ -143,14 +142,25 @@ export default (state = initialState, action) => {
           product => product.id !== action.productId
         ),
       };
+    case UPDATE_PRODUCT:
+      return {
+        ...state,
+        products: [...state.products].map(
+          product =>
+            product.id === action.product.id ? action.product : product
+        ),
+      };
     case SET_CATEGORIES:
-      return {...state, categories: [...state.categories, ...action.categories]}
+      return {
+        ...state,
+        categories: [...state.categories, ...action.categories],
+      };
     case SET_VISIBILITY_FILTER:
-      return {...state, visibilityFilter: action.visibility}
+      return { ...state, visibilityFilter: action.visibility };
     case SET_SORT_FILTER:
-      return {...state, sortFilter: action.sort}
+      return { ...state, sortFilter: action.sort };
     case GET_PRODUCT:
-      return {...state, product: action.product }
+      return { ...state, product: action.product };
     default:
       return state;
   }

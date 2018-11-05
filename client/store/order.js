@@ -28,9 +28,9 @@ export const fetchOrder = (id) => async (dispatch) => {
 		console.error(err);
 	}
 };
-export const updateOrder = (id) => async (dispatch) => {
+export const updateSingleOrder = (order) => async (dispatch) => {
 	try {
-		await axios.put(`/api/orders/${id}`);
+		await axios.put(`/api/orders/${order.id}`, order);
 		dispatch(fetchOrder(id));
 	} catch (err) {
 		console.error(err);

@@ -1,20 +1,17 @@
 import React, {Component} from 'react';
-import {fetchOrders, updateOrder, statusFilter} from '../store';
+import {fetchOrders, statusFilter, putOrder} from '../store';
 import {connect} from 'react-redux';
 import {
 	Table,
 	Container,
 	Dropdown,
 	Input,
-	Card,
-	Divider,
 	Image,
 	Grid,
 	Button,
 	Icon,
 	Select,
 	List,
-	Rail,
 	Sticky,
 	Header,
 	Segment,
@@ -31,10 +28,12 @@ class Orders extends Component {
 		super();
 		this.state = {
 			selected: 0,
-			visibilityFilter: ''
+			visibilityFilter: '',
+			status: ''
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleChange = this.handleChange.bind(this);
+		this.updateOrder = this.updateOrder.bind(this);
 	}
 	componentDidMount() {
 		this.props.loadOrders();
@@ -51,7 +50,18 @@ class Orders extends Component {
 		// this.props.setVisibility(event.target.value); //using jsx
 		this.props.setVisibility(data.value); //using Semantic UI
 		this.props.loadOrders();
-		console.log(data);
+	}
+
+	updateOrder(order, data) {
+		// console.log(event, ':event order:', data);
+		// if (data !== undefined) {
+		this.setState({...this.state, status: data.value});
+		console.log(this.state);
+		// } else if (order.id) {
+		// 	order.status = this.status.value;
+		// 	this.props.putOrder(order); //using Semantic UI
+		// 	this.props.loadOrders();
+		// }
 	}
 	render() {
 		if (!this.props.orders) {
@@ -69,7 +79,7 @@ class Orders extends Component {
 
 		const orders = this.props.orders.allOrders;
 		return (
-			<Grid>
+			<Grid padded centered>
 				<Table celled compact definition>
 					<Table.Header>
 						<Table.Row>
@@ -78,13 +88,13 @@ class Orders extends Component {
 							<Table.HeaderCell>
 								<Button.Group color="blue">
 									<Dropdown
-										onChange={this.handleChange}
 										pointing
 										floating
 										button
 										className="icon"
 										search
 										selection
+										onChange={this.handleChange}
 										placeholder="Order Status"
 										options={[ all, ...statusOptions ]}
 										value={this.state.visibilityFilter}
@@ -107,7 +117,14 @@ class Orders extends Component {
 								</Table.Cell>
 								<Table.Cell>{order.createdAt.substring(0, 10)}</Table.Cell>
 								<Table.Cell selectable>
-									<Dropdown placeholder={order.status} fluid selection options={statusOptions} />
+									<Dropdown
+										placeholder={order.status}
+										fluid
+										selection
+										options={statusOptions}
+										// onChange={this.updateOrder}
+										// value={order.status}
+									/>
 								</Table.Cell>
 								<Table.Cell>
 									<Link to={`/users/${order.userId}`}>{order.userId}</Link>
@@ -141,98 +158,37 @@ class Orders extends Component {
 
 					<Table.Footer fullWidth>
 						<Table.Row>
-							<Table.HeaderCell colSpan="9">
+							<Table.HeaderCell colSpan="9" />
+							{/* <Table.HeaderCell colSpan="5">
 								<Button floated="right" icon labelPosition="left" primary size="small">
-									<Icon name="user" /> Add User
+									<Icon name="user" /> Update Order
 								</Button>
-								<Button size="small">Approve Selected</Button>
-								<Button disabled size="small">
+								<Input placeholder="order status" />
+								// <Button size="small">Approve Selected</Button>
+								<Button floated="left" size="small">
 									Approve All
 								</Button>
-							</Table.HeaderCell>
+							</Table.HeaderCell> */}
 						</Table.Row>
 					</Table.Footer>
 				</Table>
 
 				<Form>
-					<Form.Field>
-						<label>Filter Orders</label>
-						<input placeholder="First Name" />
-					</Form.Field>
-					<Form.Field>
-						<label>Last Name</label>
-						<input placeholder="Last Name" />
-					</Form.Field>
-					<Form.Field>
-						<Checkbox label="I agree to the Terms and Conditions" />
-					</Form.Field>
+					<Form.Group width="equal">
+						<Form.Field inline>
+							<label>Set Order Id</label>
+							<input placeholder="First Name" />
+						</Form.Field>
+						<Form.Field inline>
+							<label>Last Name</label>
+							<input placeholder="Last Name" />
+						</Form.Field>
+						<Form.Field inline>
+							<Checkbox label="I agree to the Terms and Conditions" />
+						</Form.Field>
+					</Form.Group>
 					<Button type="submit">Submit</Button>
 				</Form>
-				{/* First attempt at styling all orders is to use Cards
-				<Grid.Row>
-					{orders.map((order) => (
-						<Card.Group key={order.id}>
-							<Card>
-								<Card.Content>
-									<Card.Meta>
-										<span className="date">Joined in {order.createdAt.substring(0, 4)}</span>
-									</Card.Meta>
-									<Card.Header>
-										{order.user.firstName} {order.user.lastName}
-									</Card.Header>
-
-									<Card.Description>email: {order.user.email}</Card.Description>
-									<Card.Description>mobile: {order.user.phone || 'unlisted'}</Card.Description>
-									<Card.Description>User ID: {order.userId}</Card.Description>
-									<Card.Description>
-										Order ID: {order.id} created on {order.createdAt.substring(0, 4)}
-									</Card.Description>
-									<Card.Description>Order Status: {order.status}</Card.Description>
-								</Card.Content>
-
-								{order.lineItems.map((item) => (
-									<Card key={item.productId}>
-										<Card.Content>Product ID: {item.productId}</Card.Content>
-										<Segment>
-											<List.Content>
-												<List.Content>item: {item.product.title}</List.Content>
-												<List.Content> brand: {item.product.brand || 'n/a'}</List.Content>
-												<List.Content>Stock: {item.quantity}</List.Content>
-												<List.Content>price (in cents): {item.price}</List.Content>
-											</List.Content>
-										</Segment>
-									</Card>
-								))}
-							</Card>
-						</Card.Group>
-					))}
-				</Grid.Row> */}
-
-				{/* <Grid.Row>
-					<Rail position="right">
-						<Segment>Left Rail Content</Segment>
-					</Rail>
-					<List.Item>
-						<List.Icon name="users" />
-						<List.Content>Semantic UI</List.Content>
-					</List.Item>
-					<List.Item>
-						<List.Icon name="marker" />
-						<List.Content>New York, NY</List.Content>
-					</List.Item>
-					<List.Item>
-						<List.Icon name="mail" />
-						<List.Content>
-							<a href="mailto:jack@semantic-ui.com">jack@semantic-ui.com</a>
-						</List.Content>
-					</List.Item>
-					<List.Item>
-						<List.Icon name="linkify" />
-						<List.Content>
-							<a href="http://www.semantic-ui.com">semantic-ui.com</a>
-						</List.Content>
-					</List.Item>
-				</Grid.Row> */}
 			</Grid>
 		);
 	}
@@ -244,8 +200,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	loadOrders: () => dispatch(fetchOrders()),
-	updateOrder: (id) => dispatch(updateOrder(id)),
-	setVisibility: (visibility) => dispatch(statusFilter(visibility))
+	setVisibility: (visibility) => dispatch(statusFilter(visibility)),
+	updateOrder: (order) => dispatch(putOrder(order))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Orders);

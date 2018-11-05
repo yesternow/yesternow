@@ -95,11 +95,11 @@ router.get('/user/:userId/', requireLogin, async (req, res, next) => {
 
 router.put('/:id', requireLogin, requireUserOrAdmin, async (req, res, next) => {
 	try {
-		const update = req.body;
-		await Order.update(update, {
-			where: {id}
+		const {status} = req.body;
+		await Order.update(status, {
+			where: {id: req.params.id}
 		});
-		res.status(202).end();
+		res.status(204).end();
 	} catch (error) {
 		next(error);
 	}

@@ -19,3 +19,4 @@ export { default as Orders } from './orders';
 export { default as SingleUser } from './SingleUser';
 export { default as UserOrders } from './UserOrders';
 export { default as Users } from './users';
+export { default as AllProductsAdmin } from './allproductsadmin';

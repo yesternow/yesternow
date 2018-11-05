@@ -17,6 +17,7 @@ import {
   SingleUser,
   UserOrders,
   Users,
+  AllProductsAdmin,
 } from './components';
 import { me, fetchCart } from './store';
 
@@ -50,7 +51,11 @@ class Routes extends Component {
             <Switch>
               {/* Routes placed here are only available after logging in as Admin */}
               <Route path="/addproduct" component={AddProduct} />
-              <Route path="/updateproduct" component={UpdateProduct} />
+              <Route path="/allproductsadmin" component={AllProductsAdmin} />
+              <Route
+                path="/updateproduct/:productId"
+                component={UpdateProduct}
+              />
               <Route exact path="/orders" component={Orders} />
               <Route exact path="/users" component={Users} />
               <Route exact path="/users/:id/orders" component={UserOrders} />

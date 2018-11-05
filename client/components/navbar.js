@@ -48,7 +48,9 @@ const Navbar = ({ handleClick, isLoggedIn, isAdmin, toggleCart }) => (
               <Dropdown.Item as={Link} to="/Orders">
                 Orders
               </Dropdown.Item>
-              <Dropdown.Item>Products</Dropdown.Item>
+              <Dropdown.Item as={Link} to="AllProductsAdmin">
+                Products
+              </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         ) : (

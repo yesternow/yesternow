@@ -25,6 +25,7 @@ export const updateOrder = (order) => ({
  * THUNK CREATORS
  */
 
+//Update it so it does not pull all orders just the ones we filter.
 export const fetchOrders = () => async (dispatch) => {
 	try {
 		const {data} = await axios.get(`/api/orders`);

@@ -11,6 +11,16 @@ router.get('/', requireLogin, requireAdmin, async (req, res, next) => {
     }
 })
 
+router.delete('/:id', requireLogin, requireUserOrAdmin, async (req, res, next) => {
+    try{
+        const cartId = req.body.cartId
+        await CartItem.destroy({where: {cartId}})
+        res.json(cartId)
+    } catch (err) {
+        next(err)
+    }
+})
+
 
 
 

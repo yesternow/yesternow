@@ -40,7 +40,17 @@ const Navbar = ({ handleClick, isLoggedIn, isAdmin, toggleCart }) => (
     {isLoggedIn ? (
       <Menu.Menu>
         {isAdmin ? (
-          <Menu.Item>Dashboard</Menu.Item>
+          <Dropdown item simple text="Dashboard">
+            <Dropdown.Menu>
+              <Dropdown.Item as={Link} to="/Users">
+                Users
+              </Dropdown.Item>
+              <Dropdown.Item as={Link} to="/Orders">
+                Orders
+              </Dropdown.Item>
+              <Dropdown.Item>Products</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         ) : (
           <Menu.Item>Account</Menu.Item>
         )}

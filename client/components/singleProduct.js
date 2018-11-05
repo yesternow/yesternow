@@ -57,6 +57,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   loadProduct: productId => dispatch(fetchProduct(productId)),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleProduct);

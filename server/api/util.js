@@ -15,7 +15,7 @@ function requireLogin(req, res, next) {
 }
 
 function requireUserOrAdmin(req, res, next) {
-  if (req.params.id === req.user.id || req.user.isAdmin) {
+  if (Number(req.params.id) === req.user.id || req.user.isAdmin) {
     return next();
   } else {
     res.send(401);

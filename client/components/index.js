@@ -18,3 +18,4 @@ export {default as SingleOrder} from './SingleOrder';
 export {default as Orders} from './orders';
 export {default as SingleUser} from './SingleUser';
 export {default as UserOrders} from './UserOrders';
+export {default as SingleCartItem} from './singleCartItem';

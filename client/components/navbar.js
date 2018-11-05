@@ -19,7 +19,7 @@ import {
 } from 'semantic-ui-react';
 import Search from './search';
 
-const Navbar = ({ handleClick, isLoggedIn, isAdmin, toggleCart }) => (
+const Navbar = ({ handleClick, isLoggedIn, isAdmin, toggleCart, userFirstName, userId }) => (
   <Menu fixed="top" inverted>
     <Container>
       <Menu.Item as={Link} to="/" header>
@@ -33,22 +33,33 @@ const Navbar = ({ handleClick, isLoggedIn, isAdmin, toggleCart }) => (
           <Dropdown.Item>List Item</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
+
     </Container>
 
     <Search />
 
     {isLoggedIn ? (
-      <Menu.Menu>
+      <Menu.Menu >
         {isAdmin ? (
           <Menu.Item>Dashboard</Menu.Item>
         ) : (
-          <Menu.Item>Account</Menu.Item>
+          <Menu.Item>
+          <List>
+            <List.Item>Hello, {userFirstName}</List.Item>
+          <Dropdown item simple text="Account">
+            <Dropdown.Menu>
+              <Dropdown.Item as={Link} to={`/users/${userId}/orders`} >Orders</Dropdown.Item>
+              <Dropdown.Item as={Link} to={`/users/${userId}`}>Profile</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+            </List>
+            </Menu.Item>
         )}
 
         <Menu.Item>
           <Button negative onClick={handleClick}>
             Logout
-          </Button>{' '}
+          </Button>
         </Menu.Item>
       </Menu.Menu>
     ) : (
@@ -61,9 +72,9 @@ const Navbar = ({ handleClick, isLoggedIn, isAdmin, toggleCart }) => (
         </Menu.Item>
       </Menu.Menu>
     )}
-    <MenuItem>
+    <Menu.Item>
       <Icon name="cart" onClick={toggleCart} />
-    </MenuItem>
+    </Menu.Item>
   </Menu>
   // import {Link} from 'react-router-dom'
   // import {logout} from '../store'
@@ -104,6 +115,8 @@ const mapState = state => {
   return {
     isLoggedIn: !!state.user.id,
     isAdmin: !!state.user.isAdmin,
+    userFirstName: state.user.firstName,
+    userId: state.user.id
   };
 };
 

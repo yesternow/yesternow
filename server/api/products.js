@@ -3,7 +3,7 @@ const db = require('../db');
 const { Product, Category, Image, Review } = require('../db/models');
 const { requireAdmin, requireLogin, requireUserOrAdmin } = require('./util');
 const underscore = require('underscore');
-const Tag = db.models.tags
+const Tag = db.models.tags;
 
 const productFieldsAllowList = [
   'title',
@@ -46,38 +46,44 @@ router.get('/:productId', (req, res, next) => {
     .catch(next);
 });
 
-router.put('/:productId', requireLogin, requireAdmin, async (req, res, next) => {
-  try{
-    const product =  await Product.findById(req.params.productId)
-    await product.update(underscore.pick(req.body, productFieldsAllowList));
-    res.json(product)
-  } catch (err) {
-    next(err)
+router.put(
+  '/:productId',
+  requireLogin,
+  requireAdmin,
+  async (req, res, next) => {
+    try {
+      const product = await Product.findById(req.params.productId);
+      await product.update(underscore.pick(req.body, productFieldsAllowList));
+      res.json(product);
+    } catch (err) {
+      next(err);
+    }
   }
-    // .then(product => {
-    //   product.update(underscore.pick(req.body, productFieldsAllowList));
-    // })
-    // .then(([row, [update]]) => res.status(204).json(update))
-    // .catch(next);
-});
+);
 
 router.post('/', requireLogin, requireAdmin, async (req, res, next) => {
   try {
-    const product = await Product.create(underscore.pick(req.body, productFieldsAllowList))
-    req.body.categories.split(',').forEach(async category =>  {
-      const found = await Category.findOrCreate({where: {name: category}, defaults: {name: category}})
-      await product.addCategory(found[0])
+    const product = await Product.create(
+      underscore.pick(req.body, productFieldsAllowList)
+    );
+    req.body.categories.split(',').forEach(async category => {
+      const found = await Category.findOrCreate({
+        where: { name: category },
+        defaults: { name: category },
+      });
+      await product.addCategory(found[0]);
       //tried product.addCategories too but not get it to work
-    })
+    });
 
     // await product.setImage(req.body.imageUrl)
-    await Image.create({productId: product.id, imageUrl: req.body.imageUrl})
-    const newProduct = await Product.findById(product.id, {include: [Image, Category, Review]})
-    res.json(newProduct)
+    await Image.create({ productId: product.id, imageUrl: req.body.imageUrl });
+    const newProduct = await Product.findById(product.id, {
+      include: [Image, Category, Review],
+    });
+    res.json(newProduct);
   } catch (err) {
-    next (err)
+    next(err);
   }
-
 });
 
 router.delete('/:productId', requireLogin, requireAdmin, (req, res, next) => {

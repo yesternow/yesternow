@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { sendProductUpdate, fetchProduct } from '../store';
 import { Button, Form, Container, Radio } from 'semantic-ui-react';
 import underscore from 'underscore';
+import history from '../history';
 
 class UpdateProduct extends Component {
   constructor(props) {
@@ -74,6 +75,7 @@ class UpdateProduct extends Component {
   handleSubmit(event) {
     event.preventDefault();
     this.props.sendProductUpdate(this.state);
+    history.push(`/products/${this.state.id}`);
   }
 
   render() {

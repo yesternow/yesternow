@@ -50,6 +50,7 @@ class Products extends Component {
 
     return (
       <Container>
+        <Link to='/updateproduct/1'>update</Link>
         <Grid>
           <Grid.Row>
             <select onChange={this.handleChange}>

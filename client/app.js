@@ -9,10 +9,10 @@ const App = () => {
   return (
     <div>
 
-      <Container style={{ marginBottom: '7em' }}>
+      <Container style={{ marginBottom: '4em' }}>
         <Navbar />
       </Container>
-      <SideBar>
+      <SideBar >
         <div className='full'>
           <Routes />
         </div>

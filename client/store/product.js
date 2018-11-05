@@ -83,14 +83,14 @@ export const addProduct = product => dispatch => {
 
 export const deleteProduct = productId => dispatch => {
   return axios
-    .delete(`api/products/${productId}`)
+    .delete(`/api/products/${productId}`)
     .then(() => dispatch(removeProduct(productId)))
     .catch(console.error.bind(console));
 };
 
 export const sendProductUpdate = product => dispatch => {
   return axios
-    .put(`./api/products/${product.id}`, product)
+    .put(`/api/products/${product.id}`, product)
     .then(updatedProduct => dispatch(updateProduct(updatedProduct)))
     .catch(console.error.bind(console));
 };

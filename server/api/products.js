@@ -46,13 +46,19 @@ router.get('/:productId', (req, res, next) => {
     .catch(next);
 });
 
-router.put('/:productId', requireLogin, requireAdmin, (req, res, next) => {
-  Product.findById(req.params.productId)
-    .then(product => {
-      product.update(underscore.pick(req.body, productFieldsAllowList));
-    })
-    .then(([row, [update]]) => res.status(204).json(update))
-    .catch(next);
+router.put('/:productId', requireLogin, requireAdmin, async (req, res, next) => {
+  try{
+    const product =  await Product.findById(req.params.productId)
+    await product.update(underscore.pick(req.body, productFieldsAllowList));
+    res.json(product)
+  } catch (err) {
+    next(err)
+  }
+    // .then(product => {
+    //   product.update(underscore.pick(req.body, productFieldsAllowList));
+    // })
+    // .then(([row, [update]]) => res.status(204).json(update))
+    // .catch(next);
 });
 
 router.post('/', requireLogin, requireAdmin, async (req, res, next) => {

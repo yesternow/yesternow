@@ -22,5 +22,5 @@ body {	.ui.card>.image>img, .ui.cards>.card>.image>img {
 }
 
 .full {
-  height: 100vh;
+  min-height: 100vh;
 }

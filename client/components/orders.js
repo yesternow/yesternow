@@ -64,7 +64,7 @@ class Orders extends Component {
     // }
   }
   render() {
-    if (!this.props.orders) {
+    if (!this.props.orders.allOrders.length) {
       return <div>Hello there are no orders yet</div>;
     }
     const statusOptions = [

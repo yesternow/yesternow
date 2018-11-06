@@ -44,8 +44,15 @@ export const auth = (email, password, method) => async (dispatch) => {
 
 	try {
 		dispatch(getUser(res.data));
+		if(method === 'signup'){
+			// await axios.post('/api/cart', {userId: res.data.id})
+			history.push(`/users/${res.data.id}`)
+
+		}
+		else{
+			history.push('/');
+		}
 		dispatch(fetchCart())
-		history.push('/');
 	} catch (dispatchOrHistoryErr) {
 		console.error(dispatchOrHistoryErr);
 	}

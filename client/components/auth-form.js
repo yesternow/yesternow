@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
 import {auth} from '../store';
 import {Button, Form, Grid, Header, Image, Message, Segment} from 'semantic-ui-react';
@@ -16,7 +17,7 @@ const AuthForm = (props) => {
 			<Grid textAlign="center" style={{height: '35%'}} verticalAlign="middle">
 				<Grid.Column style={{maxWidth: 450}}>
 					<Header as="h2" color="teal" textAlign="center" align="center">
-						Sign in with:
+						{displayName} with:
 					</Header>
 					<Form onSubmit={handleSubmit} name={name} size="large">
 						<Segment stacked style={{minWidth: 450}}>
@@ -39,8 +40,9 @@ const AuthForm = (props) => {
 								name="password"
 							/>
 							<Button color="teal" fluid size="large" type="submit">
-								Login
+								{displayName}
 							</Button>
+							{error && error.response && <div> {error.response.data} </div>}
 							<div>
 								<button className="ui blue secondary button" role="button">
 									<a href="/auth/facebook">
@@ -57,9 +59,19 @@ const AuthForm = (props) => {
 							</div>
 						</Segment>
 					</Form>
-					<Message className="centered center">
-						New to us? <a href="#">Sign Up</a>
-					</Message>
+					{displayName === 'Login' ?
+
+						(<Message className="centered center">
+							New to us? <Link to='/signup'>Sign Up</Link>
+						</Message>)
+
+						:
+
+						(<Message className="centered center">
+							Already have an account? <Link to='/login'>Login Now</Link>
+						</Message>)
+
+					}
 				</Grid.Column>
 			</Grid>
 

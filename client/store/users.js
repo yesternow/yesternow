@@ -5,12 +5,14 @@ import axios from 'axios';
  */
 const GET_USER_ORDERS = 'GET_USER_ORDERS';
 const GET_USERS = 'GET_USERS';
+const GET_USER = 'GET_USER';
 const REMOVE_USER_DB = 'REMOVE_USER_DB';
 const UPDATE_USER = 'UPDATE_USER';
 /**
  * ACTION CREATORS
  */
-const getUser = (user) => ({type: GET_USER_ORDERS, user});
+const getUser = (user) => ({type: GET_USER, user});
+const getUserOrders = (order) => ({type: GET_USER_ORDERS, order});
 const getUsers = (users) => ({type: GET_USERS, users});
 const removeUserDb = (userId) => ({type: REMOVE_USER_DB, userId});
 const updateUser = (user) => ({type: UPDATE_USER, user});
@@ -58,7 +60,7 @@ export const sendUpdateUser = (user) => async (dispatch) => {
 export const fetchUserOrders = (userId) => async (dispatch) => {
 	try {
 		const {data} = await axios.get(`/api/users/${userId}/orders`);
-		dispatch(getUser(data));
+		dispatch(getUserOrders(data));
 	} catch (err) {
 		console.error(err);
 	}
@@ -66,7 +68,8 @@ export const fetchUserOrders = (userId) => async (dispatch) => {
 
 const initialState = {
 	user: [],
-	users: []
+	users: [],
+	orders: []
 };
 
 /**
@@ -76,9 +79,11 @@ const initialState = {
 export default function(state = initialState, action) {
 	switch (action.type) {
 		case GET_USER_ORDERS:
-			return {...state, user: action.user};
+			return {...state, orders: action.order};
 		case GET_USERS:
 			return {...state, users: action.users};
+		case GET_USER:
+			return {...state, user: action.user};
 		case REMOVE_USER_DB:
 			return {
 				...state,

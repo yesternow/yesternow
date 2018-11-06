@@ -9,6 +9,7 @@ import carts from './carts';
 import order from './order';
 import orders from './orders';
 import review from './review';
+import address from './address'
 
 const reducer = combineReducers({
   user,
@@ -17,6 +18,7 @@ const reducer = combineReducers({
   carts,
   order,
   orders,
+  address
 });
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))
@@ -31,3 +33,4 @@ export * from './carts';
 export * from './order';
 export * from './orders';
 export * from './review';
+export * from './address';

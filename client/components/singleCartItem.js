@@ -50,7 +50,7 @@ export class SingleCartItem extends Component {
           <List.Header as={Link} to={`/products/${cartItem.product.id}`}>
             {cartItem.product.title}
           </List.Header>
-          <List.Description>Price: {cartItem.product.price} </List.Description>
+          <List.Description>Price: ${(cartItem.product.price/100).toFixed(2)} </List.Description>
           <List.Description>
             Quantity:{' '}
             <Dropdown

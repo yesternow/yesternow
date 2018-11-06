@@ -44,10 +44,10 @@ export class Cart extends Component {
 							{cartItems.length &&
 								cartItems.map((cartItem) => <SingleCartItem key={cartItem.id} cartItem={cartItem} />)}
 							<List.Item>
-								<Header>Total: {this.state.total}</Header>
+								<Header>Total: ${(this.state.total/100).toFixed(2)}</Header>
 							</List.Item>
 							<Button as={Link} to="/checkout">
-								Checkout
+								Proceed to Checkout
 							</Button>
 						</List>
 					</Grid.Column>

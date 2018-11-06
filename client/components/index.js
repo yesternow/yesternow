@@ -22,3 +22,4 @@ export {default as Users} from './users';
 export {default as AllProductsAdmin} from './allproductsadmin';
 export {default as SingleCartItem} from './singleCartItem';
 export {default as UpdateUser} from './UpdateUser';
+export {default as TakeMoney} from './TakeMoney';

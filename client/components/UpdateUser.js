@@ -9,16 +9,11 @@ class UpdateUser extends Component {
 		super(props);
 		this.state = {
 			id: 0,
-			title: '',
-			description: '',
-			price: '',
-			quantity: '',
-			weight: '',
-			brand: '',
-			imageUrl: '',
-			dimensions: '',
-			isActive: false,
-			categories: ''
+			firstName: '',
+			lastName: '',
+			email: '',
+			phone: '',
+			imageUrl: ''
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -27,7 +22,8 @@ class UpdateUser extends Component {
 	}
 
 	componentDidMount() {
-		console.log(this.props.user);
+		console.log(this.props.user, 'STORE');
+		console.log(this.props.userProp, 'User Props');
 		// this.props.loadUser(this.props.user.id);
 		const {id, firstName, lastName, email, phone, imageUrl} = this.props.user;
 		this.setState({
@@ -79,11 +75,11 @@ class UpdateUser extends Component {
 				<Form onSubmit={this.handleSubmit}>
 					<Form.Field required>
 						<label>User Firstname</label>
-						<input name="firstname" type="text" value={firstName} onChange={this.handleChange} />
+						<input required name="firstName" type="text" value={firstName} onChange={this.handleChange} />
 					</Form.Field>
 					<Form.Field required>
 						<label>User Lastname</label>
-						<input name="lastname" type="text" value={lastName} onChange={this.handleChange} />
+						<input name="lastName" type="text" value={lastName} onChange={this.handleChange} />
 					</Form.Field>
 					<Form.Group widths="equal">
 						<Form.Field required>
@@ -107,8 +103,9 @@ class UpdateUser extends Component {
 	}
 }
 
-const mapStateToProps = (state) => ({
-	user: state.users.user
+const mapStateToProps = (state, ownProps) => ({
+	user: state.users.user,
+	userProp: ownProps.user
 });
 
 const mapDispatchToProps = (dispatch) => ({

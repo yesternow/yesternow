@@ -19,7 +19,16 @@ body {	.ui.card>.image>img, .ui.cards>.card>.image>img {
 
 .ui.card > .image > img,
 .ui.cards > .card > .image > img {
-	height: 12em;
+  height: 12em;
+}
+
+.ui.medium.image,
+.ui.medium.images .image,
+.ui.medium.images img,
+.ui.medium.images svg {
+  height: 14em;
+  width: auto;
+  font-size: 1rem;
 }
 
 .full {
@@ -27,13 +36,13 @@ body {	.ui.card>.image>img, .ui.cards>.card>.image>img {
 }
 
 #auth-form {
-	height: 100%;
+  height: 100%;
 }
 
 .cardOrders {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-	flex-wrap: wrap;
-	align-items: flex-end;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  align-items: flex-end;
 }

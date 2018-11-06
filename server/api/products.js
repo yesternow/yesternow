@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const db = require('../db');
-const { Product, Category, Image, Review } = require('../db/models');
+const { Product, Category, Image, Review, User } = require('../db/models');
 const { requireAdmin, requireLogin, requireUserOrAdmin } = require('./util');
 const underscore = require('underscore');
 const Tag = db.models.tags;
@@ -41,7 +41,16 @@ router.get('/categories', async (req, res, next) => {
 });
 
 router.get('/:productId', (req, res, next) => {
-  Product.findById(req.params.productId, { include: [Category, Review, Image] })
+  Product.findById(req.params.productId, {
+    include: [
+      Category,
+      {
+        model: Review,
+        include: [{ model: User, attributes: ['firstName', 'imageUrl'] }],
+      },
+      Image,
+    ],
+  })
     .then(response => res.json(response))
     .catch(next);
 });

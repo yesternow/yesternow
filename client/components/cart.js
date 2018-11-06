@@ -22,7 +22,7 @@ export class Cart extends Component {
     componentDidUpdate(prevProps, prevState){
         if(this.props.time !== prevProps.time && this.props.cart.cartItems){
             this.setState({
-                total: this.props.cart.cartItems.map(cartItem=>cartItem.quantity*cartItem.product.price).reduce((a,b)=>a+b)
+                total: this.props.cart.cartItems.map(cartItem=>cartItem.quantity*cartItem.product.price).reduce((a,b)=>a+b, 0)
             })
         }
 

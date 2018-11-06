@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Review } from './index';
 import { fetchProduct, sendAddToCart } from '../store';
 import {
   Button,
@@ -12,9 +13,20 @@ import {
   Rating,
 } from 'semantic-ui-react';
 export class SingleProduct extends Component {
+  constructor() {
+    super();
+    this.state = { updateToggle: false };
+
+    this.handleUpdateClick = this.handleUpdateClick.bind(this);
+  }
   componentDidMount() {
     this.props.loadProduct(this.props.match.params.id);
   }
+
+  handleUpdateClick() {
+    this.setState({ updateToggle: !this.state.updateToggle });
+  }
+
   render() {
     const {
       id,
@@ -91,17 +103,26 @@ export class SingleProduct extends Component {
               {reviews &&
                 reviews.map(review => (
                   <Item key={review.id}>
-                    <Rating
-                      icon="star"
-                      defaultRating={review.rating}
-                      maxRating={5}
-                    />
+                    <Rating rating={review.rating} maxRating={5} disabled />
                     <Item.Description>{review.description}</Item.Description>
                   </Item>
                 ))}
-              <Button floated="right" color="orange">
+              <Button
+                floated="right"
+                color="orange"
+                onClick={this.handleUpdateClick}
+              >
                 Leave Review
               </Button>
+            </Grid.Column>
+            <Grid.Column width={2} />
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column width={2} />
+            <Grid.Column width={12}>
+              {this.state.updateToggle && (
+                <Review productId={id} userId={this.props.userId} />
+              )}
             </Grid.Column>
             <Grid.Column width={2} />
           </Grid.Row>
@@ -114,6 +135,7 @@ export class SingleProduct extends Component {
 const mapStateToProps = state => ({
   product: state.product.product,
   cartId: state.carts.cart.id,
+  userId: state.user.id,
 });
 
 const mapDispatchToProps = dispatch => ({

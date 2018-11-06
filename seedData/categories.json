@@ -1,7 +1,8 @@
 [
-    {"name":"Furniture"},
-    {"name":"Jewelery"},
-    {"name":"Collectible"},
-    {"name":"Clothes"},
-    {"name":"Electronics"}
+  { "name": "Furniture" },
+  { "name": "Jewelery" },
+  { "name": "Collectible" },
+  { "name": "Clothes" },
+  { "name": "Glass" },
+  { "name": "Fine Art" }
 ]

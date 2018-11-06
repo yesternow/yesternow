@@ -5,8 +5,7 @@ const SET_CART = 'SET_CART';
 const TOGGLE_CART = 'TOGGLE_CART';
 const ADD_TO_CART = 'ADD_TO_CART';
 const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
-const CLEAR_CART = 'CLEAR_CART'
-
+const CLEAR_CART = 'CLEAR_CART';
 
 const setCarts = carts => ({
   type: SET_CARTS,
@@ -32,12 +31,13 @@ export const toggleCart = () => ({
 });
 
 export const clearCart = () => ({
-  type: CLEAR_CART
-})
+  type: CLEAR_CART,
+});
 
 export const fetchCarts = () => {
   return async dispatch => {
     const { data } = await axios.get('/api/carts');
+
     dispatch(setCarts(data));
   };
 };
@@ -47,8 +47,8 @@ export const sendAddToCart = (cartItem, isUpdate) => {
     await axios.put('/api/cart/', cartItem);
     const { data } = await axios.get('/api/cart');
     dispatch(setCart(data));
-    if(!isUpdate){
-      dispatch(toggleCart())
+    if (!isUpdate) {
+      dispatch(toggleCart());
     }
   };
 };
@@ -93,7 +93,7 @@ export default (state = initialState, action) => {
       );
       return { ...state, cart: { ...state.cart, cartItems: updatedCart } };
     case CLEAR_CART:
-        return {...state, cart: {}}
+      return { ...state, cart: {} };
     default:
       return state;
   }

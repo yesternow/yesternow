@@ -1,42 +1,73 @@
 [
-    {
-        "title":"Dinner Set",
-        "description":"This is an old dinner set with 8 plates and 8 glasses.",
-        "price":5000,
-        "quantity":2,
-        "weight":100,
-        "dimensions":"10x10x10 inch",
-        "brand":"Pasabahce",
-        "isActive":true
-    },
-    {
-        "title":"Typewriter",
-        "description":"Old but rarely used typewriter which can run your javascript codes!",
-        "price":2500,
-        "quantity":1,
-        "weight":50,
-        "dimensions":"10x20x10 inch",
-        "brand":"Best Typewriters",
-        "isActive":true
-    },
-    {
-        "title":"Wall Clock",
-        "description":"From 1920s but still shows the time. Only 2 times a day...",
-        "price":200,
-        "quantity":5,
-        "weight":100,
-        "dimensions":"10x10x10 inch",
-        "brand":"Vintage Clocks",
-        "isActive":true
-    },
-    {
-        "title":"Chicago Map",
-        "description":"Map of beautiful Chicago from 1950s",
-        "price":1000,
-        "quantity":15,
-        "weight":10,
-        "dimensions":"10x10x10 inch",
-        "brand":"Google Maps",
-        "isActive":true
-    }
+  {
+    "title": "Dinner Set",
+    "description": "This is an old dinner set with 8 plates and 8 glasses.",
+    "price": 5000,
+    "quantity": 2,
+    "weight": 100,
+    "dimensions": "10x10x10 inch",
+    "brand": "Pasabahce",
+    "isActive": true
+  },
+  {
+    "title": "Typewriter",
+    "description":
+      "Old but rarely used typewriter which can run your javascript codes!",
+    "price": 2500,
+    "quantity": 1,
+    "weight": 50,
+    "dimensions": "10x20x10 inch",
+    "brand": "Best Typewriters",
+    "isActive": true
+  },
+  {
+    "title": "Wall Clock",
+    "description": "From 1920s but still shows the time. Only 2 times a day...",
+    "price": 200,
+    "quantity": 5,
+    "weight": 100,
+    "dimensions": "10x10x10 inch",
+    "brand": "Vintage Clocks",
+    "isActive": true
+  },
+  {
+    "title": "Chicago Map",
+    "description": "Map of beautiful Chicago from 1950s",
+    "price": 1000,
+    "quantity": 15,
+    "weight": 10,
+    "dimensions": "10x10x10 inch",
+    "brand": "Google Maps",
+    "isActive": true
+  },
+  {
+    "title": "Jewelry",
+    "description": "Jewelry old is gold",
+    "price": 6000,
+    "quantity": 3,
+    "weight": 100,
+    "dimensions": "2x5x10 inch",
+    "brand": "courtland jewels",
+    "isActive": true
+  },
+  {
+    "title": "Glass",
+    "description": "From 1920s but still looks new",
+    "price": 8000,
+    "quantity": 3,
+    "weight": 50,
+    "dimensions": "2x5x10 inch",
+    "brand": "Diamond Cut Crystal Set",
+    "isActive": true
+  },
+  {
+    "title": "Fine Art",
+    "description": "From 1920s painting",
+    "price": 12000,
+    "quantity": 3,
+    "weight": 50,
+    "dimensions": "10x12x10 inch",
+    "brand": "Antique Fine Art",
+    "isActive": true
+  }
 ]

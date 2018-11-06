@@ -7,9 +7,10 @@ router.use('/orders', require('./orders'));
 router.use('/carts', require('./carts'));
 router.use('/cart', require('./cart'));
 router.use('/orders', require('./orders'));
+router.use('/reviews', require('./reviews'));
 
 router.use((req, res, next) => {
-	const error = new Error('Not Found');
-	error.status = 404;
-	next(error);
+  const error = new Error('Not Found');
+  error.status = 404;
+  next(error);
 });

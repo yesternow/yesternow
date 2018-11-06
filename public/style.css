@@ -22,8 +22,18 @@ body {	.ui.card>.image>img, .ui.cards>.card>.image>img {
 	height: 12em;
 }
 
+.ui.medium.image,
+.ui.medium.images .image,
+.ui.medium.images img,
+.ui.medium.images svg {
+	height: 14em;
+	width: auto;
+	font-size: 1rem;
+}
+
 .full {
-  min-height: 100vh;
+	min-height: 100vh;
+	padding: 10vh;
 }
 
 #auth-form {

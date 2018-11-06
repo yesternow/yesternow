@@ -24,3 +24,4 @@ export {default as SingleCartItem} from './singleCartItem';
 export {default as UpdateUser} from './UpdateUser';
 export {default as TakeMoney} from './TakeMoney';
 export {default as Checkout} from './Checkout';
+export {default as Review} from './review';

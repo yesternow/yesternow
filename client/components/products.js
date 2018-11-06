@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {fetchProducts, setVisibility, setSort, fetchCategories, sendAddToCart} from '../store';
 import {connect} from 'react-redux';
-import {Container, Dropdown, Input, Card, Divider, Image, Grid, Button, Icon, Select} from 'semantic-ui-react';
+import {Container, Card, Image, Grid, Button, Icon} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 
 class Products extends Component {
@@ -37,11 +37,6 @@ class Products extends Component {
 			<Container>
 				<Grid>
 					<Grid.Row>
-						{/* Not working Semantic UI DROPDOWN
-            <Dropdown placeholder="Select Category" selection onChange={this.handleChange} options={options}/>
-            <Dropdown.item value='all' text="All"/>
-              {this.props.categories && this.props.categories.map(category=><Dropdown.Item key={category.id} value={category.id}>{category.name}</Dropdown.Item>) */}
-
 						<select onChange={this.handleChange}>
 							<option value="all">All</option>
 							{this.props.categories &&
@@ -59,13 +54,17 @@ class Products extends Component {
 									<Image as={Link} to={`/products/${product.id}`} src={product.images[0].imageUrl} />
 									<Card.Content>
 										<Card.Header>{product.title}</Card.Header>
-										<Card.Description>{product.price}</Card.Description>
+										<Card.Description>${(product.price / 100).toFixed(2)}</Card.Description>
 									</Card.Content>
 									<Button
 										animated="vertical"
 										color="orange"
 										onClick={() =>
-											this.props.sendAddToCart({quantity: 1, productId: product.id, cartId: this.props.cartId})}
+											this.props.sendAddToCart({
+												quantity: 1,
+												productId: product.id,
+												cartId: this.props.cartId
+											})}
 									>
 										<Button.Content hidden>Add To Cart</Button.Content>
 										<Button.Content visible>

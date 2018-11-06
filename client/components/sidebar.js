@@ -1,69 +1,48 @@
-import React, { Component } from 'react'
-import { Button, Header, Icon, Image, Menu, Segment, Sidebar, Ref, Container, Sticky } from 'semantic-ui-react'
-import { connect } from 'react-redux'
-import { Cart } from '../components'
-import { fetchCart } from '../store';
+import React, {Component} from 'react';
+import {Button, Header, Icon, Image, Menu, Segment, Sidebar, Ref, Container, Sticky} from 'semantic-ui-react';
+import {connect} from 'react-redux';
+import {Cart} from '../components';
+import {fetchCart} from '../store';
 
 class SidebarCart extends Component {
-    componentDidMount(){
-        this.props.loadCart()
-    }
+	componentDidMount() {
+		this.props.loadCart();
+	}
 
-  render() {
-    const  visible  = this.props.showCart
+	render() {
+		const visible = this.props.showCart;
 
-    return (
-      <Container fluid >
+		return (
+			<Container fluid>
+				<Sidebar.Pushable as={Segment}>
+					<Sidebar
+						as={Menu}
+						animation="overlay"
+						direction="right"
+						// inverted
+						vertical
+						visible={visible}
+						width="wide"
+					>
+						<Sticky style={{padding: 20}}>
+							<Cart />
+						</Sticky>
+					</Sidebar>
 
-        <Sidebar.Pushable as={Segment} >
-          <Sidebar
-            as={Menu}
-            animation='overlay'
-            direction='right'
-            // inverted
-            vertical
-            visible={visible}
-            width='wide'
-            >
-            <Sticky style={{padding:20}}>
-
-
-            <Cart />
-
-
-
-            {/* <Menu.Item as='a'>
-              <Icon name='home' />
-              Home
-            </Menu.Item>
-            <Menu.Item as='a'>
-              <Icon name='gamepad' />
-              Games
-            </Menu.Item>
-            <Menu.Item as='a'>
-              <Icon name='camera' />
-              Channels
-            </Menu.Item> */}
-          </Sticky>
-          </Sidebar>
-
-          <Sidebar.Pusher dimmed={visible}>
-            {this.props.children}
-          </Sidebar.Pusher>
-        </Sidebar.Pushable>
-      </Container>
-    )
-  }
+					<Sidebar.Pusher dimmed={visible}>{this.props.children}</Sidebar.Pusher>
+				</Sidebar.Pushable>
+			</Container>
+		);
+	}
 }
 
+const mapStateToProps = (state) => ({
+	showCart: state.carts.showCart,
+	isLoggedIn: !!state.user.id
+});
 
-const mapStateToProps = state => ({
-    showCart: state.carts.showCart,
-    isLoggedIn: !!state.user.id
-})
+const mapDispatchToProps = (dispatch) => ({
+	loadCart: () => dispatch(fetchCart())
+});
 
-const mapDispatchToProps = dispatch => ({
-    loadCart: () => dispatch(fetchCart())
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(SidebarCart)
+export default connect(mapStateToProps, mapDispatchToProps)(SidebarCart);

@@ -29,7 +29,7 @@ export class SingleUser extends React.Component {
 	}
 
 	render() {
-		if (this.props.user.firstName) {
+		if (this.props.user.email) {
 			const user = this.props.user;
 			return (
 				<List>

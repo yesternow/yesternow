@@ -91,7 +91,7 @@ class UpdateUser extends Component {
 						</Form.Field>
 						<Form.Field required>
 							<label>User Profile Image</label>
-							<input id="imageUrl" type="text" value={imageUrl} onChange={this.handleChange} />
+							<input name="imageUrl" type="text" value={imageUrl} onChange={this.handleChange} />
 						</Form.Field>
 					</Form.Group>
 

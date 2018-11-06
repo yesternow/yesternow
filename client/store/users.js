@@ -5,13 +5,13 @@ import axios from 'axios';
  */
 const GET_USER_ORDERS = 'GET_USER_ORDERS';
 const GET_USERS = 'GET_USERS';
-const GET_USER = 'GET_USER';
+const GET_USER2 = 'GET_USER2';
 const REMOVE_USER_DB = 'REMOVE_USER_DB';
 const UPDATE_USER = 'UPDATE_USER';
 /**
  * ACTION CREATORS
  */
-const getUser = (user) => ({type: GET_USER, user});
+const getUser = (user) => ({type: GET_USER2, user});
 const getUserOrders = (order) => ({type: GET_USER_ORDERS, order});
 const getUsers = (users) => ({type: GET_USERS, users});
 const removeUserDb = (userId) => ({type: REMOVE_USER_DB, userId});
@@ -82,7 +82,7 @@ export default function(state = initialState, action) {
 			return {...state, orders: action.order};
 		case GET_USERS:
 			return {...state, users: action.users};
-		case GET_USER:
+		case GET_USER2:
 			return {...state, user: action.user};
 		case REMOVE_USER_DB:
 			return {

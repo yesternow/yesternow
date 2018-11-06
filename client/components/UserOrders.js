@@ -32,7 +32,6 @@ class Orders extends Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 	componentDidMount() {
-		console.log(this.props.match.params);
 		this.props.loadOrders(this.props.match.params.id);
 		const defaultOrder = this.props.orders[this.state.selected];
 		this.setState({defaultOrder, selected: 0});
@@ -132,7 +131,7 @@ class Orders extends Component {
 
 const mapStateToProps = (state) => ({
 	// state.users will actually be all orders for that user!!
-	orders: state.users.user
+	orders: state.users.orders
 });
 
 const mapDispatchToProps = (dispatch) => ({

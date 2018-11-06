@@ -1,74 +1,72 @@
-import React, { Component } from 'react'
-import { Search, Grid, Header, Segment } from 'semantic-ui-react'
-import { connect } from 'react-redux'
-import _ from 'lodash'
+import React, {Component} from 'react';
+import {Search, Grid, Header, Segment} from 'semantic-ui-react';
+import {connect} from 'react-redux';
+import _ from 'lodash';
 
 export class SearchBar extends Component {
+	constructor() {
+		super();
+		this.state = {
+			isLoading: false,
+			results: [],
+			value: ''
+		};
+		this.resetComponent = this.resetComponent.bind(this);
+		this.handleResultSelect = this.handleResultSelect.bind(this);
+		this.handleSearchChange = this.handleSearchChange.bind(this);
+	}
+	componentDidMount() {
+		this.resetComponent();
+	}
+	componentWillMount() {
+		this.resetComponent();
+	}
 
-    constructor() {
-        super()
-        this.state = {
-            isLoading: false,
-            result: [],
-            value: ''
-        }
-        this.resetComponent = this.resetComponent.bind(this)
-        this.handleResultSelect = this.handleResultSelect.bind(this)
-        this.handleSearchChange = this.handleSearchChange.bind(this)
+	resetComponent() {
+		this.setState({isLoading: false, results: [], value: ''});
+	}
 
-    }
-    componentDidMount() {
-        this.resetComponent()
-    }
-    componentWillMount() {
-        this.resetComponent()
-      }
+	handleResultSelect(e, {result}) {
+		this.setState({value: result.title});
+	}
 
-    resetComponent(){
-        this.setState({ isLoading: false, results: [], value: '' })
-    }
+	handleSearchChange(e, {value}) {
+		this.setState({isLoading: true, value});
 
-    handleResultSelect (e, { result }) {
-        this.setState({ value: result.title })
-    }
+		setTimeout(() => {
+			if (this.state.value.length < 1) return this.resetComponent();
 
-    handleSearchChange (e, { value }) {
-        this.setState({ isLoading: true, value })
+			const re = new RegExp(_.escapeRegExp(this.state.value), 'i');
+			const isMatch = (result) => re.test(result.title);
 
-        setTimeout(() => {
-        if (this.state.value.length < 1) return this.resetComponent()
+			this.setState({
+				isLoading: false,
+				results: _.filter(this.props.products, isMatch)
+			});
+		}, 300);
+	}
 
-        const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
-        const isMatch = result => re.test(result.title)
-
-        this.setState({
-            isLoading: false,
-            results: _.filter(this.props.products, isMatch),
-        })
-        }, 300)
-    }
-
-    render() {
-        const { isLoading, value, results } = this.state
-        return (
-          <Grid>
-            <Grid.Column width={6}>
-              <Search
-                loading={isLoading}
-                onResultSelect={this.handleResultSelect}
-                onSearchChange={_.debounce(this.handleSearchChange, 500, { leading: true })}
-                results={results}
-                value={value}
-                {...this.props.products}
-              />
-            </Grid.Column>
-          </Grid>
-        )
-      }
+	render() {
+		const {isLoading, value, results} = this.state;
+		return (
+			<Grid>
+				<Grid.Column width={6}>
+					<Search
+						loading={isLoading}
+						onResultSelect={this.handleResultSelect}
+						onSearchChange={_.debounce(this.handleSearchChange, 500, {leading: true})}
+						results={results}
+						value={value}
+						{...this.props.products}
+					/>
+				</Grid.Column>
+			</Grid>
+		);
+	}
 }
 
-const mapStateToProps = state => ({
-    products: state.product.products
-})
+const mapStateToProps = (state) => ({
+	products: state.product.products
+});
 
-export default connect(mapStateToProps)(SearchBar)
+export default connect(mapStateToProps)(SearchBar);

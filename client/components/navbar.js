@@ -91,7 +91,7 @@ const Navbar = ({ handleClick, isLoggedIn, isAdmin, toggleCart, userFirstName, u
       </Menu.Menu>
     )}
     <Menu.Item>
-      <Icon name="cart" onClick={toggleCart} />
+      <Icon size='large' name="cart" onClick={toggleCart} />
     </Menu.Item>
   </Menu>
   // import {Link} from 'react-router-dom'

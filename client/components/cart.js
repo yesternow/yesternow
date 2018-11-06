@@ -3,12 +3,29 @@ import { fetchCart, removeCartItem, sendAddToCart } from '../store';
 import { connect } from 'react-redux';
 import {Link } from 'react-router-dom'
 import { Image, List, Item, Container, Select, Button, Grid, Header, Divider, Dropdown, Text } from 'semantic-ui-react'
+import SingleCartItem from './singleCartItem'
 
 export class Cart extends Component {
 
+    constructor(){
+        super()
+        this.state = {
+            total: 0
+        }
+    }
 
-    componentWillMount(){
+
+    componentDidMount(){
         this.props.loadCart()
+
+    }
+    componentDidUpdate(prevProps, prevState){
+        if(this.props.time !== prevProps.time && this.props.cart.cartItems){
+            this.setState({
+                total: this.props.cart.cartItems.map(cartItem=>cartItem.quantity*cartItem.product.price).reduce((a,b)=>a+b, 0)
+            })
+        }
+
     }
 
     render() {
@@ -27,29 +44,9 @@ export class Cart extends Component {
                 <Grid.Column>
                 <Header>Shopping Cart</Header>
                 <List celled>
-                {cartItems.map(cartItem =>(
-                    <List.Item key={cartItem.id}>
-                        <Image avatar src={cartItem.product.images[0].imageUrl}/>
-                    <List.Content>
-                            <List.Header as ={Link} to={`/products/${cartItem.product.id}`}>{cartItem.product.title}</List.Header>
-                            <List.Description>Price: {cartItem.product.price} </List.Description>
-                            <List.Description>Quantity:                             <Dropdown
-                                search
-                                placeholder={cartItem.quantity.toString()}
-                                selection
-                                compact
-                                options={options}
-                            />
-
-                            </List.Description>
-                        </List.Content>
-                        <List.Content floated="right">
-                            <Button onClick={() => this.props.sendAddToCart({quantity:1})} >Update</Button>
-                        <Button onClick={() => this.props.removeItem(cartItem.id)}>Remove</Button>
-                        </List.Content>
-                    </List.Item>))}
+                {cartItems.length && cartItems.map(cartItem => <SingleCartItem key={cartItem.id} cartItem={cartItem} />)}
                     <List.Item>
-                        <Header>Total: </Header>
+                        <Header>Total: {this.state.total}</Header>
                     </List.Item>
                     <Button>Checkout</Button>
                 </List>
@@ -62,14 +59,12 @@ export class Cart extends Component {
 
 const mapStateToProps = state => ({
     cart: state.carts.cart,
-    showCart: state.carts.showCart
-
+    showCart: state.carts.showCart,
+    time: new Date()
 })
 
 const mapDispatchToProps = dispatch => ({
-    loadCart: () => dispatch(fetchCart()),
-    removeItem: cartItemId => dispatch(removeCartItem(cartItemId)),
-    sendAddToCart: (product) => dispatch(sendAddToCart(product))
+    loadCart: () => dispatch(fetchCart())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart)

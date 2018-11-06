@@ -65,7 +65,7 @@ const defaultCart = { cartItems: [] };
 export const fetchCart = () => {
   return async dispatch => {
     const { data } = await axios.get('/api/cart');
-    dispatch(setCart(data || defaultCart));
+    dispatch(setCart(data));
   };
 };
 

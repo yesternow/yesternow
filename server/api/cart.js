@@ -2,17 +2,22 @@ const router = require("express").Router();
 const { Cart, CartItem, User, Product, Image } = require("../db/models");
 const { requireAdmin, requireLogin, requireUserOrAdmin } = require('./util')
 
-router.get('/', requireLogin, async (req, res, next) => {
-
-    // if(req.user){
+router.get('/', async (req, res, next) => {
+    if(req.user){
         const userId = req.user.id
-
-    // } else {userId = 2}
-    try{
-        const cart = await Cart.find({where: {userId}, include: [ User, {model: CartItem, include: [{model: Product, include: [Image]} ]}]})
-        res.json(cart)
-    } catch (err) {
-        next (err)
+        try{
+            const cart = await Cart.find({where: {userId}, include: [ User, {model: CartItem, include: [{model: Product, include: [Image]} ]}]})
+            res.json(cart)
+        } catch (err) {
+            next (err)
+        }
+    } else {
+        try{
+            const cart = await Cart.findOrCreate({where: {guestId: req.session.id}, defaults: {guestId: req.session.id}, include: [ User, {model: CartItem, include: [{model: Product, include: [Image]} ]}]})
+            res.json(cart[0])
+        } catch(err) {
+            next(err)
+        }
     }
 })
 

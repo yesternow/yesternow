@@ -18,7 +18,8 @@ import {
 	UserOrders,
 	Users,
 	AllProductsAdmin,
-	TakeMoney
+	TakeMoney,
+	Checkout
 } from './components';
 import {me, fetchCart} from './store';
 
@@ -47,6 +48,7 @@ class Routes extends Component {
 				<Route exact path="/orders/:id" component={SingleOrder} />
 				<Route path="/users/:id/orders" component={UserOrders} />
 				<Route exact path="/stripe" component={TakeMoney} />
+				<Route exact path="/checkout" component={Checkout} />
 
 				{isAdmin &&
 				isLoggedIn && (

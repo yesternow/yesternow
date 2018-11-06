@@ -11,6 +11,8 @@ import {
   Image,
   Message,
   Segment,
+  GridColumn,
+  Container,
 } from 'semantic-ui-react';
 
 /**
@@ -20,10 +22,12 @@ const AuthForm = props => {
   const { name, displayName, handleSubmit, error } = props;
 
   return (
-    <div className="login-form" id="auth-form">
-      <Image src="/logo.jpg" className="ui centered image medium" />
+    <Container>
       <Grid textAlign="center" style={{ height: '35%' }} verticalAlign="middle">
-        <Grid.Column style={{ maxWidth: 450 }}>
+        <GridColumn width={8}>
+          <Image src="/logo.jpg" className="ui centered image large" />
+        </GridColumn>
+        <Grid.Column width={8} style={{ maxWidth: 450 }}>
           <Header as="h2" color="teal" textAlign="center" align="center">
             {displayName} with:
           </Header>
@@ -103,7 +107,7 @@ const AuthForm = props => {
 				</div>
 				{error && error.response && <div> {error.response.data} </div>}
 			</form> */}
-    </div>
+    </Container>
   );
 };
 

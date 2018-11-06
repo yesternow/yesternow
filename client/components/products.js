@@ -7,18 +7,7 @@ import {
   sendAddToCart,
 } from '../store';
 import { connect } from 'react-redux';
-import {
-  Container,
-  Dropdown,
-  Input,
-  Card,
-  Divider,
-  Image,
-  Grid,
-  Button,
-  Icon,
-  Select,
-} from 'semantic-ui-react';
+import { Container, Card, Image, Grid, Button, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 class Products extends Component {

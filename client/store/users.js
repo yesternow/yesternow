@@ -47,8 +47,8 @@ export const sendRemoveUser = (userId) => async (dispatch) => {
 
 export const sendUpdateUser = (user) => async (dispatch) => {
 	try {
-		await axios.put(`/api/users/${user.userId}`, user);
-		const {data} = await axios.get(`/api/users/${user.userId}`);
+		await axios.put(`/api/users/${user.id}`, user);
+		const {data} = await axios.get(`/api/users/${user.id}`);
 		dispatch(updateUser(data));
 	} catch (err) {
 		console.error(err);
@@ -87,7 +87,8 @@ export default function(state = initialState, action) {
 		case UPDATE_USER:
 			return {
 				...state,
-				users: state.users.map((user) => (user.id === action.user.id ? action.user : user))
+				users: state.users.map((user) => (user.id === action.user.id ? action.user : user)),
+				user: action.user
 			};
 		default:
 			return state;

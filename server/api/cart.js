@@ -3,6 +3,7 @@ const { Cart, CartItem, User, Product, Image } = require("../db/models");
 const { requireAdmin, requireLogin, requireUserOrAdmin } = require('./util')
 
 router.get('/', async (req, res, next) => {
+    console.log(req.session.id)
     if(req.user){
         const userId = req.user.id
         try{
@@ -19,6 +20,28 @@ router.get('/', async (req, res, next) => {
             next(err)
         }
     }
+})
+
+router.post('/', async (req, res, next) => {
+
+    try {
+        const userId = req.body.userId
+        const guestCart = await Cart.findOne({where: {guestId: req.session.id}})
+        const cartItems = await CartItem.findAll({where: {cartId: guestCart.id}})
+        if(cartItems.length){
+            guestCart.userId = userId
+            res.json(guestCart)
+        } else {
+            const cart = await Cart.create({userId})
+            await guestCart.destroy()
+            res.json(cart)
+
+        }
+
+    } catch (err) {
+        next(err)
+    }
+
 })
 
 router.put('/', async (req, res, next) => {

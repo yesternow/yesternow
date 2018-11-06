@@ -29,7 +29,6 @@ export class Cart extends Component {
     }
 
     render() {
-
         let options = []
         for(let i = 1; i <= 100; i++) {
             options.push({text: i.toString(), value: i})

@@ -21,4 +21,6 @@ export { default as UserOrders } from './UserOrders';
 export { default as Users } from './users';
 export { default as AllProductsAdmin } from './allproductsadmin';
 export { default as SingleCartItem } from './singleCartItem';
+export { default as UpdateUser } from './UpdateUser';
+export { default as TakeMoney } from './TakeMoney';
 export { default as Review } from './review';

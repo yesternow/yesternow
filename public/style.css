@@ -26,7 +26,7 @@ body {	.ui.card>.image>img, .ui.cards>.card>.image>img {
 .ui.medium.images .image,
 .ui.medium.images img,
 .ui.medium.images svg {
-  height: 12em;
+  height: 14em;
   width: auto;
   font-size: 1rem;
 }

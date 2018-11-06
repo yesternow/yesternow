@@ -98,30 +98,33 @@ export class SingleProduct extends Component {
             <Divider />
             <Grid.Column width={2} />
             <Grid.Column width={12}>
-              <Divider />
               <h3>Reviews</h3>
+              <Divider />
               {reviews &&
                 reviews.map(review => (
                   <Item key={review.id}>
-                    <Rating rating={review.rating} maxRating={5} disabled />
+                    <Item.Header>
+                      <Image src={review.user.imageUrl} avatar />{' '}
+                      <span>{review.user.firstName}</span>
+                      <span>
+                        <Rating rating={review.rating} maxRating={5} disabled />
+                      </span>
+                    </Item.Header>
+                    {review.createdAt.substring(0, 10)}
                     <Item.Description>{review.description}</Item.Description>
+                    <Divider />
                   </Item>
                 ))}
-              <Button
-                floated="right"
-                color="orange"
-                onClick={this.handleUpdateClick}
-              >
-                Leave Review
-              </Button>
             </Grid.Column>
             <Grid.Column width={2} />
           </Grid.Row>
           <Grid.Row>
             <Grid.Column width={2} />
             <Grid.Column width={12}>
-              {this.state.updateToggle && (
+              {this.props.userId ? (
                 <Review productId={id} userId={this.props.userId} />
+              ) : (
+                'Log in to leave a review'
               )}
             </Grid.Column>
             <Grid.Column width={2} />

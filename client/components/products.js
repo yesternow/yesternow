@@ -53,6 +53,7 @@ class Products extends Component {
     return (
       <Container>
         <Grid>
+          <Grid.Row />
           <Grid.Row>
             {/* Not working Semantic UI DROPDOWN
             <Dropdown placeholder="Select Category" selection onChange={this.handleChange} options={options}/>

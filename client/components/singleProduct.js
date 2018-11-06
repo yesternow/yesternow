@@ -11,20 +11,34 @@ import {
   Grid,
   Divider,
   Rating,
+  Segment,
+  Dropdown,
 } from 'semantic-ui-react';
 export class SingleProduct extends Component {
   constructor() {
     super();
-    this.state = { updateToggle: false };
-
-    this.handleUpdateClick = this.handleUpdateClick.bind(this);
+    this.state = { quantity: 0 };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
+
   componentDidMount() {
     this.props.loadProduct(this.props.match.params.id);
   }
 
-  handleUpdateClick() {
-    this.setState({ updateToggle: !this.state.updateToggle });
+  handleChange(event, data) {
+    this.setState({
+      quantity: data.value,
+    });
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    this.props.sendAddToCart({
+      quantity: this.state.quantity,
+      productId: this.props.product.id,
+      cartId: this.props.cartId,
+    });
   }
 
   render() {
@@ -41,59 +55,73 @@ export class SingleProduct extends Component {
       brand,
     } = this.props.product;
 
+    let options = [];
+    for (let i = 1; i <= 100; i++) {
+      options.push({ text: i.toString(), value: i });
+    }
+
     if (!this.props.product) {
       return <div>No product available</div>;
     }
     return (
-      <Container border="3px">
+      <Container>
         <Grid>
           <Grid.Row />
-          <Grid.Row>
-            <Grid.Column width={2} />
-            <Grid.Column width={12}>
-              <Image.Group size="medium">
-                {images &&
-                  images.map(image => (
-                    <Image key={image.id} src={image.imageUrl} bordered />
-                  ))}
-                <Divider hidden />
-              </Image.Group>
-            </Grid.Column>
-            <Grid.Column width={2} />
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column width={2} />
-            <Grid.Column width={12}>
-              <Item>
-                <Item.Content>
-                  <Item.Header as="h3">{title}</Item.Header>
-                  <Item.Meta>${(price / 100).toFixed(2)}</Item.Meta>
-                  <Item.Meta>
-                    {quantity < 5 && `Only ${quantity} left!`}
-                  </Item.Meta>
+          <Container fluid>
+            <Segment>
+              <Grid.Row>
+                <Grid.Column width={2} />
 
-                  <Item.Description>{description}</Item.Description>
-                  <Item.Extra>Dimensions: {dimensions}</Item.Extra>
-                  <Item.Extra>
+                <Grid.Column width={12}>
+                  <Image.Group size="medium">
+                    {images &&
+                      images.map(image => (
+                        <Image key={image.id} src={image.imageUrl} bordered />
+                      ))}
+                    <Divider hidden />
+                  </Image.Group>
+                </Grid.Column>
+                <Grid.Column width={2} />
+              </Grid.Row>
+              <Grid>
+                <Grid.Row>
+                  <Grid.Column width={12}>
+                    <Item>
+                      <Item.Content>
+                        <Item.Header as="h3">{title}</Item.Header>
+                        <Item.Meta>${(price / 100).toFixed(2)}</Item.Meta>
+                        <Item.Meta>
+                          {quantity < 5 && `Only ${quantity} left!`}
+                        </Item.Meta>
+
+                        <Item.Description>{description}</Item.Description>
+                        <Item.Extra>Dimensions: {dimensions}</Item.Extra>
+                      </Item.Content>
+                    </Item>
+                  </Grid.Column>
+                  <Grid.Column width={2}>
+                    <Dropdown
+                      search
+                      selection
+                      compact
+                      options={options}
+                      onChange={this.handleChange}
+                    />
+                  </Grid.Column>
+                  <Grid.Column width={2}>
                     <Button
                       floated="right"
-                      onClick={() =>
-                        this.props.sendAddToCart({
-                          quantity: 1,
-                          productId: id,
-                          cartId: this.props.cartId,
-                        })
-                      }
+                      onClick={this.handleSubmit}
                       color="orange"
                     >
                       <Icon name="shop" />
                     </Button>
-                  </Item.Extra>
-                </Item.Content>
-              </Item>
-            </Grid.Column>
-            <Grid.Column width={2} />
-          </Grid.Row>
+                  </Grid.Column>
+                  {/* <Grid.Column width={2} /> */}
+                </Grid.Row>
+              </Grid>
+            </Segment>
+          </Container>
           <Grid.Row>
             <Divider />
             <Grid.Column width={2} />

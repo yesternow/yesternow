@@ -71,7 +71,7 @@ class Products extends Component {
                   <Card.Content>
                     <Card.Header>{product.title}</Card.Header>
                     <Card.Description>
-                      ${(product.price / 100).toFixed()}
+                      ${(product.price / 100).toFixed(2)}
                     </Card.Description>
                   </Card.Content>
                   <Button

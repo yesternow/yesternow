@@ -2,11 +2,6 @@ const router = require('express').Router();
 const { User, Cart, CartItem} = require('../db/models');
 module.exports = router;
 
-const userNotFound = (next) => {
-	const err = new Error('Not found');
-	err.status = 404;
-	next(err);
-};
 
 router.post('/login', async (req, res, next) => {
 	try {

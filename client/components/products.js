@@ -11,7 +11,6 @@ class Products extends Component {
 			visibilityFilter: 'all'
 		};
 		this.handleChange = this.handleChange.bind(this);
-		// this.handleClick = this.handleClick.bind(this)
 	}
 	componentDidMount() {
 		this.props.loadProducts();
@@ -23,15 +22,12 @@ class Products extends Component {
 		this.props.setVisibility(event.target.value);
 	}
 
-	// handleClick(productId) {
-	//   this.props.sendAddToCart(productId)
-	// }
 	render() {
 		if (!this.props.products || !this.props.categories.length) {
 			return <div>Hello there are no products yet</div>;
 		}
 		//Need this for dropdown
-		//const options = this.props.categories.map(category => ({key: category.id, value: category.id, text: category.name}));
+
 
 		return (
 			<Container>

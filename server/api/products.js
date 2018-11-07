@@ -1,9 +1,8 @@
 const router = require('express').Router();
 const db = require('../db');
 const { Product, Category, Image, Review, User } = require('../db/models');
-const { requireAdmin, requireLogin, requireUserOrAdmin } = require('./util');
+const { requireAdmin, requireLogin } = require('./util');
 const underscore = require('underscore');
-const Tag = db.models.tags;
 
 const productFieldsAllowList = [
   'title',

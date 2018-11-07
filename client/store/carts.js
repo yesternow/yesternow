@@ -16,10 +16,6 @@ const setCart = cart => ({
   cart,
 });
 
-const addToCart = cartItem => ({
-  type: ADD_TO_CART,
-  cartItem,
-});
 
 const removeFromCart = cartItemId => ({
   type: REMOVE_FROM_CART,
@@ -41,7 +37,7 @@ export const fetchCarts = () => {
     dispatch(setCarts(data));
   };
 };
-//make sure cartItem has quantity, cartId, and productId fields
+
 export const sendAddToCart = (cartItem, isUpdate) => {
   return async dispatch => {
     await axios.put('/api/cart/', cartItem);
@@ -60,7 +56,7 @@ export const removeCartItem = cartItemId => {
   };
 };
 
-const defaultCart = { cartItems: [] };
+
 
 export const fetchCart = () => {
   return async dispatch => {
@@ -83,10 +79,6 @@ export default (state = initialState, action) => {
       return { ...state, cart: action.cart };
     case TOGGLE_CART:
       return { ...state, showCart: !state.showCart };
-    // case ADD_TO_CART:
-    //     return {...state, cart: {...state.cart, cartItems: state.cart.cartItems.map(item => {
-    //         if(item.productId)
-    //     })}}
     case REMOVE_FROM_CART:
       const updatedCart = state.cart.cartItems.filter(
         cartItem => cartItem.id !== action.cartItemId

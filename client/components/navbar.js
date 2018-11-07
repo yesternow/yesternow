@@ -39,7 +39,7 @@ const Navbar = ({
     <Menu fixed="top" inverted>
       <Container>
         <Menu.Item as={Link} to="/" header>
-          <Image size="mini" src="/logo.png" style={{ marginRight: "1.5em" }} />
+          <Image size="mini" src="/navbarLogo.jpg" style={{ marginRight: "1.5em" }} />
           YESTERNOW
         </Menu.Item>
       </Container>

@@ -31,16 +31,12 @@ router.post('/signup', async (req, res, next) => {
 		const user = await User.create({email, password});
 		const userId = user.id
 		const guestCart = await Cart.findOne({where: {guestId: req.session.id}})
-		console.log('guestCart', guestCart)
 		const cartItems = await CartItem.findAll({where: {cartId: guestCart.id}})
-		console.log('cartItems')
 		if(cartItems.length){
             await guestCart.setUser(userId)
-            // res.json(guestCart)
         } else {
             await Cart.create({userId})
             await guestCart.destroy()
-            // res.json(cart)
         }
 
 

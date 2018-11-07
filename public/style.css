@@ -22,6 +22,10 @@ body {	.ui.card>.image>img, .ui.cards>.card>.image>img {
 	height: 12em;
 }
 
+.ui.card>.image, .ui.cards>.card>.image {
+	height: 12em;
+}
+
 .ui.medium.image,
 .ui.medium.images .image,
 .ui.medium.images img,

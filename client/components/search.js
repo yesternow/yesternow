@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {Search, Grid, Header, Segment} from 'semantic-ui-react';
+import {Link} from 'react-router-dom'
 import {connect} from 'react-redux';
 import _ from 'lodash';
+import history from '../history'
 
 export class SearchBar extends Component {
 	constructor() {
@@ -58,6 +60,7 @@ export class SearchBar extends Component {
 						results={results}
 						value={value}
 						{...this.props.products}
+
 					/>
 				</Grid.Column>
 			</Grid>

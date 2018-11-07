@@ -22,4 +22,4 @@ const facebookConfigSecret = {
 	callbackURL: process.env.FACEBOOK_CALLBACK
 };
 
-module.exports = {googleConfigSecret, facebookConfigSecret};
+module.exports = {googleConfigSecret, facebookConfigSecret, stripe};

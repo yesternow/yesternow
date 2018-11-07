@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {fetchCart, removeCartItem, sendAddToCart} from '../store';
+import {fetchCart, removeCartItem, sendAddToCart, toggleCart} from '../store';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {Image, List, Item, Container, Select, Button, Grid, Header, Divider, Dropdown, Text} from 'semantic-ui-react';
@@ -41,12 +41,12 @@ export class Cart extends Component {
 					<Grid.Column>
 						<Header>Shopping Cart</Header>
 						<List celled>
-							{cartItems.length &&
+							{cartItems.length > 0 &&
 								cartItems.map((cartItem) => <SingleCartItem key={cartItem.id} cartItem={cartItem} />)}
 							<List.Item>
 								<Header>Total: ${(this.state.total/100).toFixed(2)}</Header>
 							</List.Item>
-							<Button as={Link} to="/checkout">
+							<Button as={Link} to="/checkout" onClick={this.props.toggleCart}>
 								Proceed to Checkout
 							</Button>
 						</List>
@@ -64,7 +64,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	loadCart: () => dispatch(fetchCart())
+	loadCart: () => dispatch(fetchCart()),
+	toggleCart: () => dispatch(toggleCart())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);

@@ -27,6 +27,10 @@ router.post('/', async (req, res, next) => {
     try {
         const { address1, address2, city, state, country, zipcode } = req.body
         const address = await Address.create({address1, address2, city, state, country, zipcode})
+        if(req.user){
+            const userId = req.user.id
+            await AddressBook.create({userId, addressId: address.id})
+        }
         res.json(address)
     } catch (err) {
         next (err)

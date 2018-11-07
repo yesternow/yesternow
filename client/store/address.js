@@ -1,4 +1,5 @@
 import axios from 'axios';
+import guestInfo, { updateInfo } from './guestInfo';
 
 const FETCH_ADDRESSES = 'FETCH_ADDRESSES'
 const SELECT_ADDRESS= 'SELECT_ADDRESS'
@@ -30,7 +31,8 @@ export const fetchAddresses = () => {
 export const addAddress = address => {
     return async dispatch => {
         try {
-            await axios.post('/api/addresses', address)
+            const {data} = await axios.post('/api/addresses', address)
+            dispatch(updateInfo("addressId", data.id))
             dispatch(fetchAddresses())
         } catch (err) {
             console.log(err)
@@ -40,7 +42,7 @@ export const addAddress = address => {
 
 const initialState =  {
     addresses: [],
-    selectedAddress: {}
+    selectedAddress: 0
 }
 
 export default (state = initialState, action) => {

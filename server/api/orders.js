@@ -24,7 +24,7 @@ router.get('/', requireLogin, requireAdmin, async (req, res, next) => {
 
 //Get single order
 
-router.get('/:id', requireLogin, requireUserOrAdmin, async (req, res, next) => {
+router.get('/:id', requireLogin, async (req, res, next) => {
   try {
     const id = req.params.id;
     const order = await Order.findOne({
@@ -93,8 +93,10 @@ router.get('/user/:userId/', requireLogin, async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
+    const {lineItems} = req.body
     const order = await Order.create(underscore.pick(req.body, ['guestId', 'guestEmail', 'guestNumber', 'addressId', 'userId']))
     await CartItem.destroy({where: {cartId: req.body.cartId}})
+    lineItems.forEach(async lineItem=> await LineItem.create({...lineItem, orderId: order.id}))
     res.json(order)
     } catch (err) {
     next(err)

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Dropdown, Container, Button } from 'semantic-ui-react'
-import { fetchAddresses } from '../store'
+import { fetchAddresses, selectAddress } from '../store'
 
 class AddressSelector extends Component {
     constructor() {
@@ -20,9 +20,8 @@ class AddressSelector extends Component {
 	}
 
     handleChange(event, data){
-        this.setState({
-            selectedAddress: data.value
-        })
+        console.log('here')
+        this.props.selectAddress(data.value)
     }
     handleSubmit(event){
         event.preventDefault()
@@ -33,7 +32,7 @@ class AddressSelector extends Component {
 
     render() {
         if(this.props.addresses){
-            const options = this.props.addresses.map(el => ({text: `${el.address1} ${el.city} ${el.state}`, value: el}))
+            const options = this.props.addresses.map(el => ({text: `${el.address1} ${el.city} ${el.state}`, value: el.id}))
             return (
                 <Container>
                     <Dropdown
@@ -62,7 +61,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	loadAddresses: () => dispatch(fetchAddresses())
+    loadAddresses: () => dispatch(fetchAddresses()),
+    selectAddress: (address) => dispatch(selectAddress(address))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddressSelector);

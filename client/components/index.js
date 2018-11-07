@@ -27,4 +27,5 @@ export {default as Checkout} from './Checkout';
 export {default as Review} from './review';
 export {default as AddressForm} from './AddressForm';
 export {default as AddressSelector} from './AddressSelector';
+export {default as GuestForm} from './GuestForm';
 

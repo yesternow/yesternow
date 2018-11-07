@@ -1,6 +1,9 @@
 const router = require('express').Router();
-const {Order, LineItem, Product, Image, User} = require('../db/models');
-const {requireAdmin, requireLogin, requireUserOrAdmin} = require('./util');
+
+const { Order, LineItem, Product, Image, User, CartItem } = require('../db/models');
+const { requireAdmin, requireLogin, requireUserOrAdmin } = require('./util');
+const underscore = require('underscore')
+
 
 //Get all orders
 
@@ -23,38 +26,41 @@ router.get('/', requireLogin, requireAdmin, async (req, res, next) => {
 
 //Get single order
 
-router.get('/:id', requireLogin, requireUserOrAdmin, async (req, res, next) => {
-	try {
-		const id = req.params.id;
-		const order = await Order.findOne({
-			where: {id},
-			include: [
-				{
-					model: LineItem,
-					include: [
-						{
-							model: Product,
-							include: [ {model: Image} ]
-						}
-					]
-				}
-			]
-		});
-		if (req.user.isAdmin) {
-			res.json(order);
-		} else if (order.userId === req.user.id) {
-			res.json(order);
-		} else {
-			res.sendStatus(403);
-		}
-	} catch (error) {
-		next(error);
-	}
+
+router.get('/:id', requireLogin, async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const order = await Order.findOne({
+      where: { id },
+      include: [
+        {
+          model: LineItem,
+          include: [
+            {
+              model: Product,
+              include: [{ model: Image }],
+            },
+          ],
+        },
+      ],
+    });
+    if (req.user.isAdmin) {
+      res.json(order);
+    } else if (order.userId === req.user.id) {
+      res.json(order);
+    } else {
+      res.sendStatus(403);
+    }
+  } catch (error) {
+    next(error);
+  }
+
 });
 
 //Get orders of a single user
 
 router.get('/user/:userId/', requireLogin, async (req, res, next) => {
+
 	// if logged in, check that this is the logged in user's order
 	// if admin show anything
 	const userId = req.params.userId;
@@ -79,19 +85,24 @@ router.get('/user/:userId/', requireLogin, async (req, res, next) => {
 	} else {
 		res.sendStatus(403);
 	}
+
 });
 
 //Create order for a user
 
 // We will write these two routes when we finish cart and finish order functionality. When we create order we should create lineItems as well.
 
-// router.post('/user/:id/', requireUserOrAdmin, (req, res, next) => {
-//   let neworder = req.body;
-//   neworder['userId'] = req.params.id;
-//   return Order.create(neworder)
-//     .then(order => res.json(order))
-//     .catch(next);
-// });
+router.post('/', async (req, res, next) => {
+  try {
+    const {lineItems} = req.body
+    const order = await Order.create(underscore.pick(req.body, ['guestId', 'guestEmail', 'guestNumber', 'addressId', 'userId']))
+    await CartItem.destroy({where: {cartId: req.body.cartId}})
+    lineItems.forEach(async lineItem=> await LineItem.create({...lineItem, orderId: order.id}))
+    res.json(order)
+    } catch (err) {
+    next(err)
+  }
+})
 
 router.put('/:id', requireLogin, requireUserOrAdmin, async (req, res, next) => {
 	try {

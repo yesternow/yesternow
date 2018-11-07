@@ -153,7 +153,7 @@ export default (state = initialState, action) => {
     case SET_CATEGORIES:
       return {
         ...state,
-        categories: [...state.categories, ...action.categories],
+        categories: action.categories,
       };
     case SET_VISIBILITY_FILTER:
       return { ...state, visibilityFilter: action.visibility };

@@ -15,7 +15,7 @@ export class Footer extends Component {
 					margin: 0 //clear semantic-ui style
 				}}
 			>
-				<Menu.Item header icon="copyright" />
+				<Menu.Item header icon="copyright" content='Yesternow 2019' as='a' href='https://github.com/yesternow/yesternow/' target="_blank" />
 			</Menu>
 		);
 	}

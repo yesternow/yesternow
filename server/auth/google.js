@@ -1,7 +1,7 @@
 const passport = require('passport');
 const router = require('express').Router();
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const {User} = require('../db/models');
+const {User, Cart, CartItem} = require('../db/models');
 const {googleConfigSecret} = require('../../secrets');
 module.exports = router;
 
@@ -26,15 +26,21 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
 
 	const strategy = new GoogleStrategy(googleConfig, (token, refreshToken, profile, done) => {
 		const googleId = profile.id;
-		const firstName = profile.displayName;
-		const lastName = profile.displayName;
+		const firstName = profile.name.givenName;
+		const imageUrl = profile.photos ? profile.photos[0].value : null
+		const lastName = profile.name.familyName;
 		const email = profile.emails[0].value;
 
 		User.findOrCreate({
 			where: {googleId},
-			defaults: {firstName, lastName, email, googleId}
+			defaults: {firstName, lastName, email, googleId, imageUrl}
 		})
-			.then(([ user ]) => done(null, user))
+			.then(async ([ user ]) => {
+				done(null, user)
+				const userId = user.id
+           			 await Cart.findOrCreate({where: {userId}, defaults:{userId}})
+
+			})
 			.catch(done);
 	});
 
@@ -45,7 +51,7 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
 	router.get(
 		'/callback',
 		passport.authenticate('google', {
-			successRedirect: '/home',
+			successRedirect: '/',
 			failureRedirect: '/login'
 		})
 	);

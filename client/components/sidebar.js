@@ -19,7 +19,6 @@ class SidebarCart extends Component {
 						as={Menu}
 						animation="overlay"
 						direction="right"
-						// inverted
 						vertical
 						visible={visible}
 						width="wide"

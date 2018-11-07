@@ -44,7 +44,6 @@ class Orders extends Component {
 	}
 
 	handleFilter(evt, data) {
-		// this.props.setVisibility(event.target.value); //using jsx
 		this.props.setVisibility(data.value); //using Semantic UI
 		this.props.loadOrders();
 	}
@@ -58,15 +57,7 @@ class Orders extends Component {
 	}
 
 	updateOrder(data) {
-		// console.log(event, ':event order:', data);
-		// if (data !== undefined) {
 		this.setState({...this.state, order: {...this.state.order, status: data.value}});
-		// console.log(this.state);
-		// } else if (order.id) {
-		// 	order.status = this.status.value;
-		// 	this.props.putOrder(order); //using Semantic UI
-		// 	this.props.loadOrders();
-		// }
 	}
 
 	setOrderToUpdate(order) {

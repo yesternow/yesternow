@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const { Order, LineItem, Product, Image, User, CartItem } = require('../db/models');
-const { requireAdmin, requireLogin, requireUserOrAdmin } = require('./util');
+const { requireAdmin, requireLogin } = require('./util');
 const underscore = require('underscore')
 
 
@@ -104,7 +104,7 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-router.put('/:id', requireLogin, requireUserOrAdmin, async (req, res, next) => {
+router.put('/:id', requireLogin, requireAdmin, async (req, res, next) => {
 	try {
 		const {id, status} = req.body;
 		const order = await Order.findById(id);

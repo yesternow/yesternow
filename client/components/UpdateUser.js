@@ -22,8 +22,6 @@ class UpdateUser extends Component {
 	}
 
 	componentDidMount() {
-		// console.log(this.props.user, 'STORE');
-		// console.log(this.props.userProp, 'User Props');
 		this.props.loadUser(this.props.user.id);
 		const {id, firstName, lastName, email, phone, imageUrl} = this.props.user;
 		this.setState({

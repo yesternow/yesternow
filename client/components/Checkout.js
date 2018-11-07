@@ -75,7 +75,7 @@ class Checkout extends Component {
 		if (!this.props.cart.cartItems) return <p>Cart is Empty</p>;
 
 		return (
-			// <Container>
+
 			<Grid>
 				<Grid.Column>
 					<Header>Shopping Cart</Header>
@@ -85,9 +85,6 @@ class Checkout extends Component {
 						<List.Item>
 							<Header>Total: ${this.state.total}</Header>
 						</List.Item>
-						{/* <Button as={Link} to="/stripe">
-								Place your order
-			  </Button> */}
 			  {this.props.isLoggedIn ?
 			  	<Fragment>
 				<AddressSelector />
@@ -102,12 +99,12 @@ class Checkout extends Component {
 			  </Fragment>
 
 			}
-						{/* <TakeMoney /> */}
+
 						<Button onClick={this.handleSubmit}>Checkout</Button>
 					</List>
 				</Grid.Column>
 			</Grid>
-			// </Container>
+
 		);
 	}
 }

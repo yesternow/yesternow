@@ -18,8 +18,6 @@ const defaultOrder = {};
  * ACTION CREATORS
  */
 const getOrder = (order) => ({type: GET_ORDER, order});
-const removeOrder = () => ({type: REMOVE_ORDER});
-const newOrder = order => ({type: NEW_ORDER, order})
 
 /**
  * THUNK CREATORS

@@ -130,7 +130,6 @@ class Orders extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	// state.users will actually be all orders for that user!!
 	orders: state.users.orders
 });
 

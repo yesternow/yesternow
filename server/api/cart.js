@@ -1,9 +1,7 @@
 const router = require("express").Router();
 const { Cart, CartItem, User, Product, Image } = require("../db/models");
-const { requireAdmin, requireLogin, requireUserOrAdmin } = require('./util')
 
 router.get('/', async (req, res, next) => {
-    console.log(req.session.id)
     if(req.user){
         const userId = req.user.id
         try{

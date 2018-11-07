@@ -6,7 +6,7 @@ import {Container} from 'semantic-ui-react';
 const App = () => {
 	return (
 		<div>
-			<Container>
+			<Container style={{marginBottom: '4em'}}>
 				<Navbar />
 			</Container>
 			<SideBar>

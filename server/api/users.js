@@ -82,7 +82,7 @@ router.put('/:id', requireLogin, requireUserOrAdmin, async (req, res, next) => {
     ? underscore.pick(req.body, userFieldAdminAllowList)
     : underscore.pick(req.body, userFieldAllowList);
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findOne({where: {id: Number(req.params.id)}});
     if (!user) return res.sendStatus(404);
     await user.update(userUpdates);
     res.status(204).json({

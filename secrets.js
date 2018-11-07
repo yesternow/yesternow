@@ -1,6 +1,6 @@
 const express = require('express');
 
-const stripe = require('stripe')('sk_test_4uPct9rBJ9kVDIJb1hrT060R');
+// const stripe = require('stripe')('sk_test_4uPct9rBJ9kVDIJb1hrT060R');
 
 process.env.GOOGLE_CLIENT_ID = '671168662555-griinkphne8j0hbf3jlukq3oi3ctjbkr.apps.googleusercontent.com';
 process.env.GOOGLE_CLIENT_SECRET = '612mv26l8b1CjMGo5sBTiqxB';
@@ -22,4 +22,4 @@ const facebookConfigSecret = {
 	callbackURL: process.env.FACEBOOK_CALLBACK
 };
 
-module.exports = {googleConfigSecret, facebookConfigSecret, stripe};
+module.exports = {googleConfigSecret, facebookConfigSecret};
